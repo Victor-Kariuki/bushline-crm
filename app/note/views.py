@@ -18,7 +18,7 @@ def read_notes():
     Retrieve and render all notes
     """
 
-    if current.is_admin is False:
+    if current_user.is_admin is False:
         notes = Note.query.filter_by(created_by=current_user.id).all()
     else:
         notes = Note.query.all()
