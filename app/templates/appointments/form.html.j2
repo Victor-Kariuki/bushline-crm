@@ -6,34 +6,34 @@
 
     <div class="uk-margin">
         {% if form.title.errors %}
-            {{ form.title(class_='uk-input uk-form-danger') }}
-            {% for error in form.title.errors %}
-                <small class="uk-form-help-block">{{ error }}</small>
-            {% endfor %}
+        {{ form.title(class_='uk-input uk-form-danger') }}
+        {% for error in form.title.errors %}
+        <small class="uk-form-help-block">{{ error }}</small>
+        {% endfor %}
         {% else %}
-            {{ form.title(class_='uk-input', placeholder='Title') }}
+        {{ form.title(class_='uk-input', placeholder='Title') }}
         {% endif %}
     </div>
 
     <div class="uk-margin">
         {% if form.description.errors %}
-            {{ form.description(class_='uk-textarea uk-form-danger') }}
-            {% for error in form.description.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-            {% endfor %}
+        {{ form.description(class_='uk-textarea uk-form-danger') }}
+        {% for error in form.description.errors %}
+        <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+        {% endfor %}
         {% else %}
-            {{ form.description(class_='uk-textarea', placeholder='Description') }}
+        {{ form.description(class_='uk-textarea', placeholder='Description') }}
         {% endif %}
     </div>
 
     <div class="uk-margin">
         {% if form.date.errors %}
-            {{ form.date(class_='uk-input uk-form-danger') }}
-            {% for error in form.date.errors %}
-                <small class="uk-form-help-block">{{ error }}</small>
-            {% endfor %}
+        {{ form.date(class_='uk-input uk-form-danger') }}
+        {% for error in form.date.errors %}
+        <small class="uk-form-help-block">{{ error }}</small>
+        {% endfor %}
         {% else %}
-            {{ form.date(class_='uk-input', placeholder='Date') }}
+        {{ form.date(class_='uk-input', placeholder='Date') }}
         {% endif %}
     </div>
 

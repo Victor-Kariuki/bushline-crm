@@ -20,7 +20,7 @@ def read_tasks():
     """
 
     if current_user.is_admin is False:
-        tasks = Task.query.filter_by(user_id=current_user.id).all()
+        tasks = Task.query.filter_by(created_by=current_user.id).all()
     else:
         tasks = Task.query.all()
 
@@ -36,13 +36,13 @@ def read_task(id):
     """
 
     task = Task.query.filter_by(id=id).first()
-    user = User.query.filter_by(id=task.user_id).first()
+    user = User.query.filter_by(id=task.created_by).first()
     lead = Lead.query.filter_by(id=task.lead_id).first()
 
     return render_template('tasks/single.html.j2', task=task, user=user, lead=lead, title=task.name)
 
 
-@task.route('/create')
+@task.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_task():
     """
@@ -52,7 +52,7 @@ def create_task():
 
     form = TaskForm()
 
-    if form.validate_on_sumbit():
+    if form.validate_on_submit():
 
         task = Task(
             title = form.title.data,
@@ -75,7 +75,7 @@ def create_task():
     return render_template('tasks/form.html.j2', form=form, title='Create Task')
 
 
-@task.route('/update/<int:id>')
+@task.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_task(id):
     """
@@ -88,23 +88,26 @@ def update_task(id):
     form = TaskForm(obj = task)
 
     if form.validate_on_submit():
-        task.title = form.title.data,
-        task.description = form.description.data,
-        task.status = form.status.data,
-        task.lead = form.lead.data,
+        task.title = form.title.data
+        task.description = form.description.data
+        task.status = form.status.data
+        task.lead = form.lead.data
 
-        db.session.add(task)
-        db.session.commit()
+        try:
+            db.session.add(task)
+            db.session.commit()
 
-        flash('Successfully updated the task')
+            flash('Successfully updated the task', 'info')
 
-        # redirect to the task's page
-        redirect(url_for('task.read_task', id=task.id))
+            # redirect to the task's page
+            return redirect(url_for('task.read_task', id=task.id))
+        except:
+            flash('Error updating the tasks', 'error')
 
     return render_template('tasks/form.html.j2', form=form, title='Update Task')
 
 
-@task.route('/delete/<int:id>')
+@task.route('/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_task(id):
     """
@@ -119,4 +122,4 @@ def delete_task(id):
 
     flash('Successfully deleted the task')
 
-    redirect(url_for(task.read_tasks))
+    return redirect(url_for('task.read_tasks'))

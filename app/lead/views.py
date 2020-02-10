@@ -90,27 +90,32 @@ def update_lead(id):
 
     if form.validate_on_submit():
         lead_json = request.form.to_dict(flat=False)
+        # lead_json.get('land_id')[0]
 
-        lead.first_name = form.first_name.data,
-        lead.last_name = form.last_name.data,
-        lead.phone = form.phone.data,
-        lead.email = form.email.data,
-        lead.source = form.source.data,
-        lead.lead_type = form.lead_type.data,
-        lead.status = form.status.data,
-        location = form.location.data,
-        lead.proposal = form.proposal.data,
-        probability = form.probability.data,
-        land_id = lead_json.get('land_id')[0]
+        lead.first_name = form.first_name.data
+        lead.last_name = form.last_name.data
+        lead.phone = form.phone.data
+        lead.email = form.email.data
+        lead.source = form.source.data
+        lead.lead_type = form.lead_type.data
+        lead.status = form.status.data
+        location = form.location.data
+        lead.proposal = form.proposal.data
+        land.probability = form.probability.data
+        land.land_id = form.land_id.data
+
         lead.assignees.append(form.user_id.data)
 
-        # update the DB
-        db.session.add(lead)
-        db.session.commit()
-        flash('You have successfully edited the lead.')
+        try:
+            # update the DB
+            db.session.add(lead)
+            db.session.commit()
+            flash('You have successfully edited the lead.', 'info')
 
-        # redirect to the leads page
-        return redirect(url_for('lead.read_leads'))
+            # redirect to the leads page
+            return redirect(url_for('lead.read_leads'))
+        except:
+            flash('Error updating the lead', 'error')
 
     return render_template('leads/form.html.j2', form=form, title='Update lead')
 

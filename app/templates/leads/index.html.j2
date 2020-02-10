@@ -1,9 +1,14 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-<h1>{{ title }}</h1>
-<hr>
-<a class="uk-button uk-button-primary" href="{{ url_for('lead.create_lead') }}">Add Lead</a>
+<div class="uk-clearfix">
+    <div class="uk-float-left">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('lead.create_lead') }}">Add Lead</a>
+    </div>
+</div>
 {%  if leads %}
 {% for message in get_flashed_messages() %}
 {% if message.category == 'error' %}
@@ -19,138 +24,146 @@
 {% endif %}
 {% endfor %}
 
-<div class="uk-grid"></div>
-<ul uk-tab>
-    <li><a href="#">Active</a></li>
-    <li><a href="#">Closed</a></li>
-    <li><a href="#">Lost</a></li>
-</ul>
+<div class="uk-margin" uk-grid>
+    <div class="uk-width-auto">
+        <ul uk-tab>
+            <li><a href="#">Active</a></li>
+            <li><a href="#">Closed</a></li>
+            <li><a href="#">Lost</a></li>
+        </ul>
 
-<ul class="uk-switcher uk-margin">
-    {% for lead in leads %}
-    {% if lead.status.name == 'active'  %}
-    <li>
-        <table class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
-            <thead>
-                <tr>
-                    <th class="uk-table-shrink">Name</th>
-                    <th class="uk-table-shrink">Contact</th>
-                    <th class="uk-table-shrink">Source</th>
-                    <th class="uk-table-shrink">Proposal</th>
-                    <th class="uk-table-shrink">Type</th>
-                    <th class="uk-table-shrink">Assignee</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                            {{ lead.first_name }} {{ lead.last_name }}
-                        </a>
-                    </td>
-                    <td> {{ lead.email }}</br>{{ lead.phone }}</td>
-                    <td> {{ lead.source.name }} </td>
-                    <td>{{ lead.proposal }}</td>
-                    <td> {{ lead.lead_type.name }} </td>
-                    <td>
-                        {% for assignee in lead.assignees %}
-                        {{ assignee.username }}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
-                            uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
-                            uk-icon="trash"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </li>
-    {% elif lead.status.name == 'closed'  %}
-    <table class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th class="uk-table-shrink">Contact</th>
-                <th>Source</th>
-                <th>Proposal</th>
-                <th class="uk-table-shrink">Type</th>
-                <th>Assignee</th>
-                <th class="uk-table-shrink">Edit</th>
-                <th class="uk-table-shrink">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="uk-table-link">
-                    <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                        {{ lead.first_name }} {{ lead.last_name }}
-                    </a>
-                </td>
-                <td> {{ lead.email }}<br>{{ lead.phone }}</td>
-                <td> </td>
-                <td> {{ lead.source.name }} </td>
-                <td>{{ lead.proposal }}</td>
-                <td> {{ lead.lead_type.name }} </td>
-                <td>{{ lead.assignees }}</td>
-                <td>
-                    <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
-                        uk-icon="file-edit"></a>
-                </td>
-                <td>
-                    <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    {% else %}
-    <table class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
-        <thead>
-            <tr>
-                <th class="uk-table-shrink">Name</th>
-                <th class="uk-table-shrink">Contact</th>
-                <th class="uk-table-shrink">Source</th>
-                <th class="uk-table-shrink">Proposal</th>
-                <th class="uk-table-shrink">Type</th>
-                <th class="uk-table-shrink">Assignee</th>
-                <th class="uk-table-shrink">Edit</th>
-                <th class="uk-table-shrink">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="uk-table-link">
-                    <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                        {{ lead.first_name }} {{ lead.last_name }}
-                    </a>
-                </td>
-                <td> {{ lead.email }}</br>{{ lead.phone }}</td>
-                <td> {{ lead.source.name }} </td>
-                <td>{{ lead.proposal }}</td>
-                <td> {{ lead.lead_type.name }} </td>
-                <td>
-                    {% for assignee in lead.assignees %}
-                    {{ assignee.username }}
-                    {% endfor %}
-                </td>
-                <td>
-                    <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
-                        uk-icon="file-edit"></a>
-                </td>
-                <td>
-                    <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    {% endif %}
-    {% endfor %}
-</ul>
+        <ul class="uk-switcher uk-margin">
+            {% for lead in leads %}
+            {% if lead.status.name == 'active'  %}
+            <li>
+                <table
+                    class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="uk-table-shrink">Name</th>
+                            <th class="uk-table-shrink">Contact</th>
+                            <th class="uk-table-shrink">Source</th>
+                            <th class="uk-table-shrink">Proposal</th>
+                            <th class="uk-table-shrink">Type</th>
+                            <th class="uk-table-shrink">Assignee</th>
+                            <th class="uk-table-shrink">Edit</th>
+                            <th class="uk-table-shrink">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="uk-table-link">
+                                <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
+                                    {{ lead.first_name }} {{ lead.last_name }}
+                                </a>
+                            </td>
+                            <td> {{ lead.email }}</br>{{ lead.phone }}</td>
+                            <td> {{ lead.source.name }} </td>
+                            <td>{{ lead.proposal }}</td>
+                            <td> {{ lead.lead_type.name }} </td>
+                            <td>
+                                {% for assignee in lead.assignees %}
+                                {{ assignee.username }}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
+                                    uk-icon="file-edit"></a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
+                                    uk-icon="trash"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+            {% elif lead.status.name == 'closed'  %}
+            <table
+                class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th class="uk-table-shrink">Contact</th>
+                        <th>Source</th>
+                        <th>Proposal</th>
+                        <th class="uk-table-shrink">Type</th>
+                        <th>Assignee</th>
+                        <th class="uk-table-shrink">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="uk-table-link">
+                            <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
+                                {{ lead.first_name }} {{ lead.last_name }}
+                            </a>
+                        </td>
+                        <td> {{ lead.email }}<br>{{ lead.phone }}</td>
+                        <td> </td>
+                        <td> {{ lead.source.name }} </td>
+                        <td>{{ lead.proposal }}</td>
+                        <td> {{ lead.lead_type.name }} </td>
+                        <td>{{ lead.assignees }}</td>
+                        <td>
+                            <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
+                                uk-icon="file-edit"></a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
+                                uk-icon="trash"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <table
+                class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
+                <thead>
+                    <tr>
+                        <th class="uk-table-shrink">Name</th>
+                        <th class="uk-table-shrink">Contact</th>
+                        <th class="uk-table-shrink">Source</th>
+                        <th class="uk-table-shrink">Proposal</th>
+                        <th class="uk-table-shrink">Type</th>
+                        <th class="uk-table-shrink">Assignee</th>
+                        <th class="uk-table-shrink">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="uk-table-link">
+                            <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
+                                {{ lead.first_name }} {{ lead.last_name }}
+                            </a>
+                        </td>
+                        <td> {{ lead.email }}</br>{{ lead.phone }}</td>
+                        <td> {{ lead.source.name }} </td>
+                        <td>{{ lead.proposal }}</td>
+                        <td> {{ lead.lead_type.name }} </td>
+                        <td>
+                            {% for assignee in lead.assignees %}
+                            {{ assignee.username }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
+                                uk-icon="file-edit"></a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
+                                uk-icon="trash"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% else %}
 <div class="uk-placeholder uk-text-center">No leads have been added.</div>
 {% endif %}
