@@ -1,0 +1,23 @@
+{% extends "dashboard.html.j2" %}
+
+{% block content %}
+<div class="uk-card uk-card-default uk-width-1-2@m">
+    <div class="uk-card-header">
+        <div class="uk-grid-small uk-flex-middle" uk-grid>
+            <div class="uk-width-auto">
+                <h3 class="uk-card-title uk-margin-remove-bottom">{{ product.name }}</h3>
+                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{ product.created_on }}</time></p>
+            </div>
+            <div class="uk-width-expand">
+                <div class="uk-label uk-badge">{{ product.status.name }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-card-body">
+        <p>{{ product.description }}</p>
+    </div>
+    <div class="uk-card-footer">
+        <a class="uk-button uk-button-text">{{ product.price }}</a>
+    </div>
+</div>
+{% endblock %}

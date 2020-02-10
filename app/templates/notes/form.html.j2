@@ -1,0 +1,52 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <div class="uk-child-width-1-2@m" uk-grid>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body">
+                <h3 class="uk-card-title">{{ title }}</h3>
+                <form method='post'>
+                    {{ form.hidden_tag() }}
+                    <div class="uk-margin">
+                        {% if form.title.errors %}
+                            {{ form.title(class='uk-input uk-form-danger') }}
+                            {% for error in form.title.errors %}
+                                <small class="uk-form-help-block">
+                                    {{ error }}
+                                </small>
+                            {% endfor %}
+                        {% else %}
+                            {{ form.title(class='uk-input', placeholder='Title') }}
+                        {% endif %}
+                    </div>
+
+                    <div class="uk-margin">
+                        {% if form.description.errors %}
+                            {{ form.description(class='uk-textarea uk-form-danger', rows="5") }}
+                            {% for error in form.description.errors %}
+                                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            {{ form.description(class='uk-textarea', rows="5", placeholder='Description') }}
+                        {% endif %}
+                    </div>
+
+                    <div class="uk-margin">
+                        {% if form.lead_id.errors %}
+                            {{ form.lead_id(class='uk-select uk-form-danger', rows="5") }}
+                            {% for error in form.lead_id.errors %}
+                                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            {{ form.lead_id(class='uk-select', placeholder='lead_id') }}
+                        {% endif %}
+                    </div>
+
+                    <div class="uk-margin">
+                        {{ form.submit(class='uk-button uk-button-primary') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

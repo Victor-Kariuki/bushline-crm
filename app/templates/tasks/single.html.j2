@@ -1,0 +1,28 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <div uk-grid uk-height-viewport>
+        <div class="uk-width-2-5@m"></div>
+        <div class="uk-width-3-5@m">
+            {{ if task.comments }}
+                <ul class="uk-comment-list">
+                    {{ for comment in tasks.comments }}
+                    <li>
+                        {% if comment.user_id is current_user.id %}
+                            <article class="uk-comment">{{ comment.comment }}</article>
+                        {% else %}
+                            <ul>
+                                <li>
+                                    <article class="uk-comment">{{ comment.comment }}</article>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="uk-placeholder uk-text-center">No comments found</div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'auth.html.j2' %}
+
+{% block content %}
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    <div class="uk-margin">
+        {% if form.username.errors %}
+            {{ form.username(class_='uk-input uk-form-danger') }}
+            {% for error in form.username.errors %}
+                <small class="uk-form-help-block">{{ error }}</small>
+            {% endfor %}
+        {% else %}
+            {{ form.username(class_='uk-input', placeholder='Username') }}
+        {% endif %}
+    </div>
+
+    <div class="uk-margin">
+        {% if form.email.errors %}
+            {{ form.email(class_='uk-input uk-form-danger') }}
+            {% for error in form.email.errors %}
+                <small class="uk-form-help-block">{{ error }}</small>
+            {% endfor %}
+        {% else %}
+            {{ form.email(class_='uk-input', placeholder='Email') }}
+        {% endif %}
+    </div>
+
+    <div class="uk-margin">
+        {{ form.submit(class='uk-button uk-button-primary') }}
+    </div>
+</form>
+{% endblock %}

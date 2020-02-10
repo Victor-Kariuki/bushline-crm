@@ -1,0 +1,26 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <div class="uk-card uk-card-default uk-width-1-2@m">
+        <div class="uk-card-header">
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-auto">
+                    {{ appointment.title }}
+                </div>
+                <div class="uk-width-expand">
+                    <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{ appointment.date }}</time></p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-card-body">
+            <p>{{ appointment.description }}</p>
+            <ul class="uk-list">
+                <li>{{ owner.username }}</li>
+                <li>{{ lead.name }}</li>
+            </ul>
+        </div>
+        <div class="uk-card-footer">
+            <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Cancel Appointment</a>
+        </div>
+    </div>
+{% endblock %}

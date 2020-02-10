@@ -1,0 +1,53 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <hr>
+    <a class="uk-button uk-button-primary" href="{{ url_for('land.create_land') }}">Add land</a>
+    {%  if lands %}
+        {% for message in get_flashed_messages() %}
+            <div class="uk-alert-primary" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+        <table class="uk-table uk-table-divider uk-table-hover uk-table-justify uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Rating</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for land in lands %}
+                <tr>
+                    <td class="uk-table-link">
+                        <a class="uk-link-reset" href="{{ url_for('land.read_land', id=land.id) }}">
+                            {{ land.name }}
+                        </a>
+                    </td>
+                    <td class="uk-text-truncate"> {{ land.description }} </td>
+                    <td> {{ land.location }} </td>
+                    <td> {{ land.rating }} </td>
+                    <td> {{ land.price }} </td>
+                    <td>{{ land.status.name }}</td>
+                    <td>
+                        <a href="{{ url_for('land.update_land', id=land.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('land.delete_land', id=land.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="uk-placeholder uk-text-center">No lands have been added.</div>
+    {% endif %}
+{% endblock %}

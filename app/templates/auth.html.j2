@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }} | Magenta Leads</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}" />
+        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+        <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/uikit-icons.js') }}"></script>
+        <style>
+            html,
+            body {
+                font-family: 'Quicksand', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div uk-height-viewport uk-grid class="uk-grid-match">
+            <div class="uk-width-3-5@m">
+                <img src="{{ url_for('static', filename='images/auth-bg.jpg') }}" alt="" uk-img>
+            </div>
+            <div class="uk-width-2-5@m">
+                <div class="uk-padding">
+                    <h1>{{ title }}</h1>
+                    <hr>
+                    {% for message in get_flashed_messages() %}
+                        <div class="uk-alert-primary" uk-alert>
+                            <a class="uk-alert-close" uk-close></a>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

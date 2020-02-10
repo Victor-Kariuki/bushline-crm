@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ title }} | Magenta Leads</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}" />
+    <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>
+    <style>
+        html,
+        body {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .uk-text-error {
+            font-size: 5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div uk-height-viewport class="uk-grid-divider uk-padding" uk-grid>
+        <div class="uk-width-1-6@m uk-visible@m">
+            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+                <li class="uk-nav-header">Admin</li>
+                <li><a href="/"><span class="uk-margin-small-right" uk-icon="icon: home"></span> Dashboard</a></li>
+                <li><a href="{{ url_for('user.read_users') }}""><span class=" uk-margin-small-right"
+                        uk-icon="icon: grid"></span> Users</a></li>
+                <li><a href="{{ url_for('land.read_lands') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: calendar"></span> Lands</a>
+                </li>
+                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bolt"></span> Reports</a></li>
+                <li class="uk-nav-divider"></li>
+
+                <li class="uk-nav-header">General</li>
+                <li><a href="{{ url_for('lead.read_leads') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: table"></span> Leads</a></li>
+                <li><a href="{{ url_for('appointment.read_appointments') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: calendar"></span> Appointments</a>
+                </li>
+                <li><a href="{{ url_for('task.read_tasks') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: list"></span> Tasks</a></li>
+                <li><a href="{{ url_for('note.read_notes') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: calendar"></span> Notes</a>
+                </li>
+
+                <li class="uk-nav-divider"></li>
+
+                <li class="uk-nav-header">Account</li>
+                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: user"></span> Profile</a></li>
+                <li><a href="{{ url_for('auth.logout') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: sign-out"></span> Logout</a></li>
+            </ul>
+        </div>
+        <div class="uk-width-expand@m">
+            <div class="uk-clearfix">
+                <div class="uk-float-left">
+                    <div class="uk-padding-small uk-visible@m">
+                        <ul class="uk-breadcrumb">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><span>{{ title }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="uk-float-right">
+                    <div>
+                        <button class="uk-button uk-button-secondary" type="button">
+                            {{ current_user.username }}
+                        </button>
+                        <div uk-dropdown>
+                            <ul class="uk-nav uk-dropdown-nav">
+                                <li class="uk-active"><a
+                                        href="{{ url_for('user.read_user', id=current_user.id) }}">Profile</a></li>
+                                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-flex-center" uk-grid>
+                <div class="uk-position-left">
+                </div>
+            </div>
+            <div class="uk-container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<hr>

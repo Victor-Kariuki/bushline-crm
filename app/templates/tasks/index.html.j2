@@ -1,0 +1,101 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <hr>
+    <a class="uk-button uk-button-primary" href="{{ url_for('tasks.create_task') }}">Add Task</a>
+    {%  if tasks %}
+        {% for message in get_flashed_messages() %}
+            <div class="uk-alert-primary" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+
+        {% for task in tasks %}
+            <div class="uk-child-width=1-3@m" uk-height-viewport uk-grid>
+                {% if task.status is "active" %}
+                    <div>
+                        <div class="uk-card uk-card-default" uk-height-match>
+                            <div class="uk-card-body">
+                                <div class="uk-card-badge uk-label">{{ task.status }}</div>
+                                <h3 class="uk-card-title">{{ task.status }}</h3>
+                                <div class="uk-card uk-card-default">
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                            <div class="uk-width-expand">
+                                                <h3 class="uk-card-title">{{ task.title }}</h3>
+                                            </div>
+                                            <div class="uk-width-expand">
+                                                <a href="{{ url_for('tasks.update_task', id=task.id) }}" class="uk-icon-button" uk-icon="file-edit"></a>
+                                            </div>
+                                    </div>
+                                    <div class="uk-card-body">
+                                        <p>{{ task.description }}</p>
+                                    </div>
+                                    <div class="uk-card-foot">
+                                        <a href="{{ url_for('tasks.read_task', task.id) }}" class="uk-button uk-button-text">read more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif task.status is "pending" %}
+                    <div>
+                        <div class="uk-card uk-card-default" uk-height-match>
+                            <div class="uk-card-body">
+                                <div class="uk-card-badge uk-label">{{ task.status }}</div>
+                                <h3 class="uk-card-title">{{ task.status }}</h3>
+                                <div class="uk-card uk-card-default">
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                            <div class="uk-width-expand">
+                                                <h3 class="uk-card-title">{{ task.title }}</h3>
+                                            </div>
+                                            <div class="uk-width-expand">
+                                                <a href="{{ url_for('tasks.update_task', id=task.id) }}" class="uk-icon-button" uk-icon="file-edit"></a>
+                                            </div>
+                                    </div>
+                                    <div class="uk-card-body">
+                                        <p>{{ task.description }}</p>
+                                    </div>
+                                    <div class="uk-card-foot">
+                                        <a href="{{ url_for('tasks.read_task', task.id) }}" class="uk-button uk-button-text">read more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div>
+                        <div class="uk-card uk-card-default" uk-height-match>
+                            <div class="uk-card-body">
+                                <div class="uk-card-badge uk-label">{{ task.status }}</div>
+                                <h3 class="uk-card-title">{{ task.status }}</h3>
+                                <div class="uk-card uk-card-default">
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                            <div class="uk-width-expand">
+                                                <h3 class="uk-card-title">{{ task.title }}</h3>
+                                            </div>
+                                            <div class="uk-width-expand">
+                                                <a href="{{ url_for('tasks.update_task', id=task.id) }}" class="uk-icon-button" uk-icon="file-edit"></a>
+                                            </div>
+                                    </div>
+                                    <div class="uk-card-body">
+                                        <p>{{ task.description }}</p>
+                                    </div>
+                                    <div class="uk-card-foot">
+                                        <a href="{{ url_for('tasks.read_task', task.id) }}" class="uk-button uk-button-text">read more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="uk-placeholder uk-text-center">You have no tasks at the moment</div>
+    {% endif %}
+{% endblock %}

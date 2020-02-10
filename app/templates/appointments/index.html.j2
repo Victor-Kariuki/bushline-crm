@@ -1,0 +1,42 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <hr>
+    {% if appointments %}
+        {% for message in get_flashed_messages() %}
+            <div class="uk-alert-primary" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+        <table class="uk-table uk-table-hover uk-table-divider uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Title/th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th class="uk-table-shrink">Update</th>
+                    <th class="uk-table-shrink">Discard</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.title }}</td>
+                    <td>{{ appointment.description }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>
+                        <a href="{{ url_for('appointments.update_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="uk-placeholder uk-text-center">No appointments have been added.</div>
+    {% endif %}
+{% endblock %}
