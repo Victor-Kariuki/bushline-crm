@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # local imports
-from app import db, login_manager
+from app import db
 from app.models.links import user_lead_links
 
 class User(UserMixin, db.Model):
@@ -50,7 +50,3 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User: {}>'.format(self.email)
 
-    # Set up user_loader
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))

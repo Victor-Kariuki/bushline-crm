@@ -19,6 +19,7 @@ class Note(db.Model):
     description = db.Column(db.Text)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
+    comments = db.relationship('Comment', backref='note', lazy='dynamic')
     updated_on = db.Column(db.DateTime)
 
     def __repr__(self):

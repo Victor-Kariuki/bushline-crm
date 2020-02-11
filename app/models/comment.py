@@ -18,6 +18,7 @@ class Comment(db.Model):
     author = db.Column(db.Integer, db.ForeignKey('users.id'))
     lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'))
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)

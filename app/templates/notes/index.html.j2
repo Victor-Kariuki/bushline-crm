@@ -1,0 +1,40 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+<div class="uk-clearfix">
+    <div class="uk-float-left">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
+    </div>
+</div>
+{% if notes %}
+<div class="uk-child-width-1-4@m" uk-grid>
+    {% for note in notes %}
+    <div>
+        <article class="uk-article">
+
+            <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{ note.title }}</a></h1>
+
+            <p class="uk-article-meta">Written by <a href="#">{{ note.created_by }}</a> on {{ note.created_on }}.</p>
+
+            <p class="uk-text-truncate">{{ note.description }}</p>
+
+            <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                <div>
+                    <a class="uk-button uk-button-text" href="#">Read more</a>
+                </div>
+                <div>
+                    <a class="uk-button uk-button-text" href="#">5 Comments</a>
+                </div>
+            </div>
+
+        </article>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="uk-placeholder uk-text-center">No notes have been created.</div>
+{% endif %}
+{% endblock %}

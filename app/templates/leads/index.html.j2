@@ -11,20 +11,13 @@
 </div>
 {%  if leads %}
 {% for message in get_flashed_messages() %}
-{% if message.category == 'error' %}
 <div class="uk-alert-primary" uk-alert>
     <a class="uk-alert-close" uk-close></a>
     <p>{{ message }}</p>
 </div>
-{% else %}
-<div class="uk-alert-primary" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>{{ message }}</p>
-</div>
-{% endif %}
 {% endfor %}
 
-<div class="uk-margin" uk-grid>
+<div uk-grid>
     <div class="uk-width-auto">
         <ul uk-tab>
             <li><a href="#">Active</a></li>

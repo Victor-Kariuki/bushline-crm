@@ -10,10 +10,9 @@ from flask_login import login_required, login_user, logout_user, current_user
 from flask_mail import Message
 
 # local imports
-from app import mail
+from app import db, login_manager, mail
 from app.auth import auth
 from app.auth.forms import LoginForm, RegisterForm, ResetPasswordForm
-from app import db
 from app.models import User
 
 
@@ -41,6 +40,15 @@ def register():
         user.set_password(form.password.data)
 
         try:
+
+            msg = Message(
+                subject='Magenta Leads - Welcome',
+                sender=os.getenv('MAIL_USERNAME'),
+                recipients=[form.email.data],
+                body='Welcome to magenta leads!'
+            )
+            msg.html = render_template('mails/welcome.html')
+            mail.send(msg)
 
             # add user to the database
             db.session.add(user)
@@ -126,4 +134,19 @@ def logout():
     flash('You have successfully been logged out.')
 
     # redirect to the login page
+    return redirect(url_for('auth.login'))
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """Check if user is logged-in on every page load."""
+    if user_id is not None:
+        return User.query.get(user_id)
+    return None
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    """Redirect unauthorized users to Login page."""
+    flash('You must be logged in to view that page.')
     return redirect(url_for('auth.login'))
