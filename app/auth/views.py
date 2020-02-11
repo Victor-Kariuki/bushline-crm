@@ -40,16 +40,6 @@ def register():
         user.set_password(form.password.data)
 
         try:
-
-            msg = Message(
-                subject='Magenta Leads - Welcome',
-                sender=os.getenv('MAIL_USERNAME'),
-                recipients=[form.email.data],
-                body='Welcome to magenta leads!'
-            )
-            msg.html = render_template('mails/welcome.html')
-            mail.send(msg)
-
             # add user to the database
             db.session.add(user)
             db.session.commit()
