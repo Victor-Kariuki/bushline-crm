@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.appointment import appointment
+from app.blueprints.appointment import appointment
 from app.models import Appointment, User
-from app.appointment.forms import AppointmentForm
+from app.blueprints.appointment.forms import AppointmentForm
 
 
 def check_admin():

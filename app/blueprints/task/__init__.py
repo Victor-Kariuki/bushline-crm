@@ -6,4 +6,4 @@ from flask import Blueprint
 task = Blueprint('task', __name__)
 
 # local imports
-from app.task import views
+from app.blueprints.task import views

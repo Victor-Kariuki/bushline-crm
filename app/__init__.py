@@ -35,27 +35,32 @@ def create_app(env_name):
 
     migrate = Migrate(app=app, db=db)
 
+    # import all db models
     from app.models import Comment, Land, Lead, Note, Task, User, Appointment
 
-    from app.appointment import appointment as appointment_blueprint
+    # import & register blueprints
+    from app.blueprints.appointment import appointment as appointment_blueprint
     app.register_blueprint(appointment_blueprint, url_prefix='/appointments')
 
-    from app.auth import auth as auth_blueprint
+    from app.blueprints.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    from app.land import land as land_blueprint
+    from app.blueprints.auth import google_bp as google_blueprint
+    app.register_blueprint(google_blueprint, url_prefix="")
+
+    from app.blueprints.land import land as land_blueprint
     app.register_blueprint(land_blueprint, url_prefix='/lands')
 
-    from app.lead import lead as lead_blueprint
+    from app.blueprints.lead import lead as lead_blueprint
     app.register_blueprint(lead_blueprint, url_prefix='/leads')
 
-    from app.note import note as note_blueprint
+    from app.blueprints.note import note as note_blueprint
     app.register_blueprint(note_blueprint, url_prefix='/notes')
 
-    from app.task import task as task_blueprint
+    from app.blueprints.task import task as task_blueprint
     app.register_blueprint(task_blueprint, url_prefix='/tasks')
 
-    from app.user import user as user_blueprint
+    from app.blueprints.user import user as user_blueprint
     app.register_blueprint(user_blueprint, url_prefix='/users')
 
     # redirect to register on a fresh instance

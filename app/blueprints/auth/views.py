@@ -8,11 +8,12 @@ from datetime import datetime
 from flask import flash, redirect, render_template, url_for, request
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_mail import Message
+from flask_dance.contrib.google import google
 
 # local imports
 from app import db, login_manager, mail
-from app.auth import auth
-from app.auth.forms import LoginForm, RegisterForm, ResetPasswordForm
+from app.blueprints.auth import auth
+from app.blueprints.auth.forms import LoginForm, RegisterForm, ResetPasswordForm
 from app.models import User
 
 
@@ -55,6 +56,20 @@ def register():
 
     # GET: render register page template
     return render_template('auth/register.html.j2', form=form, title='Register')
+
+
+@auth.route('')
+def google_login():
+    """Google Oauth redirect
+    """
+
+    if not google.authorized:
+        return redirect(url_for('google.login'))
+    resp = google.get("/plus/v1/people/me")
+    if resp.ok: 
+        resp_json = resp.json()
+        print (resp_json)
+        return redirect(url_for('auth.login'))
 
 
 @auth.route('/login', methods=['GET', 'POST'])

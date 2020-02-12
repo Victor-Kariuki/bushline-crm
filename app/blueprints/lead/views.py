@@ -7,8 +7,8 @@ from flask_login import login_required, current_user
 # local imports
 from app import db
 from app.models import Lead, User
-from app.lead import lead
-from app.lead.forms import LeadForm
+from app.blueprints.lead import lead
+from app.blueprints.lead.forms import LeadForm
 
 
 @lead.route('')

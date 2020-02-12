@@ -7,8 +7,8 @@ from flask_login import login_required, current_user
 # local imports
 from app import db
 from app.models import Task, User, Lead
-from app.task import task
-from app.task.forms import TaskForm
+from app.blueprints.task import task
+from app.blueprints.task.forms import TaskForm
 
 
 @task.route('')

@@ -7,8 +7,8 @@ from flask_login import current_user, login_required
 # local imports
 from app import db
 from app.models import User
-from app.user import user
-from app.user.forms import UserForm
+from app.blueprints.user import user
+from app.blueprints.user.forms import UserForm
 
 def check_admin():
     if current_user.is_admin is False:

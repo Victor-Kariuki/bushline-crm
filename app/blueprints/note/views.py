@@ -7,8 +7,8 @@ from flask_login import login_required, current_user
 # local imports
 from app import db
 from app.models import Note, Lead
-from app.note import note
-from app.note.forms import NoteForm
+from app.blueprints.note import note
+from app.blueprints.note.forms import NoteForm
 
 @note.route('/')
 @login_required

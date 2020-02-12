@@ -7,8 +7,8 @@ from flask_login import current_user, login_required
 # local imports
 from app import db
 from app.models import Land
-from app.land import land
-from app.land.forms import LandForm
+from app.blueprints.land import land
+from app.blueprints.land.forms import LandForm
 
 
 def check_admin():

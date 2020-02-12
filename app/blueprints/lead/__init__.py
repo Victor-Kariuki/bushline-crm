@@ -6,4 +6,4 @@ from flask import Blueprint
 lead = Blueprint('lead', __name__)
 
 # local imports
-from app.lead import views
+from app.blueprints.lead import views

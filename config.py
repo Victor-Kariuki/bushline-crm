@@ -25,6 +25,8 @@ class Config():
     MAIL_PASSWORD = os.getenv('SENDGRID_API_KEY')
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+    # Oauth
+    OAUTHLIB_INSECURE_TRANSPORT = os.getenv('OAUTHLIB_INSECURE_TRANSPORT')
 
 class DevelopmentConfig(Config):
     """
@@ -32,6 +34,7 @@ class DevelopmentConfig(Config):
     """
 
     DEBUG = True
+    SQLALCHEMY_ECHO = True
 
 
 class ProductionConfig(Config):
@@ -47,6 +50,7 @@ class TestingConfig(Config):
 
     DEBUG = True
     TESTING = True
+    SQLALCHEMY_ECHO = True
 
 
 app_config = {

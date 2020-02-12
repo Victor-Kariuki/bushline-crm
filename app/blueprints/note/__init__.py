@@ -6,4 +6,4 @@ from flask import Blueprint
 note = Blueprint('note', __name__)
 
 # local imports
-from app.note import views
+from app.blueprints.note import views

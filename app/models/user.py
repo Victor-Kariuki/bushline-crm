@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(60), index=True, unique=True, nullable=False)
     phone = db.Column(db.Integer, unique=True)
     password = db.Column(db.String(128), nullable=False)
+    avatar = db.Column(db.String(200))
     is_admin = db.Column(db.Boolean, default=False)
     appointments = db.relationship('Appointment', backref='user', lazy='dynamic')
     notes = db.relationship('Note', backref='user', lazy='dynamic')

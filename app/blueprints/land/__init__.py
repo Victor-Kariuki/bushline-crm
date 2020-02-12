@@ -6,4 +6,4 @@ from flask import Blueprint
 land = Blueprint('land', __name__)
 
 # local imports
-from app.land import views
+from app.blueprints.land import views
