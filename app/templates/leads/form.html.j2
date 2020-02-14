@@ -1,18 +1,18 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-<div class="uk-child-width-expand" uk-grid>
-    <div>
-        <h3>{{ title }}</h3>
-        {% for message in get_flashed_messages() %}
-        <div class="uk-alert-primary" uk-alert>
-            <a class="uk-alert-close" uk-close></a>
-            <p>{{ message }}</p>
-        </div>
-        {% endfor %}
-        <hr>
-        <form method='post'>
-            {{ form.hidden_tag() }}
+<h3>{{ title }}</h3>
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+<hr>
+<form method='post'>
+    {{ form.hidden_tag() }}
+    <div class="uk-child-width-expand@m" uk-grid>
+        <div>
             <div class="uk-child-width-expand@m" uk-grid>
                 <div>
                     <div class="uk-margin">
@@ -71,7 +71,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="uk-margin">
                 {% if form.location.errors %}
                 {{ form.location(class='uk-input uk-form-danger') }}
@@ -82,7 +81,6 @@
                 {{ form.location(class='uk-input', placeholder='Location') }}
                 {% endif %}
             </div>
-
             <div class="uk-margin">
                 {{ form.source.label(class='uk-label') }}
                 {% if form.source.errors %}
@@ -105,20 +103,9 @@
                 {% else %}
                 {{ form.proposal(class='uk-input', placeholder='Proposal') }}
                 {% endif %}
-            </div>
-
-            <div class="uk-margin">
-                {{ form.status.label(class='uk-label') }}
-                {% if form.status.errors %}
-                {{ form.status(class='uk-select uk-form-danger') }}
-                {% for error in form.status.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.status(class='uk-select', placeholder='Status') }}
-                {% endif %}
-            </div>
-
+            </div>           
+        </div>
+        <div>
             <div class="uk-margin">
                 {{ form.lead_type.label(class='uk-label') }}
                 {% if form.lead_type.errors %}
@@ -167,10 +154,11 @@
                 {% endif %}
             </div>
 
-            <div class="uk-margin">
-                {{ form.submit(class='uk-button uk-button-primary') }}
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="uk-margin">
+        {{ form.submit(class='uk-button uk-button-primary') }}
+    </div>
+</form>
 {% endblock %}

@@ -59,8 +59,7 @@ def create_lead():
             location = form.location.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
-            land_id = form.land_id.data,
-            status = form.status.data
+            land_id = form.land_id.data
         )
 
         lead.assignees.append(form.user_id.data)
@@ -98,7 +97,6 @@ def update_lead(id):
         lead.email = form.email.data
         lead.source = form.source.data
         lead.lead_type = form.lead_type.data
-        lead.status = form.status.data
         location = form.location.data
         lead.proposal = form.proposal.data
         land.probability = form.probability.data

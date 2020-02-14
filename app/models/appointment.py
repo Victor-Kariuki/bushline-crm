@@ -1,4 +1,4 @@
-# app/models/appointments
+# app/models/appointments.py
 
 # inbuilt imports
 from datetime import datetime
@@ -17,6 +17,7 @@ class Appointment(db.Model):
     title = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(200))
     date = db.Column(db.DateTime, nullable=False)
+    location = db.Column(db.String(60), nullable=False)
     lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     comments = db.relationship('Comment', backref='appointment', lazy='dynamic')

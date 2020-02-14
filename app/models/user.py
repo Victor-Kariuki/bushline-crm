@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(128), nullable=False)
     avatar = db.Column(db.String(200))
     is_admin = db.Column(db.Boolean, default=False)
+    customers = db.relationship('Customer', backref='user', lazy='dynamic')
     appointments = db.relationship('Appointment', backref='user', lazy='dynamic')
     notes = db.relationship('Note', backref='user', lazy='dynamic')
     tasks = db.relationship('Task', backref='user', lazy='dynamic')

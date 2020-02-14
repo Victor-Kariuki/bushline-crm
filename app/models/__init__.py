@@ -3,6 +3,7 @@
 from app.models.appointment import Appointment
 from app.models.comment import Comment
 from app.models.land import Land
+from app.models.customer import Customer
 from app.models.lead import Lead
 from app.models.note import Note
 from app.models.task import Task
