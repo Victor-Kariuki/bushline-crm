@@ -11,6 +11,19 @@
 <hr>
 <form method='post'>
     {{ form.hidden_tag() }}
+
+    <div class="uk-margin">
+        {{ form.customer.label(class='uk-label') }}
+        {% if form.customer.errors %}
+        {{ form.customer(class='uk-select uk-form-danger') }}
+        {% for error in form.customer.errors %}
+        <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+        {% endfor %}
+        {% else %}
+        {{ form.customer(class='uk-select', placeholder='Type') }}
+        {% endif %}
+    </div>
+
     <div class="uk-margin">
         {{ form.source.label(class='uk-label') }}
         {% if form.source.errors %}

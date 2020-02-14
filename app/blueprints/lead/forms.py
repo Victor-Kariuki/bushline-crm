@@ -13,7 +13,7 @@ class LeadForm(FlaskForm):
     Handle creation & updating of leads.
     """
 
-    customer = QuerySelectField(query_factory=lambda: Customer.query.all(), get_label="name")
+    customer = QuerySelectField(query_factory=lambda: Customer.query.all(), get_label="first_name")
     proposal = StringField('Proposal')
     source = SelectField('Source', choices=[
         ('facebook', 'facebook'),

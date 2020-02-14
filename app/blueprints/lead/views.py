@@ -1,5 +1,8 @@
 # app/leads/views
 
+# inbuilt imports
+from datetime import datetime
+
 # 3rd party imports
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
@@ -51,12 +54,11 @@ def create_lead():
     if form.validate_on_submit():
         lead = Lead(
             customer = form.customer.data,
-            land = form.land.data,
             source = form.source.data,
-            proposal = form.proposal.data,
-            lead_type = form.lead_type.data,
             location = form.location.data,
-            probability = form.probability.data
+            proposal = form.proposal.data,
+            probability = form.probability.data,
+            land = form.land.data
         )
 
         lead.assignees.append(form.user.data)
@@ -86,13 +88,14 @@ def update_lead(id):
 
     if form.validate_on_submit():
         lead.assignees.append(form.user.data)
-        land.land = form.land.data
-        lead.source = form.source.data
-        lead.proposal = form.proposal.data
-        lead.lead_type = form.lead_type.data
-        lead.location = form.location.data
-        land.probability = form.probability.data
-
+        lead.customer = form.customer.data,
+        lead.source = form.source.data,
+        lead.location = form.location.data,
+        lead.proposal = form.proposal.data,
+        lead.probability = form.probability.data,
+        lead.land = form.land.data
+        lead.updated_on = datetime.utcnow()
+        
         try:
             # update the DB
             db.session.add(lead)
