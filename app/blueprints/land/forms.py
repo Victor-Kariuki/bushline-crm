@@ -13,6 +13,8 @@ class LandForm(FlaskForm):
 
     name = StringField('Name', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
+    latitude = StringField('Longitude')
+    longitude = StringField('Longitude')
     description = TextAreaField('Description', validators=[Length(max=200)])
     rating = IntegerField('Rating', validators=[NumberRange(min=0, max=10)])
     price = IntegerField('Price', validators=[NumberRange(min=10000)])

@@ -28,6 +28,8 @@ class Land(db.Model):
     name = db.Column(db.String(60), nullable=False, index=True)
     description = db.Column(db.Text)
     location = db.Column(db.String(64))
+    latitude = db.Column(db.Integer)
+    longitude = db.Column(db.Integer)
     rating = db.Column(db.Integer)
     price = db.Column(db.Integer)
     status = db.Column(db.Enum(LandStatus))

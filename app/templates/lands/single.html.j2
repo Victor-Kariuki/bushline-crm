@@ -1,23 +1,42 @@
 {% extends "dashboard.html.j2" %}
 
 {% block content %}
-<div class="uk-card uk-card-default uk-width-1-2@m">
-    <div class="uk-card-header">
-        <div class="uk-grid-small uk-flex-middle" uk-grid>
-            <div class="uk-width-auto">
-                <h3 class="uk-card-title uk-margin-remove-bottom">{{ product.name }}</h3>
-                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{ product.created_on }}</time></p>
+<div class="uk-child-width-1-2@s uk-grid-match"uk-grid>
+    <div>
+        <div class="uk-card uk-card-default">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <h3 class="uk-card-title uk-margin-remove-bottom">{{ land.name }}</h3>
+                        <p class="uk-text-meta uk-margin-remove-top"><time
+                                datetime="2016-04-01T19:00">{{ land.created_on }}</time></p>
+                    </div>
+                    <div class="uk-width-expand">
+                        <div class="uk-label uk-badge">{{ land.status.name }}</div>
+                    </div>
+                </div>
             </div>
-            <div class="uk-width-expand">
-                <div class="uk-label uk-badge">{{ product.status.name }}</div>
+            <div class="uk-card-body">
+                <p class="uk-text-muted uk-text-uppercase">Rating: <span class="uk-badge">{{ land.rating }}</span></p>
+                <p>{{ land.description }}</p>
+            </div>
+            <div class="uk-card-footer">
+                <a class="uk-button uk-button-text">{{ land.price }}</a>
             </div>
         </div>
     </div>
-    <div class="uk-card-body">
-        <p>{{ product.description }}</p>
-    </div>
-    <div class="uk-card-footer">
-        <a class="uk-button uk-button-text">{{ product.price }}</a>
+    <div>
+         <div id='map' style='width: 100%; height: 300px;'></div>
     </div>
 </div>
+
+<script>
+	mapboxgl.accessToken = '{{ access_token }}';
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+    center: [{{ land.longitude }}, {{ land.latitude }}], // starting position [lng, lat]
+    zoom: 8 // starting zoom
+    });
+</script>
 {% endblock %}

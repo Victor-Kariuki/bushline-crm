@@ -35,7 +35,7 @@ def read_lead(id):
 
     lead = Lead.query.filter_by(id=id).first()
 
-    return render_template('leads/single.html.j2', lead=lead, notes=notes, title=lead.first_name)
+    return render_template('leads/single.html.j2', lead=lead, title=lead.first_name)
 
 
 @lead.route('/create', methods=['GET', 'POST'])
@@ -59,7 +59,7 @@ def create_lead():
             location = form.location.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
-            land_id = lead_json.get('land_id')[0],
+            land_id = form.land_id.data,
             status = form.status.data
         )
 

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}" />
     <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
     <style>
         html,
         body {
@@ -82,10 +84,6 @@
                     </div>
                 </div>
             </div>
-            <div class="uk-flex-center" uk-grid>
-                <div class="uk-position-left">
-                </div>
-            </div>
             <div class="uk-container">
                 {% block content %}
                 {% endblock %}
@@ -93,6 +91,4 @@
         </div>
     </div>
 </body>
-
 </html>
-<hr>

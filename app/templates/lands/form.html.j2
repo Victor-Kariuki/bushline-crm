@@ -40,6 +40,37 @@
                     {% endif %}
                 </div>
 
+                <div class="uk-child-width-1-2" uk-grid>
+                    <div>
+                        <div class="uk-margin">
+                            {% if form.longitude.errors %}
+                                {{ form.longitude(class='uk-input uk-form-danger') }}
+                                {% for error in form.longitude.errors %}
+                                    <small class="uk-form-help-block">
+                                        {{ error }}
+                                    </small>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.longitude(class='uk-input', placeholder='Longitude') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-margin">
+                            {% if form.latitude.errors %}
+                                {{ form.latitude(class='uk-input uk-form-danger') }}
+                                {% for error in form.latitude.errors %}
+                                    <small class="uk-form-help-block">
+                                        {{ error }}
+                                    </small>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.latitude(class='uk-input', placeholder='Latitude') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="uk-margin">
                     {% if form.description.errors %}
                         {{ form.description(class='uk-textarea uk-form-danger', rows="5") }}

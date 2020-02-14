@@ -1,5 +1,8 @@
 # app/land/views.py
 
+# inbuilt imports
+import os
+
 # 3rd party imports
 from flask import render_template, url_for, redirect, flash, abort
 from flask_login import current_user, login_required
@@ -25,8 +28,9 @@ def read_lands():
     """
 
     lands = Land.query.all()
+    access_token = os.getenv('MAPBOX_ACCESS_TOKEN')
 
-    return render_template('lands/index.html.j2', lands=lands, title='lands')
+    return render_template('lands/index.html.j2', access_token=access_token, lands=lands, title='lands')
 
 
 @land.route('/<int:id>')
@@ -39,7 +43,9 @@ def read_land(id):
 
     land = Land.query.get_or_404(id)
 
-    return render_template('lands/single.html.j2', land=land, title=land.name)
+    access_token = os.getenv('MAPBOX_ACCESS_TOKEN')
+
+    return render_template('lands/single.html.j2', access_token=access_token, land=land, title=land.name)
 
 
 @land.route('/create', methods=['GET', 'POST'])
@@ -56,7 +62,9 @@ def create_land():
         land = Land(
             name = form.name.data,
             description = form.description.data,
-            location = form.location.name,
+            location = form.location.data,
+            latitude = form.latitude.data,
+            longitude = form.longitude.data,
             rating = form.rating.data,
             price = form.price.data,
             status = form.status.data,
@@ -83,15 +91,18 @@ def update_land(id):
     Update the target Land
     """
 
-    land = Land.query.get_or_404(id=id)
+    land = Land.query.get_or_404(id)
 
-    form = LandForm(obj=Land)
+    form = LandForm(obj=land)
 
     if form.validate_on_submit():
-        land.name = form.name.data,
-        land.description = form.description.data,
-        land.rating = form.rating.data,
-        land.price = form.price.data,
+        land.name = form.name.data
+        land.description = form.description.data
+        land.location = form.location.data
+        land.latitude = form.latitude.data
+        land.longitude = form.longitude.data
+        land.rating = form.rating.data
+        land.price = form.price.data
         land.status = form.status.data
 
         try:

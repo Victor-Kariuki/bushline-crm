@@ -1,7 +1,7 @@
 # app/user/views.py
 
 # 3rd party imports
-from flask import render_template, redirect, url_for, abort
+from flask import render_template, redirect, url_for, abort, flash
 from flask_login import current_user, login_required
 
 # local imports
@@ -48,7 +48,7 @@ def update_user(id):
     Update the target user
     """
 
-    user = User.query.get_or_404(id=did)
+    user = User.query.get_or_404(id)
 
     form = UserForm(obj=user)
 
