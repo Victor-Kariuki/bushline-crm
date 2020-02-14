@@ -1,0 +1,90 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+<h2 class="uk-modal-title">Create Lead</h2>
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+  <a class="uk-alert-close" uk-close></a>
+  <p>{{ message }}</p>
+</div>
+{% endfor %}
+<hr>
+<form method='post'>
+  {{ form.hidden_tag() }}
+
+  <div class="uk-margin">
+    {{ form.location.label(class='uk-label') }}
+    {% if form.location.errors %}
+    {{ form.location(class='uk-input uk-form-danger') }}
+    {% for error in form.location.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.location(class='uk-input', placeholder='location') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {{ form.source.label(class='uk-label') }}
+    {% if form.source.errors %}
+    {{ form.source(class='uk-select uk-form-danger') }}
+    {% for error in form.source.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.source(class='uk-select', placeholder='Source') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {% if form.proposal.errors %}
+    {{ form.proposal(class='uk-input uk-form-danger') }}
+    {% for error in form.proposal.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.proposal(class='uk-input', placeholder='Proposal') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {{ form.probability.label(class='uk-label') }}
+    {% if form.probability.errors %}
+    {{ form.probability(class='uk-select uk-form-danger') }}
+    {% for error in form.probability.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.probability(class='uk-select', placeholder='Type') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {{ form.land.label(class='uk-label') }}
+    {% if form.land.errors %}
+    {{ form.land(class='uk-select uk-form-danger') }}
+    {% for error in form.land.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.land(class='uk-select', placeholder='Land') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {{ form.user.label(class='uk-label') }}
+    {% if form.user.errors %}
+    {{ form.user(class='uk-select uk-form-danger') }}
+    {% for error in form.user.errors %}
+    <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+    {% endfor %}
+    {% else %}
+    {{ form.user(class='uk-select', placeholder='Assignee') }}
+    {% endif %}
+  </div>
+
+  <div class="uk-margin">
+    {{ form.submit(class='uk-button uk-button-primary') }}
+  </div>
+</form>
+{% endblock %}

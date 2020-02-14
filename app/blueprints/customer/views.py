@@ -11,8 +11,7 @@ from flask_login import login_required, current_user
 from app import db
 from app.models import Customer, Lead
 from app.blueprints.customer import customer
-from app.blueprints.customer.forms import CustomerForm
-from app.blueprints.lead.forms import LeadForm
+from app.blueprints.customer.forms import CustomerForm, LeadForm
 
 
 @customer.route('')
@@ -59,7 +58,7 @@ def create_customer():
             phone = form.phone.data,
             email = form.email.data,
             location = form.location.data,
-            added_by = current_user.id
+            user = current_user
         )
 
         try:
@@ -127,34 +126,37 @@ def delete_customer(id):
     return redirect(url_for('customer.read_customers'))
 
 
-@customer.route('/<int:id>/create-lead')
+@customer.route('/<int:id>/create-lead', methods=['GET', 'POST'])
 def create_lead(id):
-  """
+    """
     Handles requests to /customers/id/create-lead route
     Delete an existing user
-  """
+    """
 
-  form = LeadForm()
+    form = LeadForm()
 
-  if form.validate_on_submit():
-    lead = Lead(
-          source = form.source.data,
-          location = form.location.data,
-          proposal = form.proposal.data,
-          probability = form.probability.data,
-          customer_id = id,
-          land_id = form.land_id.data,
-          status = form.status.data
-    )
+    customer = Customer.query.filter_by(id=id).first_or_404()
 
-    try:
-        db.session.add(lead)
-        db.session.commit()
-        flash('You have successfully added a new lead.', 'info')
+    if form.validate_on_submit():
+        lead = Lead(
+            source = form.source.data,
+            location = form.location.data,
+            proposal = form.proposal.data,
+            probability = form.probability.data,
+            customer = customer,
+            land = form.land.data
+        )
 
-        # redirect to the leads page
-        return redirect(url_for('customer.read_customer', id=id))
-    except:
-        flash('Error creating the lead', 'error')
+        lead.assignees.append(form.user.data)
 
-  return render_template('leads/form.html.j2', form=form, title='Create Lead')
+        try:
+            db.session.add(lead)
+            db.session.commit()
+            flash('You have successfully added a new lead.', 'nfo')
+
+            # redirect to the leads page
+            return redirect(url_for('customer.read_customer',id=id))
+        except:
+            flash('Error creating the lead', 'error')
+
+    return render_template('customers/lead-form.html.j2', form=form, title='Create Lead')

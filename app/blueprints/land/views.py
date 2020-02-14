@@ -62,7 +62,6 @@ def create_land():
         land = Land(
             name = form.name.data,
             description = form.description.data,
-            location = form.location.data,
             latitude = form.latitude.data,
             longitude = form.longitude.data,
             rating = form.rating.data,
@@ -98,7 +97,6 @@ def update_land(id):
     if form.validate_on_submit():
         land.name = form.name.data
         land.description = form.description.data
-        land.location = form.location.data
         land.latitude = form.latitude.data
         land.longitude = form.longitude.data
         land.rating = form.rating.data

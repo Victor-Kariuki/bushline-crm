@@ -7,12 +7,13 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Email
 
 # local imports
-from app.models import User, Land
+from app.models import User, Land, Customer
 class LeadForm(FlaskForm):
     """
     Handle creation & updating of leads.
     """
 
+    customer = QuerySelectField(query_factory=lambda: Customer.query.all(), get_label="name")
     proposal = StringField('Proposal')
     source = SelectField('Source', choices=[
         ('facebook', 'facebook'),
@@ -21,8 +22,8 @@ class LeadForm(FlaskForm):
         ('sms', 'sms'),
         ('call', 'call')
     ])
-    land_id = QuerySelectField(query_factory=lambda: Land.query.all(), get_label="name")
-    user_id = QuerySelectField(query_factory=lambda: User.query.all(), get_label="username")
+    land = QuerySelectField(query_factory=lambda: Land.query.all(), get_label="name")
+    user = QuerySelectField(query_factory=lambda: User.query.all(), get_label="username")
     probability = SelectField('Probability', choices=[
         ('high', 'high'),
         ('medium', 'medium'),

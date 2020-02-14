@@ -16,43 +16,42 @@
     <p>{{ message }}</p>
 </div>
 {% endfor %}
-    {% for customer in customers %}
-        <table
-            class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
-            <thead>
-                <tr>
-                    <th class="uk-table-shrink">Name</th>
-                    <th class="uk-table-shrink">Email</th>
-                    <th class="uk-table-shrink">Phone</th>
-                    <th class="uk-table-shrink">Leads</th>
-                    <th class="uk-table-shrink">Added By</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('customer.read_customer', id=customer.id) }}">
-                            {{ customer.first_name }} {{ customer.last_name }}
-                        </a>
-                    </td>
-                    <td> {{ customer.email }}</td>
-                    <td>{{ customer.phone }}</td>
-                    <td> {{ customer.leads.count() }} </td>
-                    <td>{{ customer.added_by }}</td>
-                    <td>
-                        <a href="{{ url_for('customer.update_customer', id=customer.id) }}" class="uk-icon-link"
-                            uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('customer.delete_customer', id=customer.id) }}" class="uk-icon-link"
-                            uk-icon="trash"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    {% endfor %}
+<table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+    <thead>
+        <tr>
+            <th class="uk-table-shrink">Name</th>
+            <th class="uk-table-shrink">Email</th>
+            <th class="uk-table-shrink">Phone</th>
+            <th class="uk-table-shrink">Leads</th>
+            <th class="uk-table-shrink">Added By</th>
+            <th class="uk-table-shrink">Edit</th>
+            <th class="uk-table-shrink">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td class="uk-table-link">
+                <a class="uk-link-reset" href="{{ url_for('customer.read_customer', id=customer.id) }}">
+                    {{ customer.first_name }} {{ customer.last_name }}
+                </a>
+            </td>
+            <td> {{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td> {{ customer.leads.count() }} </td>
+            <td>{{ customer.user.username }}</td>
+            <td>
+                <a href="{{ url_for('customer.update_customer', id=customer.id) }}" class="uk-icon-link"
+                    uk-icon="file-edit"></a>
+            </td>
+            <td>
+                <a href="{{ url_for('customer.delete_customer', id=customer.id) }}" class="uk-icon-link"
+                    uk-icon="trash"></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
 <div class="uk-placeholder uk-text-center">No customers have been added.</div>
 {% endif %}

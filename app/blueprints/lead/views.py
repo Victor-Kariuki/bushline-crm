@@ -50,19 +50,16 @@ def create_lead():
 
     if form.validate_on_submit():
         lead = Lead(
-            first_name = form.first_name.data,
-            last_name = form.last_name.data,
-            phone = form.phone.data,
-            email = form.email.data,
+            customer = form.customer.data,
+            land = form.land.data,
             source = form.source.data,
+            proposal = form.proposal.data,
             lead_type = form.lead_type.data,
             location = form.location.data,
-            proposal = form.proposal.data,
-            probability = form.probability.data,
-            land_id = form.land_id.data
+            probability = form.probability.data
         )
 
-        lead.assignees.append(form.user_id.data)
+        lead.assignees.append(form.user.data)
 
         try:
             db.session.add(lead)
@@ -88,21 +85,13 @@ def update_lead(id):
     form = LeadForm(obj=lead)
 
     if form.validate_on_submit():
-        lead_json = request.form.to_dict(flat=False)
-        # lead_json.get('land_id')[0]
-
-        lead.first_name = form.first_name.data
-        lead.last_name = form.last_name.data
-        lead.phone = form.phone.data
-        lead.email = form.email.data
+        lead.assignees.append(form.user.data)
+        land.land = form.land.data
         lead.source = form.source.data
-        lead.lead_type = form.lead_type.data
-        location = form.location.data
         lead.proposal = form.proposal.data
+        lead.lead_type = form.lead_type.data
+        lead.location = form.location.data
         land.probability = form.probability.data
-        land.land_id = form.land_id.data
-
-        lead.assignees.append(form.user_id.data)
 
         try:
             # update the DB

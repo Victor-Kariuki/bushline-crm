@@ -27,19 +27,6 @@
                     {% endif %}
                 </div>
 
-                <div class="uk-margin">
-                    {% if form.location.errors %}
-                        {{ form.location(class='uk-input uk-form-danger') }}
-                        {% for error in form.location.errors %}
-                            <small class="uk-form-help-block">
-                                {{ error }}
-                            </small>
-                        {% endfor %}
-                    {% else %}
-                        {{ form.location(class='uk-input', placeholder='Location') }}
-                    {% endif %}
-                </div>
-
                 <div class="uk-child-width-1-2" uk-grid>
                     <div>
                         <div class="uk-margin">
@@ -84,14 +71,14 @@
 
                 <div class="uk-margin">
                     {% if form.rating.errors %}
-                        {{ form.rating(class='uk-input uk-form-danger', type="number") }}
+                        {{ form.rating(class='uk-form-danger', type="radio") }}
                         {% for error in form.rating.errors %}
                             <small class="uk-form-help-block">
                                 {{ error }}
                             </small>
                         {% endfor %}
                     {% else %}
-                        {{ form.rating(class='uk-input', placeholder='Rating', type="number") }}
+                        {{ form.rating(class='', type="radio") }}
                     {% endif %}
                 </div>
 
