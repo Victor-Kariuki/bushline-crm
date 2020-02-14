@@ -64,15 +64,57 @@
 
                     </div>
                     <div class="uk-card-footer">
-                        <div class="uk-text-small uk-text-muted">Rating <span class="uk-badge">{{ land.rating }}</span></div>
-                        <div class="uk-text-small uk-text-muted">Price <span class="uk-text-primary">{{ land.price }}</span></div>
+                        <div class="uk-text-small uk-text-muted">Rating <span class="uk-badge">{{ land.rating }}</span>
+                        </div>
+                        <div class="uk-text-small uk-text-muted">Price <span
+                                class="uk-text-primary">{{ land.price }}</span></div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </li>
-    <li>Bazinga!</li>
+    <li>
+        <table
+            class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-small uk-table-justify uk-table-middle">
+            <thead>
+                <tr>
+                    <th class="uk-table-shrink">Name</th>
+                    <th class="uk-table-shrink">Description</th>
+                    <th class="uk-table-shrink">Price</th>
+                    <th class="uk-table-shrink">Rating</th>
+                    <th class="uk-table-shrink">Status</th>
+                    <th class="uk-table-shrink">Leads</th>
+                    <th class="uk-table-shrink">Update</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for land in lands %}
+                <tr>
+                    <td class="uk-table-link">
+                        <a class="uk-link-reset" href="{{ url_for('land.read_land', id=land.id) }}">
+                            {{ land.name }}
+                        </a>
+                    </td>
+                    <td class="uk-text-truncate">{{ land.description }}</td>
+                    <td>{{ land.price }}</td>
+                    <td>{{ land.rating }}</td>
+                    <td>{{ land.status.name }}</td>
+                    <td>{{ land.leads.count() }}</td>
+                    <td>
+                        <a href="{{ url_for('land.update_land', id=land.id) }}" class="uk-icon-link"
+                            uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('land.delete_land', id=land.id) }}" class="uk-icon-link"
+                            uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </li>
 </ul>
 {% else %}
 <div class="uk-placeholder uk-text-center">No lands have been added.</div>
@@ -80,12 +122,12 @@
 
 
 <script>
-	mapboxgl.accessToken = '{{ access_token }}';
+    mapboxgl.accessToken = '{{ access_token }}';
     var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-    center: [37.9062, 0.0236], // starting position [lng, lat]
-    zoom: 6 // starting zoom
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        center: [37.9062, 0.0236], // starting position [lng, lat]
+        zoom: 6 // starting zoom
     });
 </script>
 {% endblock %}

@@ -3,10 +3,10 @@
 {% block content %}
 <div class="uk-clearfix uk-margin">
     <div class="uk-float-left">
-        <h1>{{ lead.first_name }} {{ lead.last_name }}</h1>
+        <h1>{{ lead.customer.first_name }} {{ lead.customer.last_name }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('leads.update_lead', id=lead.id) }}">Update Lead</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('lead.update_lead', id=lead.id) }}">Update Lead</a>
     </div>
 </div>
 <hr>
@@ -33,14 +33,20 @@
                 <ul class="uk-iconnav uk-iconnav-vertical">
                     <li>
                         <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>
+                            Name:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.first_name }} {{ lead.customer.last_name }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.email }}</span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.phone }}</span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.phone }}</span>
                         </a>
                     </li>
                     <li>
@@ -49,7 +55,7 @@
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: info"></span>
-                        Type:  <span class="uk-badge">{{ lead.lead_type.name }}</span>
+                        Probability:  <span class="uk-text-meta uk-text-primary">{{ lead.probability.name }}</span>
                     </li>
                 </ul>
             </div>
@@ -70,7 +76,7 @@
                             <h3>Notes</h3>
                         </div>
                         <div class="uk-float-right">
-                            <a class="uk-button uk-button-primary" href="{{ url_for('notes.create_note') }}">Add Note</a>
+                            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
                         </div>
                     </div>
                 </div>
@@ -90,10 +96,10 @@
                                 <td>{{ note.title }}</td>
                                 <td class="uk-table-truncate">{{  note.description }}</td>
                                 <td>
-                                    <a href="{{ url_for('notes.update_note', id=note.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                                    <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
                                 </td>
                                 <td>
-                                    <a href="{{ url_for('notes.delete_note', id=note.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+                                    <a href="{{ url_for('note.delete_note', id=note.id) }}" class="uk-icon-link" uk-icon="trash"></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -103,7 +109,7 @@
             </div>
         {% else %}
             <div class="uk-placeholder uk-text-center">No notes for the lead.</div>
-            <a class="uk-button uk-button-primary" href="{{ url_for('notes.create_note') }}">Add Note</a>
+            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
         {% endif %}
     </div>
 </div>
@@ -118,51 +124,51 @@
                             <h3>Appointments</h3>
                         </div>
                         <div class="uk-float-right">
-                            <a class="uk-button uk-button-primary" href="{{ url_for('notes.create_note') }}">Add Appointment</a>
+                            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Appointment</a>
                         </div>
                     </div>
                 </div>
             </div>
         {% else %}
             <div class="uk-placeholder uk-text-center">No scheduled appointments.</div>
-            <a class="uk-button uk-button-primary" href="{{ url_for('notes.create_note') }}">Add Appointment</a>
+            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Appointment</a>
         {% endif %}
     </div>
     <div class="uk-width-2-5@m">
-        <div class="uk-card uk-card-secondary uk-card-small">
+        <div class="uk-card uk-card-default uk-card-small">
             <div class="uk-card-header">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
                         <h3 class="uk-card-title">Assignee</h3>
                     </div>
                     <div class="uk-width-expand">
-                        <a class="uk-button uk-button-primary" href="{{ url_for('notes.create_note') }}">Re Assign</a>
+                        <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Re Assign</a>
                     </div>
                 </div>
             </div>
             <div class="uk-card-body">
+                {% for assignee in lead.assignees %}
                 <ul class="uk-iconnav uk-iconnav-vertical">
                     <li>
                         <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>
+                            Username:  <span class="uk-text-meta uk-text-primary">{{ assignee.username }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.email }}</span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ assignee.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.phone }}</span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ assignee.phone }}</span>
                         </a>
                     </li>
-                    <li>
-                        <span class="uk-margin-small-right" uk-icon="icon: social"></span>
-                        Source:  <span class="uk-text-meta uk-text-primary">{{ lead.source.name }}</span>
-                    </li>
-                    <li>
-                        <span class="uk-margin-small-right" uk-icon="icon: info"></span>
-                        Type:  <span class="uk-badge">{{ lead.lead_type.name }}</span>
-                    </li>
                 </ul>
+                {% endfor %}
             </div>
             <div class="uk-card-footer">
                 <p class="uk-text-meta uk-margin-remove-top">

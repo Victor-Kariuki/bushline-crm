@@ -140,7 +140,6 @@ def create_lead(id):
     if form.validate_on_submit():
         lead = Lead(
             source = form.source.data,
-            location = form.location.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
             customer = customer,

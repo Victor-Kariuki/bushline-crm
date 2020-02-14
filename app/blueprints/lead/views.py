@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Lead, User
+from app.models import Lead, User, Appointment
 from app.blueprints.lead import lead
-from app.blueprints.lead.forms import LeadForm
+from app.blueprints.lead.forms import LeadForm, AppointmentForm
 
 
 @lead.route('')
@@ -38,7 +38,7 @@ def read_lead(id):
 
     lead = Lead.query.filter_by(id=id).first()
 
-    return render_template('leads/single.html.j2', lead=lead, title=lead.first_name)
+    return render_template('leads/single.html.j2', lead=lead, title=lead.customer.first_name)
 
 
 @lead.route('/create', methods=['GET', 'POST'])
@@ -55,7 +55,6 @@ def create_lead():
         lead = Lead(
             customer = form.customer.data,
             source = form.source.data,
-            location = form.location.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
             land = form.land.data
@@ -90,7 +89,6 @@ def update_lead(id):
         lead.assignees.append(form.user.data)
         lead.customer = form.customer.data,
         lead.source = form.source.data,
-        lead.location = form.location.data,
         lead.proposal = form.proposal.data,
         lead.probability = form.probability.data,
         lead.land = form.land.data
@@ -126,3 +124,28 @@ def delete_lead(id):
 
     # redirect to the leads page
     return redirect(url_for('lead.read_leads'))
+
+
+@lead.route('/<int:id>/create-appointment')
+def create_appointment(id):
+
+    form = AppointmentForm()
+
+    if form.validate_on_submit():
+        appointment = Appointment()
+
+    return render_template('leads/appointment-form.html.j2', form=form, title='Create Appointment')
+
+
+@lead.route('/<int:id>/reassign')
+def reassign_lead(id):
+
+
+    lead = Lead.query.get_or_404(id)
+    form = ReassignForm(obj=lead)
+
+    if form.validate_on_submit():
+        lead = Lead()
+
+    return render_template('leads/reassign-form.html.j2', form=form, title='Assign')
+    

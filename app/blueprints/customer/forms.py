@@ -25,7 +25,6 @@ class LeadForm(FlaskForm):
     """
     Handle creation & updating of leads.
     """
-    location = StringField('Location')
     proposal = StringField('Proposal')
     source = SelectField('Source', choices=[
         ('facebook', 'facebook'),

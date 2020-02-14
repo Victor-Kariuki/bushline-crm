@@ -1,8 +1,17 @@
 {% extends "dashboard.html.j2" %}
 
 {% block content %}
-<div class="uk-child-width-1-2@s uk-grid-match"uk-grid>
-    <div>
+<div class="uk-clearfix uk-margin">
+    <div class="uk-float-left">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('land.update_land', id=land.id) }}">Update land</a>
+    </div>
+</div>
+<hr>
+<div uk-grid>
+    <div class="uk-width-1-3@s">
         <div class="uk-card uk-card-default">
             <div class="uk-card-header">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -25,18 +34,71 @@
             </div>
         </div>
     </div>
-    <div>
-         <div id='map' style='width: 100%; height: 300px;'></div>
+    <div class="uk-width-2-3@s">
+        <div class="uk-card uk-card-default uk-card-body">
+            <h3 class="uk-card-title">Cordinates</h3>
+            <div id='map' style='width: 100%; height: 300px;'></div>
+        </div>
+
+        {% if land.leads %}
+        <div class="uk-card uk-card-default uk-card-body uk-margin">
+            <h3 class="uk-card-title">Leads</h3>
+            <div class="uk-overflow-auto">
+                <table
+                    class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive uk-table-small">
+                    <thead>
+                        <tr>
+                            <th class="uk-table-shrink">Name</th>
+                            <th class="uk-table-shrink">Contact</th>
+                            <th class="uk-table-shrink">Proposal</th>
+                            <th class="uk-table-shrink">Location</th>
+                            <th class="uk-table-shrink">Assignee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in land.leads %}
+                        <tr>
+                            <td class="uk-table-link">
+                                <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
+                                    {{ lead.customer.first_name }} {{ lead.customer.last_name }}
+                                </a>
+                            </td>
+                            <td class="uk-text-overflow"> {{ lead.customer.phone }}</br>{{ lead.customer.email }}</td>
+                            <td>{{ lead.proposal }}</td>
+                            <td> {{ lead.customer.location }} </td>
+                            <td>
+                                {% for assignee in lead.assignees %}
+                                {{ assignee.username }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="uk-placeholder">No leads found for this land</div>
+        {% endif %}
     </div>
 </div>
 
 <script>
-	mapboxgl.accessToken = '{{ access_token }}';
+    mapboxgl.accessToken = '{{ access_token }}';
     var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-    center: [{{ land.longitude }}, {{ land.latitude }}], // starting position [lng, lat]
-    zoom: 8 // starting zoom
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        center: [{
+            {
+                land.longitude
+            }
+        }, {
+            {
+                land.latitude
+            }
+        }], // starting position [lng, lat]
+        zoom: 8 // starting zoom
     });
 </script>
 {% endblock %}

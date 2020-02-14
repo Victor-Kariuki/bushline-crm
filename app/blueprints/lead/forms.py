@@ -30,3 +30,15 @@ class LeadForm(FlaskForm):
         ('low', 'low')
     ])
     submit = SubmitField('Submit')
+
+
+class AppointmentForm(FlaskForm):
+    """
+    Handle creation of new appoitments for the lead
+    """
+
+
+class ReassignForm(FlaskForm):
+    """
+    Handle assiging of a lead new appoitments for the lead
+    """

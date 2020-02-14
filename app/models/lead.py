@@ -49,7 +49,6 @@ class Lead(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     source = db.Column(db.Enum(Source))
-    location = db.Column(db.String(60), nullable=False)
     proposal = db.Column(db.Integer)
     probability = db.Column(db.Enum(Probability))
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
