@@ -23,7 +23,19 @@ def read_notes():
     else:
         notes = Note.query.all()
 
-    return render_template('notes/index.html.j2', title='Notes')
+    return render_template('notes/index.html.j2', notes=notes, title='Notes')
+
+@note.route('/<int:id>')
+@login_required
+def read_note(id):
+    """
+    Handle request to /notes route \n
+    Retrieve and render all notes
+    """
+
+    note = Note.query.filter_by(id=id).first_or_404()
+
+    return render_template('notes/single.html.j2', note=note, title='Notes')
 
 @note.route('/create', methods=['GET', 'POST'])
 @login_required

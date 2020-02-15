@@ -9,28 +9,31 @@
         <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
     </div>
 </div>
+<hr>
 {% if notes %}
-<div class="uk-child-width-1-4@m" uk-grid>
+<div class="uk-child-width-1-3@m" uk-grid>
     {% for note in notes %}
     <div>
-        <article class="uk-article">
+        <div class="uk-placeholder">
+            <article class="uk-article">
 
-            <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{ note.title }}</a></h1>
+                <div class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('note.read_note', id=note.id) }}">{{ note.title }}</a></div>
+                <hr>
+                <p class="uk-article-meta">Written by <a href="#">{{ note.user.username }}</a> on {{ note.created_on }}.</p>
 
-            <p class="uk-article-meta">Written by <a href="#">{{ note.created_by }}</a> on {{ note.created_on }}.</p>
+                <p class="uk-text-truncate">{{ note.description }}</p>
 
-            <p class="uk-text-truncate">{{ note.description }}</p>
-
-            <div class="uk-grid-small uk-child-width-auto" uk-grid>
-                <div>
-                    <a class="uk-button uk-button-text" href="#">Read more</a>
+                <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                    <div>
+                        <a class="uk-button uk-button-text" href="#">Read more</a>
+                    </div>
+                    <div>
+                        <a class="uk-button uk-button-text" href="#">5 Comments</a>
+                    </div>
                 </div>
-                <div>
-                    <a class="uk-button uk-button-text" href="#">5 Comments</a>
-                </div>
-            </div>
 
-        </article>
+            </article>
+        </div>
     </div>
     {% endfor %}
 </div>

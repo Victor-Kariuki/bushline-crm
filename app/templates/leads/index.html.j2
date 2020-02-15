@@ -27,6 +27,7 @@
                 <th class="uk-table-shrink">Location</th>
                 <th class="uk-table-shrink">Land</th>
                 <th class="uk-table-shrink">Assignee</th>
+                <th class="uk-table-shrink">Status</th>
                 <th class="uk-table-shrink">Edit</th>
                 <th class="uk-table-shrink">Delete</th>
             </tr>
@@ -49,6 +50,7 @@
                     {{ assignee.username }}
                     {% endfor %}
                 </td>
+                <td><span class="uk-label uk-badge">{{ lead.status.name }}</span></td>
                 <td>
                     <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
                         uk-icon="file-edit"></a>

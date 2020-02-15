@@ -51,6 +51,9 @@ def create_app(env_name):
     from app.blueprints.customer import customer as customer_blueprint
     app.register_blueprint(customer_blueprint, url_prefix='/customers')
 
+    from app.blueprints.dashboard import dashboard as dashboard_blueprint
+    app.register_blueprint(dashboard_blueprint, url_prefix='/dashboard')
+
     from app.blueprints.land import land as land_blueprint
     app.register_blueprint(land_blueprint, url_prefix='/lands')
 
