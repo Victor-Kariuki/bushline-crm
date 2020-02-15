@@ -37,6 +37,7 @@ def read_note(id):
 
     return render_template('notes/single.html.j2', note=note, title='Notes')
 
+
 @note.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_note():
@@ -52,7 +53,9 @@ def create_note():
         note = Note(
             title = form.title.data,
             description = form.description.data,
-            created_by = current_user.id
+            appointment = form.appointment.data,
+            lead = form.lead.data,
+            user = current_user
         )
 
         try:

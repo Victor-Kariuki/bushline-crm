@@ -25,10 +25,10 @@
 
                 <div class="uk-grid-small uk-child-width-auto" uk-grid>
                     <div>
-                        <a class="uk-button uk-button-text" href="#">Read more</a>
+                        <a class="uk-button uk-button-text" href="{{ url_for('note.read_note', id=note.id) }}">Read more</a>
                     </div>
                     <div>
-                        <a class="uk-button uk-button-text" href="#">5 Comments</a>
+                        <a class="uk-button uk-button-text" href="{{ url_for('note.read_note', id=note.id) }}">{{ note.comments.count() }}</a>
                     </div>
                 </div>
 

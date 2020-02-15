@@ -32,13 +32,26 @@
             </div>
 
             <div class="uk-margin">
-                {% if form.lead_id.errors %}
-                {{ form.lead_id(class='uk-select uk-form-danger', rows="5") }}
-                {% for error in form.lead_id.errors %}
+                {{ form.lead.label(class='uk-label') }}
+                {% if form.lead.errors %}
+                {{ form.lead(class='uk-select uk-form-danger', rows="5") }}
+                {% for error in form.lead.errors %}
                 <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
                 {% endfor %}
                 {% else %}
-                {{ form.lead_id(class='uk-select', placeholder='lead_id') }}
+                {{ form.lead(class='uk-select', placeholder='lead') }}
+                {% endif %}
+            </div>
+
+            <div class="uk-margin">
+                {{ form.appointment.label(class='uk-label') }}
+                {% if form.appointment.errors %}
+                {{ form.appointment(class='uk-select uk-form-danger', rows="5") }}
+                {% for error in form.appointment.errors %}
+                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                {% endfor %}
+                {% else %}
+                {{ form.appointment(class='uk-select', placeholder='appointment') }}
                 {% endif %}
             </div>
 
