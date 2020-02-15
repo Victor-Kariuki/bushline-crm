@@ -68,71 +68,51 @@
         </div>
     </div>
     <div class="uk-width-3-5@m">
-        {% if notes %}
-            <div class="uk-card uk-card-default uk-card-small">
-                <div class="uk-card-header">
-                    <div class="uk-clearfix">
-                        <div class="uk-float-left">
-                            <h3>Notes</h3>
-                        </div>
-                        <div class="uk-float-right">
-                            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-card-body">
-                    <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th class="uk-table-shrink">Edit</th>
-                                <th class="uk-table-shrink">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for note in notes %}
-                            <tr>
-                                <td>{{ note.title }}</td>
-                                <td class="uk-table-truncate">{{  note.description }}</td>
-                                <td>
-                                    <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                                </td>
-                                <td>
-                                    <a href="{{ url_for('note.delete_note', id=note.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Notes</h3>
             </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('lead.create_note',id=lead.id) }}">Add Note</a>
+            </div>
+        </div>
+        {% if notes %}
+            <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th class="uk-table-shrink">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for note in notes %}
+                    {{ note }}
+                    <tr>
+                        <td>{{ note.title }}</td>
+                        <td class="uk-table-truncate">{{  note.description }}</td>
+                        <td>
+                            <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('note.delete_note', id=note.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             <div class="uk-placeholder uk-text-center">No notes for the lead.</div>
-            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Note</a>
         {% endif %}
     </div>
 </div>
 
 <div uk-grid>
     <div class="uk-width-3-5@m">
-        {% if appointments %}
-            <div class="uk-card uk-card-default uk-card-small">
-                <div class="uk-card-header">
-                    <div class="uk-clearfix">
-                        <div class="uk-float-left">
-                            <h3>Appointments</h3>
-                        </div>
-                        <div class="uk-float-right">
-                            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Appointment</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% else %}
+
             <div class="uk-placeholder uk-text-center">No scheduled appointments.</div>
-            <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Add Appointment</a>
-        {% endif %}
+            <a class="uk-button uk-button-primary" href="">Add Appointment</a>
     </div>
     <div class="uk-width-2-5@m">
         <div class="uk-card uk-card-default uk-card-small">
@@ -142,7 +122,7 @@
                         <h3 class="uk-card-title">Assignee</h3>
                     </div>
                     <div class="uk-width-expand">
-                        <a class="uk-button uk-button-primary" href="{{ url_for('note.create_note') }}">Re Assign</a>
+                        <a class="uk-button uk-button-primary" href="">Re Assign</a>
                     </div>
                 </div>
             </div>

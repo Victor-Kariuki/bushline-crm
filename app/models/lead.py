@@ -55,6 +55,8 @@ class Lead(db.Model):
     land_id = db.Column(db.Integer, db.ForeignKey('lands.id'))
     status = db.Column(db.Enum(Status), default='active')
     assignees = db.relationship('User', secondary=user_lead_links)
+    appointments = db.relationship('Appointment', backref='lead', lazy='dynamic')
+    notes = db.relationship('Note', backref='lead', lazy='dynamic')
     comments = db.relationship('Comment', backref='lead', lazy='dynamic')
     tasks = db.relationship('Task', backref='lead', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())

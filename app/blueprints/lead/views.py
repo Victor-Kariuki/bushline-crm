@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Lead, User, Appointment
+from app.models import Lead, User, Appointment, Note
 from app.blueprints.lead import lead
-from app.blueprints.lead.forms import LeadForm, AppointmentForm
+from app.blueprints.lead.forms import LeadForm, AppointmentForm, NoteForm
 
 
 @lead.route('')
@@ -38,7 +38,9 @@ def read_lead(id):
 
     lead = Lead.query.filter_by(id=id).first()
 
-    return render_template('leads/single.html.j2', lead=lead, title=lead.customer.first_name)
+    notes = Note.query.filter_by(lead_id=id).all()
+
+    return render_template('leads/single.html.j2', lead=lead, notes=notes, title=lead.customer.first_name)
 
 
 @lead.route('/create', methods=['GET', 'POST'])
@@ -126,26 +128,34 @@ def delete_lead(id):
     return redirect(url_for('lead.read_leads'))
 
 
-@lead.route('/<int:id>/create-appointment')
-def create_appointment(id):
+@lead.route('/<int:id>/create-note', methods=['GET', 'POST'])
+def create_note(id):
+    """
+    Handle request to /leads/<id>/create note route
+    Create a new note for the lead
+    """
 
-    form = AppointmentForm()
-
-    if form.validate_on_submit():
-        appointment = Appointment()
-
-    return render_template('leads/appointment-form.html.j2', form=form, title='Create Appointment')
-
-
-@lead.route('/<int:id>/reassign')
-def reassign_lead(id):
-
+    form = NoteForm()
 
     lead = Lead.query.get_or_404(id)
-    form = ReassignForm(obj=lead)
 
     if form.validate_on_submit():
-        lead = Lead()
+        note = Note(
+            title = form.title.data,
+            description = form.description.data,
+            lead = lead,
+            user = current_user
+        )
 
-    return render_template('leads/reassign-form.html.j2', form=form, title='Assign')
+        try:
+            # update the DB
+            db.session.add(note)
+            db.session.commit()
+            flash('Successfully added a new note.', 'info')
+
+            # redirect to the leads page
+            return redirect(url_for('lead.read_lead', id=id))
+        except:
+            flash('Error updating the lead', 'error')
     
+    return render_template('leads/note-form.html.j2', form=form, title='Create Note')
