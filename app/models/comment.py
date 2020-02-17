@@ -21,6 +21,8 @@ class Comment(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
+    replies = db.relationship('Comment', remote_side=parent_id)
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)
 
