@@ -8,7 +8,6 @@ from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_mail import Mail
 
 # local imports
 from config import app_config
@@ -16,8 +15,6 @@ from config import app_config
 # DB Variable init
 db = SQLAlchemy()
 login_manager = LoginManager()
-mail = Mail()
-
 
 
 def create_app(env_name):
@@ -27,7 +24,6 @@ def create_app(env_name):
 
     db.init_app(app)
     login_manager.init_app(app)
-    mail.init_app(app)
 
     # config flask_login
     login_manager.login_message = "You must be logged in to access this page."
@@ -44,9 +40,6 @@ def create_app(env_name):
 
     from app.blueprints.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
-
-    from app.blueprints.auth import google_bp as google_blueprint
-    app.register_blueprint(google_blueprint, url_prefix="")
 
     from app.blueprints.customer import customer as customer_blueprint
     app.register_blueprint(customer_blueprint, url_prefix='/customers')
