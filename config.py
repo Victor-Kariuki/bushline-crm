@@ -17,13 +17,6 @@ class Config():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
-    # uploads
-    UPLOADS_DEFAULT_DEST = TOP_LEVEL_DIR + '/app/static/img/'
-    UPLOADS_DEFAULT_URL = 'http://localhost:5000/static/img/'
-    
-    UPLOADED_IMAGES_DEST = TOP_LEVEL_DIR + '/app/static/img/'
-    UPLOADED_IMAGES_URL = 'http://localhost:5000/static/img/'
-
 
 class DevelopmentConfig(Config):
     """

@@ -1,4 +1,4 @@
-# app/auth/forms.py
+# app/blueprint/auth/forms.py
 
 # 3rd party imports
 from flask_wtf import FlaskForm

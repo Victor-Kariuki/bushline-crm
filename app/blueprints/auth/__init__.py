@@ -1,4 +1,4 @@
-# app/auth/__init__.py
+# app/blueprint/auth/__init__.py
 
 # inbuilt imports
 import os

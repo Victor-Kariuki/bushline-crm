@@ -16,7 +16,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(200), nullable=False)
     author = db.Column(db.Integer, db.ForeignKey('users.id'))
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))

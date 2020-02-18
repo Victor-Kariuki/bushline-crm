@@ -16,8 +16,9 @@
                     <th>Username</th>
                     <th>Fullname</th>
                     <th>Contacts</th>
-                    <th>Admin Status</th>
-                    <th>Appointments</th>
+                    <th class="uk-table-shrink">Admin Status</th>
+                    <th class="uk-table-shrink">Appointments</th>
+                    <th class="uk-table-shrink">Leads</th>
                     <th class="uk-table-shrink">Edit</th>
                     <th class="uk-table-shrink">Delete</th>
                 </tr>
@@ -33,7 +34,8 @@
                     <td> {{ user.first_name }} {{ user.last_name }}</td>
                     <td> {{ user.email }}</br>{{ user.phone }}</td>
                     <td> {{ user.is_admin }} </td>
-                    <td> {{ user.appointments.count() }} </td>
+                    <td class="uk-text-center"><span class="uk-badge">{{ user.appointments.count() }}</span> </td>
+                    <td class="uk-text-center"><span class="uk-badge">{{ user.leads.count() }}</span> </td>
                     <td>
                         <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
                     </td>

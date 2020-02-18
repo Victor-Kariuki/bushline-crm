@@ -7,7 +7,8 @@ from datetime import datetime
 # local imports
 from app import db
 
-class PlotStatus(enum.Enum):
+
+class Status(enum.Enum):
     """
     plot status enum
     """
@@ -15,6 +16,17 @@ class PlotStatus(enum.Enum):
     sold = 'sold'
     booked = 'booked'
     available = 'available'
+
+
+class Size(enum.Enum):
+    """
+    plot status enum
+    """
+
+    eighth = 'eighth'
+    quarter = 'quarter'
+    half = 'half'
+    full = 'full'
 
 
 class Plot(db.Model):
@@ -25,18 +37,17 @@ class Plot(db.Model):
     __tablename__ = 'plots'
 
     id = db.Column(db.Integer, primary_key=True)
-    number = db.Column(db.String(128), nullable=False)
-    name = db.Column(db.String(60), nullable=False, index=True)
+    lr_number = db.Column(db.String(128), nullable=False)
     description = db.Column(db.Text)
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
-    rating = db.Column(db.Integer)
-    price = db.Column(db.Integer)
-    estate_id = db.Column(db.Integer, db.ForeignKey('estates.id'))
-    status = db.Column(db.Enum(PlotStatus), default='available')
-    leads = db.relationship('Lead', backref='plot', lazy='dynamic')
+    size = db.Column(db.Enum(Size), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    status = db.Column(db.Enum(Status), default='available')
+    clients = db.relationship('Client', backref='plot', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<Plot: {}>'.format(self.name)
+        return '<Plot: {}>'.format(self.lr_number)

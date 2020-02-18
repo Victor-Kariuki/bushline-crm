@@ -1,4 +1,4 @@
-# app/auth/views.py
+# app/blueprint/auth/views.py
 
 # inbuilt imports
 import os

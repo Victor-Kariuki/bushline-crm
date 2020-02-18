@@ -32,14 +32,14 @@
             </div>
 
             <div class="uk-margin">
-                {{ form.lead.label(class='uk-label') }}
-                {% if form.lead.errors %}
-                {{ form.lead(class='uk-select uk-form-danger', rows="5") }}
-                {% for error in form.lead.errors %}
+                {{ form.client.label(class='uk-label') }}
+                {% if form.client.errors %}
+                {{ form.client(class='uk-select uk-form-danger', rows="5") }}
+                {% for error in form.client.errors %}
                 <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
                 {% endfor %}
                 {% else %}
-                {{ form.lead(class='uk-select', placeholder='lead') }}
+                {{ form.client(class='uk-select', placeholder='Client') }}
                 {% endif %}
             </div>
 

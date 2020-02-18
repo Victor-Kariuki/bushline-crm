@@ -1,9 +1,17 @@
-# app/appointment/forms.py
+# app/blueprint/appointment/forms.py
+
+# inbuilt imports
+from datetime import datetime
 
 # 3rd party imports
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, DateField, TextAreaField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+from wtforms_components import DateRange, TimeField
 from wtforms.validators import DataRequired, Length
+
+# local imports
+from app.models import Inquiry, Client
 
 
 class AppointmentForm(FlaskForm):
@@ -13,5 +21,8 @@ class AppointmentForm(FlaskForm):
 
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
-    date = DateField('Date', format='%m/%d/%Y')
+    date = DateField('Date', format='%m/%d/%Y', validators=[DataRequired(), DateRange(min=datetime.now())])
+    time = TimeField('Time')
+    inquiry = QuerySelectField(query_factory=lambda: Inquiry.query.all(), get_label="title")
+    client = QuerySelectField(query_factory=lambda: Client.query.all(), get_label="first_name")
     submit = SubmitField('Submit')

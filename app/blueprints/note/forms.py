@@ -6,7 +6,7 @@ from wtforms import SubmitField, StringField, TextAreaField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length
 
-from app.models import Lead, Appointment
+from app.models import Client, Appointment
 
 class NoteForm(FlaskForm):
     """
@@ -16,5 +16,5 @@ class NoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     appointment =  QuerySelectField(query_factory=lambda: Appointment.query.all(), get_label="title")
-    lead = QuerySelectField(query_factory=lambda: Lead.query.all(), get_label="customer")
+    client = QuerySelectField(query_factory=lambda: Client.query.all(), get_label="first_name")
     submit = SubmitField('Submit')

@@ -4,19 +4,15 @@
 from datetime import datetime
 
 # 3rd party imports
-from flask import render_template, redirect, url_for, abort
+from flask import render_template, redirect, url_for, abort, flash
 from flask_login import login_required, current_user
 
 # local imports
 from app import db
 from app.blueprints.appointment import appointment
-from app.models import Appointment, User
+from app.models import Appointment, User, Client, Inquiry
 from app.blueprints.appointment.forms import AppointmentForm
 
-
-def check_admin():
-    if current_user.is_admin is False:
-        abort(403)
 
 @appointment.route('/')
 @login_required
@@ -25,7 +21,10 @@ def read_appointments():
     Handle requests to /appointments route
     Retrieve & render all appointments in the db
     """
-    appointments = Appointment.query.filter_by(user_id=current_user.id).all()
+    if current_user.is_admin is False:
+        appointments = Appointment.query.filter_by(user_id=current_user.id).all()
+    else:
+        appointment = Appointment.query.all()
 
     return render_template('appointments/index.html.j2', appointments=appointments, title='appointments')
 
@@ -38,41 +37,41 @@ def read_appointment(id):
     Retrieve & render target appointment info
     """
 
-    appointment = Appointment.query.filter_by(id=id).first()
-    owner = User.query.filter_by(id=appointment.user_id).first()
-    lead = Lead.query.filter_by(id=appointment.lead_id).first()
+    appointment = Appointment.query.get_or_404(id)
 
-    return render_template('appointments/single.html.j2', appointment=appointment, owner=owner, lead=lead, title=appointment.name)
+    return render_template('appointments/single.html.j2', appointment=appointment, title=appointment.name)
 
 
 @appointment.route('/create', methods=['GET', 'POST'])
-def create_appointment(id):
+def create_appointment():
     """
     Handle requests to /appointments route
     Create & save a new appointment
     """
 
-    form = appointmentForm()
+    form = AppointmentForm()
 
-    if form.validate_on_sumbit():
+    if form.validate_on_submit():
 
         appointment = appointment(
             title = form.title.data,
             description = form.description.data,
             date = form.date.data,
-            lead_id = id,
-            user_id = current_user.id
+            time= form.time.data,
+            client = form.client.data,
+            inquiry = form.inquiry.data,
+            user = current_user
         )
 
         try:
             db.session.add(appointment)
             db.session.commit()
 
-            flash('Successfully created the appointment.', 'info')
+            flash('Successfully created the appointment.')
 
-            return redirect(url_for('appointment.read_appointments', id=id))
+            return redirect(url_for('appointment.read_appointments'))
         except:
-            flash('Error creating the appointment', 'error')
+            flash('Error creating the appointment')
 
     return render_template('appointments/form.html.j2', form=form, title='Create appointment')
 
@@ -87,12 +86,15 @@ def update_appointment(id):
 
     appointment = Appointment.query.get_or_404(id=id)
 
-    form = appointmentForm(obj=appointment)
+    form = AppointmentForm(obj=appointment)
 
     if form.validate_on_submit():
-        title = form.title.data,
-        description = form.description.data,
-        date = form.date.data
+        appointment.title = form.title.data
+        appointment.description = form.description.data
+        appointment.date = form.date.data,
+        appointment.time= form.time.data,
+        appointment.client = form.client.data,
+        appointment.inquiry = form.inquiry.data,
         
         try:
             db.session.add(appointment)
@@ -101,7 +103,7 @@ def update_appointment(id):
             flash('Successfully updated the appointment', 'info')
 
             # redirect to the appointment's page
-            return redirect(url_for('appointment.read_appointment', id=appointment.id))
+            return redirect(url_for('appointment.read_appointment', id=id))
         except:
             flash('Error updating the appointment', 'error')
 
@@ -118,11 +120,9 @@ def delete_appointment(id):
 
     appointment = Appointment.query.get_or_404(id)
 
-    organization_id = appointment.organization_id
-
     db.session.delete(appointment)
     db.session.commit()
 
     flash('Successfully deleted the appointment')
 
-    redirect(url_for('appointment.read_appointments', id=organization_id))
+    redirect(url_for('appointment.read_appointments'))

@@ -25,13 +25,13 @@ class Task(db.Model):
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(60), nullable='False')
+    title = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(200))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     status = db.Column(db.Enum(TaskStatus), nullable=False)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     comments = db.relationship('Comment', backref='task', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)

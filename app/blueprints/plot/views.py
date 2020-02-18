@@ -60,14 +60,14 @@ def create_plot():
     if form.validate_on_submit():
 
         plot = Plot(
-            name = form.name.data,
+            lr_number = form.lr_number.data,
             description = form.description.data,
             latitude = form.latitude.data,
             longitude = form.longitude.data,
-            rating = form.rating.data,
+            size = form.size.data,
             price = form.price.data,
             status = form.status.data,
-            estate = form.data.estate
+            project = form.data.project
         )
 
         try:

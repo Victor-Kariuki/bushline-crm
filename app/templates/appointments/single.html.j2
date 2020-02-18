@@ -1,7 +1,10 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-    <div class="uk-card uk-card-default uk-width-1-2@m">
+<div uk-grid>
+
+<div class="uk-width-2-5">
+    <div class="uk-card uk-card-default">
         <div class="uk-card-header">
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-auto">
@@ -23,4 +26,33 @@
             <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Cancel Appointment</a>
         </div>
     </div>
+</div>
+<div class="uk-width-3-5">
+
+</div>
+    {% for note in appointment.notes %}
+    <div>
+        <div class="uk-placeholder">
+            <article class="uk-article">
+
+                <div class="uk-article-title"><a class="uk-link-reset" href="{{ url_for('note.read_note', id=note.id) }}">{{ note.title }}</a></div>
+                <hr>
+                <p class="uk-article-meta">Written by <a href="#">{{ note.user.username }}</a> on {{ note.created_on }}.</p>
+
+                <p class="uk-text-truncate">{{ note.description }}</p>
+
+                <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                    <div>
+                        <a class="uk-button uk-button-text" href="{{ url_for('note.read_note', id=note.id) }}">Read more</a>
+                    </div>
+                    <div>
+                        <a class="uk-button uk-button-text" href="{{ url_for('note.read_note', id=note.id) }}">{{ note.comments.count() }}</a>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

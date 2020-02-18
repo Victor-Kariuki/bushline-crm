@@ -1,42 +1,46 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <hr>
-    {% if appointments %}
-        {% for message in get_flashed_messages() %}
-            <div class="uk-alert-primary" uk-alert>
-                <a class="uk-alert-close" uk-close></a>
-                <p>{{ message }}</p>
+<div class="uk-clearfix">
+    <div class="uk-float-left">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('appointment.create_appointment') }}">Create
+            Appointment</a>
+    </div>
+</div>
+<hr>
+{% if appointments %}
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+<div class="uk-child-width-1-4" uk-grid>
+    {% for appointment in appointments %}
+        <div class="uk-card uk-card-default">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h3 class="uk-card-title uk-margin-remove-bottom">{{ appointment.title }}</h3>
+                        <p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ appointment.created_on }}">{{ appointment.created_on }}</time></p>
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-        <table class="uk-table uk-table-hover uk-table-divider uk-table-responsive">
-            <thead>
-                <tr>
-                    <th>Title/th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th class="uk-table-shrink">Update</th>
-                    <th class="uk-table-shrink">Discard</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for appointment in appointments %}
-                <tr>
-                    <td>{{ appointment.title }}</td>
-                    <td>{{ appointment.description }}</td>
-                    <td>{{ appointment.date }}</td>
-                    <td>
-                        <a href="{{ url_for('appointments.update_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <div class="uk-placeholder uk-text-center">No appointments have been added.</div>
-    {% endif %}
+            <div class="uk-card-body">
+                <p>Date: <span class="uk-label">{{ appointment.date }}</span></p>
+                <p>Time: <span class="uk-label">{{ appointment.time }}</span></p>
+                <p>{{ appointment.description }}</p>
+            </div>
+            <div class="uk-card-footer">
+                <a href="{{ url_for('appointment.read_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Read more</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="uk-placeholder uk-text-center">No appointments have been added.</div>
+{% endif %}
 {% endblock %}

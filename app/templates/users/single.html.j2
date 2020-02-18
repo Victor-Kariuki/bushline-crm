@@ -1,9 +1,218 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-     <div uk-grid>
-         <div class="uk-child-width-2-5">
-         </div>
-         <div></div>
-     </div>
+<div class="uk-clearfix uk-margin">
+    <div class="uk-float-left">
+        <h1>{{ user.username }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('user.update_user', id=user.id) }}">Update
+            User</a>
+    </div>
+</div>
+<hr>
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+<div uk-grid>
+    <div class="uk-width-2-5@m">
+        <div class="uk-card uk-card-default">
+            <div class="uk-card-header">
+                <h3 class="uk-card-title uk-margin-remove-bottom">{{ user.first_name }}
+                    {{ user.last_name }}
+                </h3>
+                <p class="uk-text-meta uk-margin-remove-top">
+                    <time datetime="{{ user.created_on }}">{{ user.created_on }}</time>
+                </p>
+            </div>
+            <div class="uk-card-body">
+                <ul class="uk-iconnav uk-iconnav-vertical">
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
+                            Email: <span class="uk-text-meta uk-text-primary">{{ user.email }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
+                            Phone: <span class="uk-text-meta uk-text-primary">{{ user.phone }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="uk-width-3-5@m">
+        {% if user.id == current_user.id %}
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Appointments</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('appointment.create_appointment') }}">Create
+                    Appointment</a>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+        {% if user.appointments.count() != 0 %}
+        <table class="uk-table uk-table-hover uk-table-divider uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th class="uk-table-shrink">Update</th>
+                    <th class="uk-table-shrink">Discard</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in user.appointments %}
+                <tr>
+                    <td>{{ appointment.title }}</td>
+                    <td>{{ appointment.description }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>
+                        <a href="{{ url_for('appointments.update_appointment', id=appointment.id) }}"
+                            class="uk-icon-link" uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}"
+                            class="uk-icon-link" uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="uk-placeholder uk-text-center">No appointments have been added.</div>
+        {% endif %}
+
+        <hr>
+        <hr>
+
+        {% if user.id == current_user.id %}
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Customers</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('customer.create_customer') }}">Add customer</a>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+        {%  if user.customers.count() != 0 %}
+        <table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+            <thead>
+                <tr>
+                    <th class="uk-table-shrink">Name</th>
+                    <th class="uk-table-shrink">Email</th>
+                    <th class="uk-table-shrink">Phone</th>
+                    <th class="uk-table-shrink">Leads</th>
+                    <th class="uk-table-shrink">Added By</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in user.customers %}
+                <tr>
+                    <td class="uk-table-link">
+                        <a class="uk-link-reset" href="{{ url_for('customer.read_customer', id=customer.id) }}">
+                            {{ customer.first_name }} {{ customer.last_name }}
+                        </a>
+                    </td>
+                    <td> {{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td> {{ customer.leads.count() }} </td>
+                    <td>{{ customer.user.username }}</td>
+                    <td>
+                        <a href="{{ url_for('customer.update_customer', id=customer.id) }}" class="uk-icon-link"
+                            uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('customer.delete_customer', id=customer.id) }}" class="uk-icon-link"
+                            uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="uk-placeholder uk-text-center">No customers have been added.</div>
+        {% endif %}
+
+        <hr>
+        <hr>
+
+        {% if user.id == current_user.id %}
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Leads</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('lead.create_lead') }}">Add Lead</a>
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+
+        {%  if user.leads.count() != 0 %}
+        <table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+            <thead>
+                <tr>
+                    <th class="uk-table-shrink">Name</th>
+                    <th class="uk-table-shrink">Contact</th>
+                    <th class="uk-table-shrink">Source</th>
+                    <th class="uk-table-shrink">Proposal</th>
+                    <th class="uk-table-shrink">Location</th>
+                    <th class="uk-table-shrink">plot</th>
+                    <th class="uk-table-shrink">Assignee</th>
+                    <th class="uk-table-shrink">Status</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in user.leads %}
+                <tr>
+                    <td class="uk-table-link">
+                        <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
+                            {{ lead.customer.first_name }} {{ lead.customer.last_name }}
+                        </a>
+                    </td>
+                    <td> {{ lead.customer.phone }}</br>{{ lead.customer.email }}</td>
+                    <td> {{ lead.source.name }} </td>
+                    <td>{{ lead.proposal }}</td>
+                    <td> {{ lead.customer.location }} </td>
+                    <td>{{ lead.plot.name }}</td>
+                    <td>
+                        {% for assignee in lead.assignees %}
+                        {{ assignee.username }}
+                        {% endfor %}
+                    </td>
+                    <td><span class="uk-label uk-badge">{{ lead.status.name }}</span></td>
+                    <td>
+                        <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
+                            uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
+                            uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="uk-placeholder uk-text-center">No leads have been added.</div>
+        {% endif %}
+
+    </div>
+</div>
 {% endblock %}

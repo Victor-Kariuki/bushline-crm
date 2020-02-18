@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Note, Lead
+from app.models import Note
 from app.blueprints.note import note
 from app.blueprints.note.forms import NoteForm
 
@@ -33,7 +33,7 @@ def read_note(id):
     Retrieve and render all notes
     """
 
-    note = Note.query.filter_by(id=id).first_or_404()
+    note = Note.query.get_or_404(id)
 
     return render_template('notes/single.html.j2', note=note, title='Notes')
 
@@ -54,7 +54,7 @@ def create_note():
             title = form.title.data,
             description = form.description.data,
             appointment = form.appointment.data,
-            lead = form.lead.data,
+            client = form.client.data,
             user = current_user
         )
 
@@ -62,7 +62,7 @@ def create_note():
             db.session.add(note)
             db.session.commit()
             flash('You have successfully added a new note.', 'info')
-            # redirect to the lead's page
+            # redirect to the client's page
             return redirect(url_for('note.read_notes'))
         except:
             flash('Error creating the note', 'error')
@@ -84,15 +84,16 @@ def update_note(id):
     form = NoteForm(obj=note)
 
     if form.validate_on_submit():
-        title = form.title.data,
-        description = form.description.data,
+        note.title = form.title.data
+        note.description = form.description.data
+        note.client = form.client.data
 
         # update the note's instance in the DB
         db.session.add(note)
         db.session.commit()
         flash('You have successfully edited the note.')
 
-        # redirect to the lead's page
+        # redirect to the client's page
         return redirect(url_for('note.read_note', id=note.id))
 
     return render_template('notes/form.html.j2', form=form, title='Update Note')
@@ -113,6 +114,6 @@ def delete_note(id):
     db.session.commit()
     flash('You have successfully deleted the note.')
 
-    # redirect to the lead's page
+    # redirect to the client's page
     return redirect(url_for('note.read_notes'))
 
