@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Customer, Lead
+from app.models import Customer, Lead, Contact
 from app.blueprints.customer import customer
-from app.blueprints.customer.forms import CustomerForm, LeadForm
+from app.blueprints.customer.forms import CustomerForm, LeadForm, ContactForm
 
 
 @customer.route('')
@@ -143,7 +143,7 @@ def create_lead(id):
             proposal = form.proposal.data,
             probability = form.probability.data,
             customer = customer,
-            land = form.land.data
+            plot = form.plot.data
         )
 
         lead.assignees.append(form.user.data)
@@ -159,3 +159,33 @@ def create_lead(id):
             flash('Error creating the lead', 'error')
 
     return render_template('customers/lead-form.html.j2', form=form, title='Create Lead')
+
+
+@customer.route('/<int:id>/add-contact', methods=['GET', 'POST'])
+def add_contact(id):
+    """
+    Handles requests to /customers/<id>/add_contact route
+    add new contact info for the customer
+    """
+
+    form = ContactForm()
+    customer = Customer.query.get_or_404(id)
+
+    if form.validate_on_submit():
+        contact = Contact(
+            phone = form.phone.data,
+            email = form.email.data,
+            website = form.website.data,
+            customer = customer
+        )
+
+        try:
+            db.session.add(contact)
+            db.session.commit()
+
+            flash('successfully added new contact info', 'info')
+            return redirect(url_for('customer.read_customer', id=id))
+        except:
+            flash('Error creating confact info')
+
+    return render_template('customers/contact-form.html.j2', form=form, title='Add Contact Info')

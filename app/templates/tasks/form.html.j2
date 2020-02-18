@@ -32,6 +32,17 @@
             </div>
 
             <div class="uk-margin">
+                {% if form.lead.errors %}
+                {{ form.lead(class='uk-select uk-form-danger') }}
+                {% for error in form.lead.errors %}
+                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                {% endfor %}
+                {% else %}
+                {{ form.lead(class='uk-select') }}
+                {% endif %}
+            </div>
+
+            <div class="uk-margin">
                 {% if form.status.errors %}
                 {{ form.status(class='uk-select uk-form-danger') }}
                 {% for error in form.status.errors %}

@@ -4,6 +4,8 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app import images
 
 
 class UserForm(FlaskForm):
@@ -16,4 +18,5 @@ class UserForm(FlaskForm):
     last_name = StringField('Last name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     phone = StringField('Phone number', validators=[DataRequired()])
+    avatar = FileField('Avatar', validators=[FileRequired(), FileAllowed(images, 'Images only!')])
     submit = SubmitField('Submit')

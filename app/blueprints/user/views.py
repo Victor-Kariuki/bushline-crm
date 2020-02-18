@@ -1,11 +1,11 @@
 # app/user/views.py
 
 # 3rd party imports
-from flask import render_template, redirect, url_for, abort, flash
+from flask import render_template, redirect, url_for, abort, flash, request
 from flask_login import current_user, login_required
 
 # local imports
-from app import db
+from app import db, images
 from app.models import User
 from app.blueprints.user import user
 from app.blueprints.user.forms import UserForm
@@ -53,11 +53,14 @@ def update_user(id):
     form = UserForm(obj=user)
 
     if form.validate_on_submit():
+        avatar_filename = images.save(request.files['avatar'])
+        avatar_url = images.url(avatar_filename)
         user.username = form.username.data,
         user.first_name = form.first_name.data,
         user.last_name = form.last_name.data,
         user.email = form.email.data,
         user.phone = form.phone.data,
+        user.avatar = avatar_url
 
         db.session.add(user)
         db.session.commit()

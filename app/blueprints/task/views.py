@@ -1,5 +1,8 @@
 # app/task/views.py
 
+#inbuilt imports
+from datetime import datetime
+
 # 3rd party imports
 from flask import render_template, url_for, redirect, abort, flash
 from flask_login import login_required, current_user
@@ -36,10 +39,8 @@ def read_task(id):
     """
 
     task = Task.query.filter_by(id=id).first()
-    user = User.query.filter_by(id=task.created_by).first()
-    lead = Lead.query.filter_by(id=task.lead_id).first()
 
-    return render_template('tasks/single.html.j2', task=task, user=user, lead=lead, title=task.name)
+    return render_template('tasks/single.html.j2', task=task, title=task.title)
 
 
 @task.route('/create', methods=['GET', 'POST'])
@@ -57,9 +58,11 @@ def create_task():
         task = Task(
             title = form.title.data,
             description = form.description.data,
+            start_date = form.start_date.data,
+            end_date = form.end_date.data,
             status = form.status.data,
             lead = form.lead.data,
-            created_by = current_user.id
+            user = current_user
         )
 
         try:
@@ -83,15 +86,18 @@ def update_task(id):
     Update the target task
     """
 
-    task = Task.query.get_or_404(id=did)
+    task = Task.query.get_or_404(id)
 
     form = TaskForm(obj = task)
 
     if form.validate_on_submit():
         task.title = form.title.data
         task.description = form.description.data
+        task.start_date = form.start_date.data
+        task.end_date = form.end_date.data
         task.status = form.status.data
         task.lead = form.lead.data
+        task.updated_on = datetime.utcnow()
 
         try:
             db.session.add(task)

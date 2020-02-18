@@ -1,4 +1,4 @@
-# app/land/forms.py
+# app/plot/forms.py
 
 # 3rd party imports
 from flask_wtf import FlaskForm
@@ -6,9 +6,9 @@ from wtforms import SubmitField, StringField, IntegerField, SelectField, TextAre
 from wtforms.validators import DataRequired, NumberRange, Length
 
 
-class LandForm(FlaskForm):
+class PlotForm(FlaskForm):
     """
-    Form to handle creating & updating of lands
+    Form to handle creating & updating of plots
     """
 
     name = StringField('Name', validators=[DataRequired()])

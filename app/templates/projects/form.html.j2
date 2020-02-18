@@ -1,0 +1,91 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+    <div class="uk-child-width-1-2@m" uk-grid>
+        <div>
+            <h3>{{ title }}</h3>
+            {% for message in get_flashed_messages() %}
+                <div class="uk-alert-primary" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+            <hr>
+            <form method='post'>
+                {{ form.hidden_tag() }}
+
+                <div class="uk-margin">
+                    {% if form.name.errors %}
+                        {{ form.name(class='uk-input uk-form-danger') }}
+                        {% for error in form.name.errors %}
+                            <small class="uk-form-help-block">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.name(class='uk-input', placeholder='Name') }}
+                    {% endif %}
+                </div>
+
+                <div class="uk-child-width-1-2" uk-grid>
+                    <div>
+                        <div class="uk-margin">
+                            {% if form.longitude.errors %}
+                                {{ form.longitude(class='uk-input uk-form-danger') }}
+                                {% for error in form.longitude.errors %}
+                                    <small class="uk-form-help-block">
+                                        {{ error }}
+                                    </small>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.longitude(class='uk-input', placeholder='Longitude') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-margin">
+                            {% if form.latitude.errors %}
+                                {{ form.latitude(class='uk-input uk-form-danger') }}
+                                {% for error in form.latitude.errors %}
+                                    <small class="uk-form-help-block">
+                                        {{ error }}
+                                    </small>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.latitude(class='uk-input', placeholder='Latitude') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    {% if form.description.errors %}
+                        {{ form.description(class='uk-textarea uk-form-danger', rows="5") }}
+                        {% for error in form.description.errors %}
+                            <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.description(class='uk-textarea', rows="5", placeholder='Description') }}
+                    {% endif %}
+                </div>
+
+                <div class="uk-margin">
+                    {% if form.price.errors %}
+                        {{ form.price(class='uk-input uk-form-danger', type="number") }}
+                        {% for error in form.price.errors %}
+                            <small class="uk-form-help-block">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.price(class='uk-input', placeholder='Price', type="number") }}
+                    {% endif %}
+                </div>
+
+                <div class="uk-margin">
+                    {{ form.submit(class='uk-button uk-button-primary') }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

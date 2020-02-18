@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{ title }} | Magenta Leads</title>
+    <title>{{ title }} | Bushline CRM</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
@@ -31,8 +31,10 @@
                 <li><a href="{{ url_for('dashboard.index') }}"><span class="uk-margin-small-right" uk-icon="icon: home"></span> Dashboard</a></li>
                 <li><a href="{{ url_for('user.read_users') }}"><span class=" uk-margin-small-right"
                             uk-icon="icon: users"></span> Users</a></li>
-                <li><a href="{{ url_for('land.read_lands') }}"><span class="uk-margin-small-right"
-                            uk-icon="icon: calendar"></span> Lands</a>
+                <li><a href="{{ url_for('project.read_projects') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: star"></span> Projects</a>
+                <li><a href="{{ url_for('plot.read_plots') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: image"></span>Plots</a>
                 </li>
                 <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bolt"></span> Reports</a></li>
                 <li class="uk-nav-divider"></li>

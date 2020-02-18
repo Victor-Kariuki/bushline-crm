@@ -8,6 +8,7 @@ from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 # local imports
 from config import app_config
@@ -15,7 +16,7 @@ from config import app_config
 # DB Variable init
 db = SQLAlchemy()
 login_manager = LoginManager()
-
+images = UploadSet('images', IMAGES)
 
 def create_app(env_name):
     app = Flask(__name__)
@@ -31,8 +32,10 @@ def create_app(env_name):
 
     migrate = Migrate(app=app, db=db)
 
+    configure_uploads(app, images)
+
     # import all db models
-    from app.models import Comment, Land, Lead, Note, Task, User, Appointment
+    from app.models import Comment, Plot, Lead, Note, Task, User, Appointment, Estate, Contact
 
     # import & register blueprints
     from app.blueprints.appointment import appointment as appointment_blueprint
@@ -47,8 +50,11 @@ def create_app(env_name):
     from app.blueprints.dashboard import dashboard as dashboard_blueprint
     app.register_blueprint(dashboard_blueprint, url_prefix='/dashboard')
 
-    from app.blueprints.land import land as land_blueprint
-    app.register_blueprint(land_blueprint, url_prefix='/lands')
+    from app.blueprints.estate import estate as estate_blueprint
+    app.register_blueprint(estate_blueprint, url_prefix='/estates')
+
+    from app.blueprints.plot import plot as plot_blueprint
+    app.register_blueprint(plot_blueprint, url_prefix='/plots')
 
     from app.blueprints.lead import lead as lead_blueprint
     app.register_blueprint(lead_blueprint, url_prefix='/leads')

@@ -25,7 +25,7 @@
                 <th class="uk-table-shrink">Source</th>
                 <th class="uk-table-shrink">Proposal</th>
                 <th class="uk-table-shrink">Location</th>
-                <th class="uk-table-shrink">Land</th>
+                <th class="uk-table-shrink">plot</th>
                 <th class="uk-table-shrink">Assignee</th>
                 <th class="uk-table-shrink">Status</th>
                 <th class="uk-table-shrink">Edit</th>
@@ -44,7 +44,7 @@
                 <td> {{ lead.source.name }} </td>
                 <td>{{ lead.proposal }}</td>
                 <td> {{ lead.customer.location }} </td>
-                <td>{{ lead.land.name }}</td>
+                <td>{{ lead.plot.name }}</td>
                 <td>
                     {% for assignee in lead.assignees %}
                     {{ assignee.username }}

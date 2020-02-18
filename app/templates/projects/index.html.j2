@@ -6,10 +6,10 @@
         <h1>{{ title }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('land.create_land') }}">Add land</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('project.create_project') }}">Add Estate</a>
     </div>
 </div>
-{%  if lands %}
+{%  if projects %}
 {% for message in get_flashed_messages() %}
 <div class="uk-alert-primary" uk-alert>
     <a class="uk-alert-close" uk-close></a>
@@ -28,46 +28,37 @@
     </li>
     <li>
         <div class="uk-child-width-1-3@s uk-margin uk-grid-small" uk-grid>
-            {% for land in lands %}
+            {% for project in projects %}
             <div>
                 <div class="uk-card uk-card-default">
                     <div class="uk-card-header">
                         <div class="uk-grid-small" uk-grid>
                             <div class="uk-width-auto">
                                 <h3 class="uk-card-title uk-margin-remove-bottom">
-                                    <a class="uk-link-reset" href="{{ url_for('land.read_land', id=land.id) }}">
-                                        {{ land.name }}
+                                    <a class="uk-link-reset" href="{{ url_for('project.read_project', id=project.id) }}">
+                                        {{ project.name }}
                                     </a>
                                 </h3>
                                 <p class="uk-text-meta uk-margin-remove-top">
-                                    <time datetime="{{ land.created_on }}">{{ land.created_on }}</time>
+                                    <time datetime="{{ project.created_on }}">{{ project.created_on }}</time>
                                 </p>
                             </div>
                             <div class="uk-width-expand">
-                                <a href="{{ url_for('land.update_land', id=land.id) }}" class="uk-icon-link"
+                                <a href="{{ url_for('project.update_project', id=project.id) }}" class="uk-icon-link"
                                     uk-icon="file-edit"></a>
-                                <a href="{{ url_for('land.delete_land', id=land.id) }}" class="uk-icon-link"
+                                <a href="{{ url_for('project.delete_project', id=project.id) }}" class="uk-icon-link"
                                     uk-icon="trash"></a>
-                                {% if land.status.name == 'available' %}
-                                <div class="uk-label uk-label-success">{{ land.status.name }}</div>
-                                {% elif land.status.name == 'booked' %}
-                                <div class="uk-label uk-label-warning">{{ land.status.name }}</div>
-                                {% else %}
-                                <div class="uk-label">{{ land.status.name }}</div>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
                     <div class="uk-card-body">
                         <div class="uk-label">Description</div>
-                        <p>{{ land.description }}</p>
+                        <p>{{ project.description }}</p>
 
                     </div>
                     <div class="uk-card-footer">
-                        <div class="uk-text-small uk-text-muted">Rating <span class="uk-badge">{{ land.rating }}</span>
-                        </div>
                         <div class="uk-text-small uk-text-muted">Price <span
-                                class="uk-text-primary">{{ land.price }}</span></div>
+                                class="uk-label uk-label-success">{{ project.price }}</span></div>
                     </div>
                 </div>
             </div>
@@ -80,34 +71,30 @@
             <thead>
                 <tr>
                     <th class="uk-table-shrink">Name</th>
-                    <th class="uk-table-shrink">Description</th>
+                    <th>Description</th>
                     <th class="uk-table-shrink">Price</th>
-                    <th class="uk-table-shrink">Rating</th>
-                    <th class="uk-table-shrink">Status</th>
-                    <th class="uk-table-shrink">Leads</th>
+                    <th class="uk-table-shrink">Plots</th>
                     <th class="uk-table-shrink">Update</th>
                     <th class="uk-table-shrink">Delete</th>
                 </tr>
             </thead>
             <tbody>
-                {% for land in lands %}
+                {% for project in projects %}
                 <tr>
                     <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('land.read_land', id=land.id) }}">
-                            {{ land.name }}
+                        <a class="uk-link-reset" href="{{ url_for('project.read_project', id=project.id) }}">
+                            {{ project.name }}
                         </a>
                     </td>
-                    <td class="uk-text-truncate">{{ land.description }}</td>
-                    <td>{{ land.price }}</td>
-                    <td>{{ land.rating }}</td>
-                    <td>{{ land.status.name }}</td>
-                    <td>{{ land.leads.count() }}</td>
-                    <td>
-                        <a href="{{ url_for('land.update_land', id=land.id) }}" class="uk-icon-link"
+                    <td class="uk-text-truncate">{{ project.description }}</td>
+                    <td>{{ project.price }}</td>
+                    <td class="uk-text-center"><span class="uk-badge">{{ project.plots.count() }}</span></td>
+                    <td class="uk-text-center">
+                        <a href="{{ url_for('project.update_project', id=project.id) }}" class="uk-icon-link"
                             uk-icon="file-edit"></a>
                     </td>
-                    <td>
-                        <a href="{{ url_for('land.delete_land', id=land.id) }}" class="uk-icon-link"
+                    <td class="uk-text-center">
+                        <a href="{{ url_for('project.delete_project', id=project.id) }}" class="uk-icon-link"
                             uk-icon="trash"></a>
                     </td>
                 </tr>
@@ -117,7 +104,7 @@
     </li>
 </ul>
 {% else %}
-<div class="uk-placeholder uk-text-center">No lands have been added.</div>
+<div class="uk-placeholder uk-text-center">No projects have been added.</div>
 {% endif %}
 
 

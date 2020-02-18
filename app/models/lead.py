@@ -52,7 +52,7 @@ class Lead(db.Model):
     proposal = db.Column(db.Integer)
     probability = db.Column(db.Enum(Probability))
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
-    land_id = db.Column(db.Integer, db.ForeignKey('lands.id'))
+    plot_id = db.Column(db.Integer, db.ForeignKey('plots.id'))
     status = db.Column(db.Enum(Status), default='active')
     assignees = db.relationship('User', secondary=user_lead_links)
     appointments = db.relationship('Appointment', backref='lead', lazy='dynamic')

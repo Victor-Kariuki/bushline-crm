@@ -2,7 +2,7 @@
 
 # 3rd party imports
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, SelectField, TextAreaField
+from wtforms import SubmitField, StringField, SelectField, TextAreaField, DateField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length
 
@@ -17,10 +17,12 @@ class TaskForm(FlaskForm):
 
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
+    start_date = DateField('Start Date', format='%m/%d/%Y')
+    end_date = DateField('End Date', format='%m/%d/%Y')
     status = SelectField('Status', choices=[
         ('pending', 'pending'),
         ('active', 'active'),
         ('closed', 'closed')
     ])
-    lead_id = QuerySelectField(query_factory=lambda: Lead.query.all(), get_label="first_name")
+    lead = QuerySelectField(query_factory=lambda: Lead.query.all(), get_label="customer")
     submit = SubmitField('submit')

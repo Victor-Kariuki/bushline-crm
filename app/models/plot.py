@@ -1,4 +1,4 @@
-# app/models/land.py
+# app/models/plot.py
 
 # inbuilt imports
 import enum
@@ -7,9 +7,9 @@ from datetime import datetime
 # local imports
 from app import db
 
-class LandStatus(enum.Enum):
+class PlotStatus(enum.Enum):
     """
-    Land status enum
+    plot status enum
     """
 
     sold = 'sold'
@@ -17,24 +17,26 @@ class LandStatus(enum.Enum):
     available = 'available'
 
 
-class Land(db.Model):
+class Plot(db.Model):
     """
-    Create a land's table
+    Create a plot's table
     """
 
-    __tablename__ = 'lands'
+    __tablename__ = 'plots'
 
     id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String(128), nullable=False)
     name = db.Column(db.String(60), nullable=False, index=True)
     description = db.Column(db.Text)
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Integer)
     price = db.Column(db.Integer)
-    status = db.Column(db.Enum(LandStatus), default='available')
-    leads = db.relationship('Lead', backref='land', lazy='dynamic')
+    estate_id = db.Column(db.Integer, db.ForeignKey('estates.id'))
+    status = db.Column(db.Enum(PlotStatus), default='available')
+    leads = db.relationship('Lead', backref='plot', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<Land: {}>'.format(self.name)
+        return '<Plot: {}>'.format(self.name)

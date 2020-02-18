@@ -60,7 +60,7 @@
                 class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
                 <thead>
                     <tr>
-                        <th>Land</th>
+                        <th>plot</th>
                         <th>Location</th>
                         <th>Source</th>
                         <th>Proposal</th>
@@ -74,7 +74,7 @@
                     <tr>
                         <td class="uk-table-link">
                             <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                                {{ lead.land.name }}
+                                {{ lead.plot.name }}
                             </a>
                         </td>
                         <td> {{ lead.customer.location }}</td>

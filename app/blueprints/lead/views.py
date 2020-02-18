@@ -59,7 +59,7 @@ def create_lead():
             source = form.source.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
-            land = form.land.data
+            plot = form.plot.data
         )
 
         lead.assignees.append(form.user.data)
@@ -93,7 +93,7 @@ def update_lead(id):
         lead.source = form.source.data,
         lead.proposal = form.proposal.data,
         lead.probability = form.probability.data,
-        lead.land = form.land.data
+        lead.plot = form.plot.data
         lead.updated_on = datetime.utcnow()
         
         try:

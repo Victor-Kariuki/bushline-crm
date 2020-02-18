@@ -48,14 +48,14 @@
   </div>
 
   <div class="uk-margin">
-    {{ form.land.label(class='uk-label') }}
-    {% if form.land.errors %}
-    {{ form.land(class='uk-select uk-form-danger') }}
-    {% for error in form.land.errors %}
+    {{ form.plot.label(class='uk-label') }}
+    {% if form.plot.errors %}
+    {{ form.plot(class='uk-select uk-form-danger') }}
+    {% for error in form.plot.errors %}
     <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
     {% endfor %}
     {% else %}
-    {{ form.land(class='uk-select', placeholder='Land') }}
+    {{ form.plot(class='uk-select', placeholder='plot') }}
     {% endif %}
   </div>
 

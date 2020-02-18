@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(60), index=True, nullable=False)
     email = db.Column(db.String(60), index=True, unique=True, nullable=False)
     phone = db.Column(db.Integer, unique=True)
+    avatar = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
     avatar = db.Column(db.String(200))
     is_admin = db.Column(db.Boolean, default=False)

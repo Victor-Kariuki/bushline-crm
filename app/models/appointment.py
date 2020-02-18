@@ -1,4 +1,4 @@
-# app/models/appointments.py
+# app/models/appointment.py
 
 # inbuilt imports
 from datetime import datetime
@@ -15,8 +15,10 @@ class Appointment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60), nullable=False)
-    description = db.Column(db.String(200))
+    description = db.Column(db.Text)
     date = db.Column(db.DateTime, nullable=False)
+    time = db.Column(db.DateTime)
+    duration = db.Column(db.Integer)
     location = db.Column(db.String(60), nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
     lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'))
