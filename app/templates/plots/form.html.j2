@@ -15,6 +15,20 @@
                 {{ form.hidden_tag() }}
 
                 <div class="uk-margin">
+                    {{ form.project.label(class='uk-label') }}
+                    {% if form.project.errors %}
+                        {{ form.project(class='uk-select uk-form-danger') }}
+                        {% for error in form.project.errors %}
+                            <small class="uk-form-help-block">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.project(class='uk-select') }}
+                    {% endif %}
+                </div>
+
+                <div class="uk-margin">
                     {% if form.lr_number.errors %}
                         {{ form.lr_number(class='uk-input uk-form-danger') }}
                         {% for error in form.lr_number.errors %}
@@ -92,19 +106,6 @@
                         {% endfor %}
                     {% else %}
                         {{ form.price(class='uk-input', placeholder='Price', type="number") }}
-                    {% endif %}
-                </div>
-
-                <div class="uk-margin">
-                    {% if form.status.errors %}
-                        {{ form.status(class='uk-select uk-form-danger') }}
-                        {% for error in form.status.errors %}
-                            <small class="uk-form-help-block">
-                                {{ error }}
-                            </small>
-                        {% endfor %}
-                    {% else %}
-                        {{ form.status(class='uk-select', placeholder='Status') }}
                     {% endif %}
                 </div>
 

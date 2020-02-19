@@ -2,7 +2,7 @@
 
 # 3rd party imports
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, SelectField
+from wtforms import SubmitField, StringField, SelectField, TextAreaField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired
 
@@ -34,3 +34,13 @@ class InquiryForm(FlaskForm):
   client = QuerySelectField(query_factory=lambda: Client.query.all(), get_label="first_name")
   user = QuerySelectField(query_factory=lambda: User.query.all(), get_label="username")
   submit = SubmitField('Submit')
+
+
+class NoteForm(FlaskForm):
+    """
+    Handle creation & updating of appointment notes.
+    """
+
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')

@@ -1,7 +1,7 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
+    <h1 class="uk-text-capitalize">{{ title }}</h1>
     <hr>
     {%  if users %}
         {% for message in get_flashed_messages() %}

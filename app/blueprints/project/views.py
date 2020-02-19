@@ -65,7 +65,6 @@ def create_project():
             description = form.description.data,
             latitude = form.latitude.data,
             longitude = form.longitude.data,
-            price = form.price.data
         )
 
         try:
@@ -97,7 +96,6 @@ def update_project(id):
         project.description = form.description.data
         project.latitude = form.latitude.data
         project.longitude = form.longitude.data
-        project.price = form.price.data
         project.updated_on = datetime.utcnow()
 
         try:
@@ -148,13 +146,12 @@ def add_plot(id):
     if form.validate_on_submit():
 
         plot = Plot(
-            name = form.name.data,
+            lr_number = form.lr_number.data,
             description = form.description.data,
             latitude = form.latitude.data,
             longitude = form.longitude.data,
-            rating = form.rating.data,
+            size = form.size.data,
             price = form.price.data,
-            status = form.status.data,
             project = project
         )
 

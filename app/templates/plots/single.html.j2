@@ -3,7 +3,7 @@
 {% block content %}
 <div class="uk-clearfix uk-margin">
     <div class="uk-float-left">
-        <h1>{{ title }}</h1>
+        <h1 class="uk-text-capitalize">{{ title }}</h1>
     </div>
     <div class="uk-float-right">
         <a class="uk-button uk-button-primary" href="{{ url_for('plot.update_plot', id=plot.id) }}">Update plot</a>
@@ -17,8 +17,6 @@
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-auto">
                         <h3 class="uk-card-title uk-margin-remove-bottom">{{ plot.lr_number }}</h3>
-                        <p class="uk-text-meta uk-margin-remove-top"><time
-                                datetime="2016-04-01T19:00">{{ plot.created_on }}</time></p>
                     </div>
                     <div class="uk-width-expand">
                         <div class="uk-label uk-badge">{{ plot.status.name }}</div>
@@ -26,78 +24,74 @@
                 </div>
             </div>
             <div class="uk-card-body">
-                <p class="uk-text-muted uk-text-uppercase">Size: <span class="uk-badge">{{ plot.size }}</span></p>
+                <p class="uk-text-muted uk-text-uppercase">Size: <span
+                        class="uk-text-primary">{{ plot.size.name }}</span></p>
+                <h6>Description</h6>
                 <p>{{ plot.description }}</p>
             </div>
             <div class="uk-card-footer">
-                <a class="uk-button uk-button-text">{{ plot.price }}</a>
+                <a class="uk-button uk-button-text">Price: <span class="uk-badge">{{ plot.price }}</span></a>
+                <p class="uk-text-meta uk-margin-remove-top">Update On: <time
+                        datetime="2016-04-01T19:00">{{ plot.created_on }}</time></p>
             </div>
         </div>
     </div>
     <div class="uk-width-2-3@s">
-        <div class="uk-card uk-card-default uk-card-body">
-            <h3 class="uk-card-title">Cordinates</h3>
-            <div id='map' style='width: 100%; height: 300px;'></div>
-        </div>
-
-        {% if plot.inquiries %}
-        <div class="uk-card uk-card-default uk-card-body uk-margin">
-            <h3 class="uk-card-title">Inquiries</h3>
-            <div class="uk-overflow-auto">
-                <table
-                    class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive uk-table-small">
-                    <thead>
-                        <tr>
-                            <th class="uk-table-shrink">Name</th>
-                            <th class="uk-table-shrink">Contact</th>
-                            <th class="uk-table-shrink">Proposal</th>
-                            <th class="uk-table-shrink">Location</th>
-                            <th class="uk-table-shrink">Assignee</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for inquiry in plot.inquiries %}
-                        <tr>
-                            <td class="uk-table-link">
-                                <a class="uk-link-reset" href="{{ url_for('inquiry.read_inquiry', id=inquiry.id) }}">
-                                    {{ inquiry.client.first_name }} {{ inquiry.client.last_name }}
-                                </a>
-                            </td>
-                            <td class="uk-text-overflow"> {{ inquiry.client.phone }}</br>{{ inquiry.client.email }}</td>
-                            <td>{{ inquiry.proposal }}</td>
-                            <td> {{ inquiry.client.location }} </td>
-                            <td>
-                                {% for assignee in inquiry.assignees %}
-                                {{ assignee.username }}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    </tbody>
-                    {% endfor %}
-                </table>
+        <div id='plot' style='width: 100%; height: 300px;'></div>
+        <div class="uk-clearfix uk-margin">
+            <div class="uk-float-left">
+                <h2>Inquiries</h2>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('plot.add_inquiry', id=plot.id) }}">Add Inquiry</a>
             </div>
         </div>
-
-        {% else %}
-        <div class="uk-placeholder">No inquiries found for this plot</div>
-        {% endif %}
+        <hr>
+        {% if plot.inquiries.count() != 0 %}
+        <div class="uk-overflow-auto">
+            <table
+                class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive uk-table-small">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th class="uk-table-shrink">Contact</th>
+                        <th class="uk-table-shrink">Proposal</th>
+                        <th class="uk-table-shrink">Location</th>
+                        <th class="uk-table-shrink">Assignee</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inquiry in plot.inquiries %}
+                    <tr>
+                        <td class="uk-table-link">
+                            <a class="uk-link-reset" href="{{ url_for('inquiry.read_inquiry', id=inquiry.id) }}">
+                                {{ inquiry.client.first_name }} {{ inquiry.client.last_name }}
+                            </a>
+                        </td>
+                        <td class="uk-text-overflow"> {{ inquiry.client.phone }}</br>{{ inquiry.client.email }}</td>
+                        <td>{{ inquiry.proposal }}</td>
+                        <td> {{ inquiry.client.location }} </td>
+                        <td>
+                            {% for assignee in inquiry.assignees %}
+                            {{ assignee.username }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+            {% else %}
+            <div class="uk-placeholder">No inquiries found for this plot</div>
+            {% endif %}
+        </div>
     </div>
-</div>
 
 <script>
     mapboxgl.accessToken = '{{ access_token }}';
     var map = new mapboxgl.Map({
-        container: 'map', // container id
+        container: 'plot', // container id
         style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-        center: [{
-            {
-                plot.longitude
-            }
-        }, {
-            {
-                plot.latitude
-            }
-        }], // starting position [lng, lat]
+        center: [{{ plot.longitude}}, {{plot.latitude}}], // starting position [lng, lat]
         zoom: 8 // starting zoom
     });
 </script>

@@ -3,7 +3,7 @@
 {% block content %}
     <div class="uk-child-width-1-2@m" uk-grid>
         <div>
-            <h3>{{ title }}</h3>
+            <h3 class='uk-text-uppercase'>{{ title }}</h3>
             {% for message in get_flashed_messages() %}
                 <div class="uk-alert-primary" uk-alert>
                     <a class="uk-alert-close" uk-close></a>
@@ -66,19 +66,6 @@
                         {% endfor %}
                     {% else %}
                         {{ form.description(class='uk-textarea', rows="5", placeholder='Description') }}
-                    {% endif %}
-                </div>
-
-                <div class="uk-margin">
-                    {% if form.price.errors %}
-                        {{ form.price(class='uk-input uk-form-danger', type="number") }}
-                        {% for error in form.price.errors %}
-                            <small class="uk-form-help-block">
-                                {{ error }}
-                            </small>
-                        {% endfor %}
-                    {% else %}
-                        {{ form.price(class='uk-input', placeholder='Price', type="number") }}
                     {% endif %}
                 </div>
 

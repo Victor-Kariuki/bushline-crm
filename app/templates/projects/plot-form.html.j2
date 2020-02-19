@@ -15,15 +15,15 @@
                 {{ form.hidden_tag() }}
 
                 <div class="uk-margin">
-                    {% if form.name.errors %}
-                        {{ form.name(class='uk-input uk-form-danger') }}
-                        {% for error in form.name.errors %}
+                    {% if form.lr_number.errors %}
+                        {{ form.lr_number(class='uk-input uk-form-danger') }}
+                        {% for error in form.lr_number.errors %}
                             <small class="uk-form-help-block">
                                 {{ error }}
                             </small>
                         {% endfor %}
                     {% else %}
-                        {{ form.name(class='uk-input', placeholder='Name') }}
+                        {{ form.lr_number(class='uk-input', placeholder='LR Number') }}
                     {% endif %}
                 </div>
 
@@ -70,15 +70,15 @@
                 </div>
 
                 <div class="uk-margin">
-                    {% if form.rating.errors %}
-                        {{ form.rating(class='uk-form-danger', type="radio") }}
-                        {% for error in form.rating.errors %}
+                    {% if form.size.errors %}
+                        {{ form.size(class='uk-select uk-form-danger') }}
+                        {% for error in form.size.errors %}
                             <small class="uk-form-help-block">
                                 {{ error }}
                             </small>
                         {% endfor %}
                     {% else %}
-                        {{ form.rating(class='', type="radio") }}
+                        {{ form.size(class='uk-select') }}
                     {% endif %}
                 </div>
 
@@ -92,19 +92,6 @@
                         {% endfor %}
                     {% else %}
                         {{ form.price(class='uk-input', placeholder='Price', type="number") }}
-                    {% endif %}
-                </div>
-
-                <div class="uk-margin">
-                    {% if form.status.errors %}
-                        {{ form.status(class='uk-select uk-form-danger') }}
-                        {% for error in form.status.errors %}
-                            <small class="uk-form-help-block">
-                                {{ error }}
-                            </small>
-                        {% endfor %}
-                    {% else %}
-                        {{ form.status(class='uk-select', placeholder='Status') }}
                     {% endif %}
                 </div>
 

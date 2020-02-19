@@ -3,10 +3,10 @@
 {% block content %}
 <div class="uk-clearfix uk-margin">
     <div class="uk-float-left">
-        <h1>{{ lead.client.first_name }} {{ lead.client.last_name }}</h1>
+        <h1>{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('lead.update_lead', id=lead.id) }}">Update Lead</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}">Update Lead</a>
     </div>
 </div>
 <hr>
@@ -25,7 +25,7 @@
                         <h3 class="uk-card-title">Info</h3>
                     </div>
                     <div class="uk-width-expand">
-                        <div class="uk-card-badge uk-label">{{ lead.status.name }}</div>
+                        <div class="uk-card-badge uk-label">{{ inquiry.status.name }}</div>
                     </div>
                 </div>
             </div>
@@ -34,35 +34,35 @@
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: user"></span>
-                            Name:  <span class="uk-text-meta uk-text-primary">{{ lead.client.first_name }} {{ lead.client.last_name }}</span>
+                            Name:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.client.email }}</span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.client.phone }}</span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.phone }}</span>
                         </a>
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: social"></span>
-                        Source:  <span class="uk-text-meta uk-text-primary">{{ lead.source.name }}</span>
+                        Source:  <span class="uk-text-meta uk-text-primary">{{ inquiry.source.name }}</span>
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: info"></span>
-                        Probability:  <span class="uk-text-meta uk-text-primary">{{ lead.probability.name }}</span>
+                        Probability:  <span class="uk-text-meta uk-text-primary">{{ inquiry.probability.name }}</span>
                     </li>
                 </ul>
             </div>
             <div class="uk-card-footer">
                 <p class="uk-text-meta uk-margin-remove-top">
                     Last updated:
-                    <time datetime="{{ lead.created_on }}">{{ lead.created_on }}</time>
+                    <time datetime="{{ inquiry.created_on }}">{{ inquiry.created_on }}</time>
                 </p>
             </div>
         </div>
@@ -73,7 +73,7 @@
                 <h3>Notes</h3>
             </div>
             <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('lead.create_note',id=lead.id) }}">Add Note</a>
+                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_note',id=inquiry.id) }}">Add Note</a>
             </div>
         </div>
         {% if notes %}
@@ -103,7 +103,7 @@
                 </tbody>
             </table>
         {% else %}
-            <div class="uk-placeholder uk-text-center">No notes for the lead.</div>
+            <div class="uk-placeholder uk-text-center">No notes for the inquiry.</div>
         {% endif %}
     </div>
 </div>
@@ -126,7 +126,7 @@
                 </div>
             </div>
             <div class="uk-card-body">
-                {% for assignee in lead.assignees %}
+                {% for assignee in inquiry.assignees %}
                 <ul class="uk-iconnav uk-iconnav-vertical">
                     <li>
                         <a href="#">
@@ -152,7 +152,7 @@
             <div class="uk-card-footer">
                 <p class="uk-text-meta uk-margin-remove-top">
                     Last updated:
-                    <time datetime="{{ lead.created_on }}">{{ lead.created_on }}</time>
+                    <time datetime="{{ inquiry.created_on }}">{{ inquiry.created_on }}</time>
                 </p>
             </div>
         </div>

@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Inquiry
+from app.models import Inquiry, Note
 from app.blueprints.inquiry import inquiry
-from app.blueprints.inquiry.forms import InquiryForm
+from app.blueprints.inquiry.forms import InquiryForm, NoteForm
 
 
 @inquiry.route('/')
@@ -20,12 +20,12 @@ def read_inquiries():
 
     """
     Handles request to /inquiries route
-    Retrieve & render all inquries in the DB
+    Retrieve & render all inquiries in the DB
     """
 
-    inquries = Inquiry.query.all()
+    inquiries = Inquiry.query.all()
 
-    return render_template('inquiries/index.html.j2', inquries=inquries, title='Inquiries Listing')
+    return render_template('inquiries/index.html.j2', inquiries=inquiries, title='Inquiries Listing')
 
 
 @inquiry.route('/<int:id>')
@@ -132,4 +132,37 @@ def delete_inquiry(id):
 
     # redirect to the inquiries page
     return redirect(url_for('inquiry.read_inquiries'))
+
+
+@inquiry.route('/<int:id>/create-note', methods=['GET', 'POST'])
+@login_required
+def create_note(id):
+    """
+    Handle request to /inquiries/<id>/create-note route \n
+    Create a new note and store in the DB
+    """
+
+    form = NoteForm()
+    inquiry = Inquiry.query.get_or_404(id)
+
+    if form.validate_on_submit():
+
+        note = Note(
+            title = form.title.data,
+            description = form.description.data,
+            inquiry = inquiry,
+            user = current_user
+        )
+
+        try:
+            db.session.add(note)
+            db.session.commit()
+            flash('You have successfully added a new note.', 'info')
+            # redirect to the client's page
+            return redirect(url_for('inquiry.read_inquiry', id=id))
+        except:
+            flash('Error creating the note', 'error')
+
+    # load note form template
+    return render_template('inquiries/note-form.html.j2', form=form, title='Add Note')
 

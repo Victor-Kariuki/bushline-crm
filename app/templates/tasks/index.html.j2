@@ -1,7 +1,7 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-<h1>{{ title }}</h1>
+<h1 class="uk-text-capitalize">{{ title }}</h1>
 <hr>
 <a class="uk-button uk-button-primary" href="{{ url_for('task.create_task') }}">Add Task</a>
 {%  if tasks %}

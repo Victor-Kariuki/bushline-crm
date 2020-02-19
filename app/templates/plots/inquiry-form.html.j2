@@ -63,30 +63,6 @@
             </div>
 
             <div class="uk-margin">
-                {{ form.plot.label(class='uk-label') }}
-                {% if form.plot.errors %}
-                {{ form.plot(class='uk-select uk-form-danger') }}
-                {% for error in form.plot.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.plot(class='uk-select', placeholder='plot') }}
-                {% endif %}
-            </div>
-
-            <div class="uk-margin">
-                {{ form.user.label(class='uk-label') }}
-                {% if form.user.errors %}
-                {{ form.user(class='uk-select uk-form-danger') }}
-                {% for error in form.user.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.user(class='uk-select', placeholder='Assignee') }}
-                {% endif %}
-            </div>
-
-            <div class="uk-margin">
                 {{ form.submit(class='uk-button uk-button-primary') }}
             </div>
         </form>

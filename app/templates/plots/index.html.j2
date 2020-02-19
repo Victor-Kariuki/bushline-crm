@@ -3,7 +3,7 @@
 {% block content %}
 <div class="uk-clearfix uk-margin">
     <div class="uk-float-left">
-        <h1>{{ title }}</h1>
+        <h1 class="uk-text-capitalize">{{ title }}</h1>
     </div>
     <div class="uk-float-right">
         <a class="uk-button uk-button-primary" href="{{ url_for('plot.create_plot') }}">Add plot</a>
@@ -18,7 +18,6 @@
 {% endfor %}
 <ul class="uk-tab" uk-switcher>
     <li><a href="#">Map View</a></li>
-    <li><a href="#">Card View</a></li>
     <li><a href="#">Listing View</a></li>
 </ul>
 
@@ -27,63 +26,16 @@
         <div id="map" style='width: 100%; height: 400px;' class="uk-margin"></div>
     </li>
     <li>
-        <div class="uk-child-width-1-3@s uk-margin uk-grid-small" uk-grid>
-            {% for plot in plots %}
-            <div>
-                <div class="uk-card uk-card-default">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small" uk-grid>
-                            <div class="uk-width-auto">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">
-                                    <a class="uk-link-reset" href="{{ url_for('plot.read_plot', id=plot.id) }}">
-                                        {{ plot.lr_number }}
-                                    </a>
-                                </h3>
-                                <p class="uk-text-meta uk-margin-remove-top">
-                                    <time datetime="{{ plot.created_on }}">{{ plot.created_on }}</time>
-                                </p>
-                            </div>
-                            <div class="uk-width-expand">
-                                <a href="{{ url_for('plot.update_plot', id=plot.id) }}" class="uk-icon-link"
-                                    uk-icon="file-edit"></a>
-                                <a href="{{ url_for('plot.delete_plot', id=plot.id) }}" class="uk-icon-link"
-                                    uk-icon="trash"></a>
-                                {% if plot.status.name == 'available' %}
-                                <div class="uk-label uk-label-success">{{ plot.status.name }}</div>
-                                {% elif plot.status.name == 'booked' %}
-                                <div class="uk-label uk-label-warning">{{ plot.status.name }}</div>
-                                {% else %}
-                                <div class="uk-label">{{ plot.status.name }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="uk-card-body">
-                        <div class="uk-label">Description</div>
-                        <p>{{ plot.description }}</p>
-
-                    </div>
-                    <div class="uk-card-footer">
-                        <div class="uk-text-small uk-text-muted">Size <span class="uk-badge">{{ plot.size }}</span>
-                        </div>
-                        <div class="uk-text-small uk-text-muted">Price <span
-                                class="uk-text-primary">{{ plot.price }}</span></div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </li>
-    <li>
         <table
             class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-small uk-table-justify uk-table-middle">
             <thead>
                 <tr>
-                    <th class="uk-table-shrink">LR Number</th>
-                    <th class="uk-table-shrink">Description</th>
-                    <th class="uk-table-shrink">Price</th>
-                    <th class="uk-table-shrink">Size</th>
-                    <th class="uk-table-shrink">Status</th>
+                    <th>LR Number</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Size</th>
+                    <th>Status</th>
+                    <th>Project</th>
                     <th class="uk-table-shrink">Inquiries</th>
                     <th class="uk-table-shrink">Update</th>
                     <th class="uk-table-shrink">Delete</th>
@@ -99,14 +51,15 @@
                     </td>
                     <td class="uk-text-truncate">{{ plot.description }}</td>
                     <td>{{ plot.price }}</td>
-                    <td>{{ plot.size }}</td>
+                    <td>{{ plot.size.name }}</td>
                     <td>{{ plot.status.name }}</td>
-                    <td>{{ plot.Inquiries.count() }}</td>
-                    <td>
+                    <td>{{ plot.project.name }}</td>
+                    <td class="uk-text-center"><span class="uk-badge">{{ plot.inquiries.count() }}</span></td>
+                    <td class="uk-text-center">
                         <a href="{{ url_for('plot.update_plot', id=plot.id) }}" class="uk-icon-link"
                             uk-icon="file-edit"></a>
                     </td>
-                    <td>
+                    <td class="uk-text-center">
                         <a href="{{ url_for('plot.delete_plot', id=plot.id) }}" class="uk-icon-link"
                             uk-icon="trash"></a>
                     </td>

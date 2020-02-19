@@ -3,13 +3,13 @@
 {% block content %}
 <div class="uk-clearfix">
     <div class="uk-float-left">
-        <h1>{{ title }}</h1>
+        <h1 class="uk-text-capitalize">{{ title }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_inquiry') }}">Add Lead</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_inquiry') }}">Add Inquiry</a>
     </div>
 </div>
-{%  if leads %}
+{%  if inquiries %}
 {% for message in get_flashed_messages() %}
 <div class="uk-alert-primary" uk-alert>
     <a class="uk-alert-close" uk-close></a>
@@ -17,7 +17,7 @@
 </div>
 {% endfor %}
     <table
-        class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+        class="uk-table uk-table-divider uk-table-justify uk-table-hover uk-table-responsive">
         <thead>
             <tr>
                 <th class="uk-table-shrink">Name</th>
@@ -33,30 +33,30 @@
             </tr>
         </thead>
         <tbody>
-            {% for lead in leads %}
+            {% for inquiry in inquiries %}
             <tr>
                 <td class="uk-table-link">
-                    <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                        {{ lead.client.first_name }} {{ lead.client.last_name }}
+                    <a class="uk-link-reset" href="{{ url_for('inquiry.read_inquiry', id=inquiry.id) }}">
+                        {{ inquiry.client.first_name }} {{ inquiry.client.last_name }}
                     </a>
                 </td>
-                <td> {{ lead.client.phone }}</br>{{ lead.client.email }}</td>
-                <td> {{ lead.source.name }} </td>
-                <td>{{ lead.proposal }}</td>
-                <td> {{ lead.client.location }} </td>
-                <td>{{ lead.plot.name }}</td>
+                <td> {{ inquiry.client.phone }}</br>{{ inquiry.client.email }}</td>
+                <td> {{ inquiry.source.name }} </td>
+                <td>{{ inquiry.proposal }}</td>
+                <td> {{ inquiry.client.location }} </td>
+                <td><a class="uk-link-reset" href="{{ url_for('plot.read_plot', id=inquiry.plot.id) }}">{{ inquiry.plot.lr_number }}</a></td>
                 <td>
-                    {% for assignee in lead.assignees %}
+                    {% for assignee in inquiry.assignees %}
                     {{ assignee.username }}
                     {% endfor %}
                 </td>
-                <td><span class="uk-label uk-badge">{{ lead.status.name }}</span></td>
+                <td><span class="uk-label uk-badge">{{ inquiry.status.name }}</span></td>
                 <td>
-                    <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
+                    <a href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}" class="uk-icon-link"
                         uk-icon="file-edit"></a>
                 </td>
                 <td>
-                    <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
+                    <a href="{{ url_for('inquiry.delete_inquiry', id=inquiry.id) }}" class="uk-icon-link"
                         uk-icon="trash"></a>
                 </td>
             </tr>
@@ -64,6 +64,6 @@
         </tbody>
     </table>
 {% else %}
-<div class="uk-placeholder uk-text-center">No leads have been added.</div>
+<div class="uk-placeholder uk-text-center">No inquiries have been added.</div>
 {% endif %}
 {% endblock %}
