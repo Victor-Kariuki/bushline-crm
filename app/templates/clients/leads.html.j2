@@ -1,0 +1,60 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+<div class="uk-clearfix">
+    <div class="uk-float-left">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('client.create_client') }}">Add Lead</a>
+    </div>
+</div>
+{%  if leads %}
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+<table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Location</th>
+            <th class="uk-table-shrink">Inquiries</th>
+            <th>Added By</th>
+            <th class="uk-table-shrink">Edit</th>
+            <th class="uk-table-shrink">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lead in leads %}
+        <tr>
+            <td class="uk-table-link">
+                <a class="uk-link-reset" href="{{ url_for('client.read_client', id=lead.id) }}">
+                    {{ lead.first_name }} {{ lead.last_name }}
+                </a>
+            </td>
+            <td> {{ lead.email }}</td>
+            <td>{{ lead.mobile }}</td>
+            <td>{{ lead.location }}</td>
+            <td class="uk-text-center"> <span class="uk-badge">{{ lead.inquiries.count() }}</span> </td>
+            <td>{{ lead.user.username }}</td>
+            <td class="uk-text-center">
+                <a href="{{ url_for('client.update_client', id=lead.id) }}" class="uk-icon-link"
+                    uk-icon="file-edit"></a>
+            </td>
+            <td class="uk-text-center">
+                <a href="{{ url_for('client.delete_client', id=lead.id) }}" class="uk-icon-link"
+                    uk-icon="trash"></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="uk-placeholder uk-text-center">No Leads have been added.</div>
+{% endif %}
+{% endblock %}

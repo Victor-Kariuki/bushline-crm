@@ -1,8 +1,8 @@
 """create-initial-tables
 
-Revision ID: 46ff8138c98c
+Revision ID: ae80387ec2a3
 Revises: 
-Create Date: 2020-02-18 12:06:04.859177
+Create Date: 2020-02-19 09:14:29.651234
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '46ff8138c98c'
+revision = 'ae80387ec2a3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,7 @@ def upgrade():
     sa.Column('latitude', sa.Integer(), nullable=False),
     sa.Column('longitude', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('price', sa.Integer(), nullable=True),
+    sa.Column('status', sa.Enum('sold_out', 'available', name='status'), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -49,87 +49,58 @@ def upgrade():
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
     op.create_index(op.f('ix_users_first_name'), 'users', ['first_name'], unique=False)
     op.create_index(op.f('ix_users_last_name'), 'users', ['last_name'], unique=False)
-    op.create_table('customers',
+    op.create_table('clients',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=60), nullable=False),
     sa.Column('last_name', sa.String(length=60), nullable=False),
-    sa.Column('email', sa.String(length=60), nullable=True),
-    sa.Column('phone', sa.Integer(), nullable=True),
+    sa.Column('email', sa.String(length=60), nullable=False),
+    sa.Column('mobile', sa.Integer(), nullable=False),
+    sa.Column('tel', sa.Integer(), nullable=True),
     sa.Column('location', sa.String(length=60), nullable=False),
+    sa.Column('type', sa.Enum('client', 'lead', name='type'), nullable=False),
     sa.Column('is_blacklisted', sa.Boolean(), nullable=True),
-    sa.Column('added_by', sa.Integer(), nullable=True),
+    sa.Column('added_by', sa.Integer(), nullable=False),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['added_by'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('phone')
+    sa.UniqueConstraint('mobile'),
+    sa.UniqueConstraint('tel')
     )
-    op.create_index(op.f('ix_customers_first_name'), 'customers', ['first_name'], unique=False)
-    op.create_index(op.f('ix_customers_last_name'), 'customers', ['last_name'], unique=False)
+    op.create_index(op.f('ix_clients_first_name'), 'clients', ['first_name'], unique=False)
+    op.create_index(op.f('ix_clients_last_name'), 'clients', ['last_name'], unique=False)
     op.create_table('plots',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('number', sa.String(length=128), nullable=False),
-    sa.Column('name', sa.String(length=60), nullable=False),
+    sa.Column('lr_number', sa.String(length=128), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('latitude', sa.Integer(), nullable=False),
     sa.Column('longitude', sa.Integer(), nullable=False),
-    sa.Column('rating', sa.Integer(), nullable=True),
-    sa.Column('price', sa.Integer(), nullable=True),
+    sa.Column('size', sa.Enum('eighth', 'quarter', 'half', 'full', name='size'), nullable=False),
+    sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('project_id', sa.Integer(), nullable=True),
-    sa.Column('status', sa.Enum('sold', 'booked', 'available', name='plotstatus'), nullable=True),
+    sa.Column('status', sa.Enum('sold', 'booked', 'available', name='status'), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['project_id'], ['projects.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_plots_name'), 'plots', ['name'], unique=False)
-    op.create_table('contacts',
+    op.create_table('inquiries',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('phone', sa.Integer(), nullable=True),
-    sa.Column('email', sa.String(length=128), nullable=True),
-    sa.Column('website', sa.String(length=128), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('created_on', sa.DateTime(), nullable=True),
-    sa.Column('updated_on', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('phone'),
-    sa.UniqueConstraint('website')
-    )
-    op.create_table('leads',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('source', sa.Enum('facebook', 'twitter', 'whatsapp', 'sms', 'call', name='source'), nullable=True),
+    sa.Column('title', sa.String(length=60), nullable=False),
     sa.Column('proposal', sa.Integer(), nullable=True),
     sa.Column('probability', sa.Enum('high', 'medium', 'low', name='probability'), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
+    sa.Column('client_id', sa.Integer(), nullable=False),
     sa.Column('plot_id', sa.Integer(), nullable=True),
     sa.Column('status', sa.Enum('active', 'closed', 'lost', name='status'), nullable=True),
+    sa.Column('source', sa.Enum('facebook', 'twitter', 'whatsapp', 'sms', 'call', 'mail', name='source'), nullable=False),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
     sa.ForeignKeyConstraint(['plot_id'], ['plots.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('appointments',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(length=60), nullable=False),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('date', sa.DateTime(), nullable=False),
-    sa.Column('time', sa.DateTime(), nullable=True),
-    sa.Column('duration', sa.Integer(), nullable=True),
-    sa.Column('location', sa.String(length=60), nullable=False),
-    sa.Column('customer_id', sa.Integer(), nullable=False),
-    sa.Column('lead_id', sa.Integer(), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('created_on', sa.DateTime(), nullable=True),
-    sa.Column('updated_on', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
-    sa.ForeignKeyConstraint(['lead_id'], ['leads.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
+    op.create_index(op.f('ix_inquiries_title'), 'inquiries', ['title'], unique=False)
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=60), nullable=False),
@@ -138,39 +109,61 @@ def upgrade():
     sa.Column('end_date', sa.DateTime(), nullable=True),
     sa.Column('status', sa.Enum('pending', 'active', 'closed', name='taskstatus'), nullable=False),
     sa.Column('created_by', sa.Integer(), nullable=False),
-    sa.Column('lead_id', sa.Integer(), nullable=True),
+    sa.Column('client_id', sa.Integer(), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
     sa.ForeignKeyConstraint(['created_by'], ['users.id'], ),
-    sa.ForeignKeyConstraint(['lead_id'], ['leads.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('user_lead_links',
+    op.create_table('user_client_links',
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('lead_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['lead_id'], ['leads.id'], ),
+    sa.Column('client_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], )
+    )
+    op.create_table('appointments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=60), nullable=False),
+    sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('date', sa.DateTime(), nullable=False),
+    sa.Column('time', sa.DateTime(), nullable=True),
+    sa.Column('location', sa.String(length=60), nullable=False),
+    sa.Column('client_id', sa.Integer(), nullable=False),
+    sa.Column('inquiry_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('created_on', sa.DateTime(), nullable=True),
+    sa.Column('updated_on', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
+    sa.ForeignKeyConstraint(['inquiry_id'], ['inquiries.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('user_inquiry_links',
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('inquiry_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['inquiry_id'], ['inquiries.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], )
     )
     op.create_table('notes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=60), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('lead_id', sa.Integer(), nullable=True),
+    sa.Column('inquiry_id', sa.Integer(), nullable=True),
     sa.Column('appointment_id', sa.Integer(), nullable=True),
     sa.Column('created_by', sa.Integer(), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['appointment_id'], ['appointments.id'], ),
     sa.ForeignKeyConstraint(['created_by'], ['users.id'], ),
-    sa.ForeignKeyConstraint(['lead_id'], ['leads.id'], ),
+    sa.ForeignKeyConstraint(['inquiry_id'], ['inquiries.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('comment', sa.String(length=200), nullable=False),
     sa.Column('author', sa.Integer(), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('lead_id', sa.Integer(), nullable=True),
+    sa.Column('client_id', sa.Integer(), nullable=True),
     sa.Column('task_id', sa.Integer(), nullable=True),
     sa.Column('note_id', sa.Integer(), nullable=True),
     sa.Column('appointment_id', sa.Integer(), nullable=True),
@@ -179,8 +172,7 @@ def upgrade():
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['appointment_id'], ['appointments.id'], ),
     sa.ForeignKeyConstraint(['author'], ['users.id'], ),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
-    sa.ForeignKeyConstraint(['lead_id'], ['leads.id'], ),
+    sa.ForeignKeyConstraint(['client_id'], ['clients.id'], ),
     sa.ForeignKeyConstraint(['note_id'], ['notes.id'], ),
     sa.ForeignKeyConstraint(['parent_id'], ['comments.id'], ),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ),
@@ -193,16 +185,16 @@ def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('comments')
     op.drop_table('notes')
-    op.drop_table('user_lead_links')
-    op.drop_table('tasks')
+    op.drop_table('user_inquiry_links')
     op.drop_table('appointments')
-    op.drop_table('leads')
-    op.drop_table('contacts')
-    op.drop_index(op.f('ix_plots_name'), table_name='plots')
+    op.drop_table('user_client_links')
+    op.drop_table('tasks')
+    op.drop_index(op.f('ix_inquiries_title'), table_name='inquiries')
+    op.drop_table('inquiries')
     op.drop_table('plots')
-    op.drop_index(op.f('ix_customers_last_name'), table_name='customers')
-    op.drop_index(op.f('ix_customers_first_name'), table_name='customers')
-    op.drop_table('customers')
+    op.drop_index(op.f('ix_clients_last_name'), table_name='clients')
+    op.drop_index(op.f('ix_clients_first_name'), table_name='clients')
+    op.drop_table('clients')
     op.drop_index(op.f('ix_users_last_name'), table_name='users')
     op.drop_index(op.f('ix_users_first_name'), table_name='users')
     op.drop_index(op.f('ix_users_email'), table_name='users')

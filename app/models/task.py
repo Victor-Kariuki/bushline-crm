@@ -31,7 +31,7 @@ class Task(db.Model):
     end_date = db.Column(db.DateTime)
     status = db.Column(db.Enum(TaskStatus), nullable=False)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    inquiry_id = db.Column(db.Integer, db.ForeignKey('inquiries.id'))
     comments = db.relationship('Comment', backref='task', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)

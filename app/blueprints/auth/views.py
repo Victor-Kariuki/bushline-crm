@@ -75,7 +75,7 @@ def login():
             login_user(user)
 
             # redirect to the dashboard
-            return redirect(url_for('lead.read_leads'))
+            return redirect(url_for('inquiry.read_inquiries'))
 
         # when login details are incorrect
         else:

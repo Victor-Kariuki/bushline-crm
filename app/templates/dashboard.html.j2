@@ -31,20 +31,28 @@
                 <li><a href="{{ url_for('dashboard.index') }}"><span class="uk-margin-small-right" uk-icon="icon: home"></span> Dashboard</a></li>
                 <li><a href="{{ url_for('user.read_users') }}"><span class=" uk-margin-small-right"
                             uk-icon="icon: users"></span> Users</a></li>
+                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bolt"></span> Reports</a></li>
+                <li class="uk-nav-divider"></li>
+
+                <li class="uk-nav-header">Properties</li>
                 <li><a href="{{ url_for('project.read_projects') }}"><span class="uk-margin-small-right"
                             uk-icon="icon: star"></span> Projects</a>
                 <li><a href="{{ url_for('plot.read_plots') }}"><span class="uk-margin-small-right"
                             uk-icon="icon: image"></span>Plots</a>
                 </li>
-                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bolt"></span> Reports</a></li>
+                <li class="uk-nav-divider"></li>
+    
+
+                <li class="uk-nav-header">Clients</li>
+                <li><a href="{{ url_for('client.read_customers') }}"><span class=" uk-margin-small-right"
+                            uk-icon="icon: users"></span>Customers</a></li>
+                <li><a href="{{ url_for('client.read_leads') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: rss"></span> Leads</a></li>
+                <li><a href="{{ url_for('inquiry.read_inquiries') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: rss"></span> Inquiries</a></li>
                 <li class="uk-nav-divider"></li>
 
                 <li class="uk-nav-header">General</li>
-                <li><a href="{{ url_for('customer.read_customers') }}"><span class=" uk-margin-small-right"
-                            uk-icon="icon: users"></span>Customers</a></li>
-                <li><a href=""><span class="uk-margin-small-right" uk-icon="icon: credit-card"></span> Payments</a></li>
-                <li><a href="{{ url_for('lead.read_leads') }}"><span class="uk-margin-small-right"
-                            uk-icon="icon: rss"></span> Leads</a></li>
                 <li><a href="{{ url_for('appointment.read_appointments') }}"><span class="uk-margin-small-right"
                             uk-icon="icon: calendar"></span> Appointments</a>
                 </li>

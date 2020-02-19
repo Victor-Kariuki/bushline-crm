@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Task, User, Lead
+from app.models import Task, User, Inquiry
 from app.blueprints.task import task
 from app.blueprints.task.forms import TaskForm
 
@@ -61,7 +61,7 @@ def create_task():
             start_date = form.start_date.data,
             end_date = form.end_date.data,
             status = form.status.data,
-            lead = form.lead.data,
+            inquiry = form.inquiry.data,
             user = current_user
         )
 
@@ -96,7 +96,7 @@ def update_task(id):
         task.start_date = form.start_date.data
         task.end_date = form.end_date.data
         task.status = form.status.data
-        task.lead = form.lead.data
+        task.inquiry = form.inquiry.data
         task.updated_on = datetime.utcnow()
 
         try:

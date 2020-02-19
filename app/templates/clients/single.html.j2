@@ -1,0 +1,147 @@
+{% extends 'dashboard.html.j2' %}
+
+{% block content %}
+<div class="uk-clearfix uk-margin">
+    <div class="uk-float-left">
+        <h1>{{ client.first_name }} {{ client.last_name }}</h1>
+    </div>
+    <div class="uk-float-right">
+        <a class="uk-button uk-button-primary" href="{{ url_for('client.update_client', id=client.id) }}">Update client</a>
+    </div>
+</div>
+<hr>
+{% for message in get_flashed_messages() %}
+    <div class="uk-alert-primary" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
+<div uk-grid>
+    <div class="uk-width-2-5@m">
+        <div class="uk-card uk-card-primary uk-card-small uk-margin">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h3 class="uk-card-title">Client</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-card-body">
+                <ul class="uk-iconnav uk-iconnav-vertical">
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ client.email }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ client.mobile }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: world"></span>
+                            Location:  <span class="uk-text-meta uk-text-primary">{{ client.location }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="uk-card-footer">
+                <p class="uk-text-meta uk-margin-remove-top">
+                    Last updated:
+                    <time datetime="{{ client.created_on }}">{{ client.created_on }}</time>
+                </p>
+            </div>
+        </div>
+
+        <div class="uk-card uk-card-secondary uk-card-small uk-margin">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h3 class="uk-card-title">Assignee</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-card-body">
+                <ul class="uk-iconnav uk-iconnav-vertical">
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>
+                            Name:  <span class="uk-text-meta uk-text-primary">{{ client.user.first_name }} {{ client.user.last_name }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ client.user.email }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ client.user.phone }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="uk-card-footer">
+                <p class="uk-text-meta uk-margin-remove-top">
+                    Last updated:
+                    <time datetime="{{ client.created_on }}">{{ client.created_on }}</time>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="uk-width-3-5@m">
+        <a class="uk-button uk-button-primary" href="{{ url_for('client.create_inquiry', id=client.id) }}">Create Inquiry</a>
+        {% if client.inquiries.count() != 0 %}
+            <table
+                class="uk-table uk-table-divider uk-table-middle uk-table-justify  uk-table-hover uk-table-responsive">
+                <thead>
+                    <tr>
+                        <th>plot</th>
+                        <th>Location</th>
+                        <th>Source</th>
+                        <th>Proposal</th>
+                        <th>Assignee</th>
+                        <th class="uk-table-shrink">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inquiry in client.inquiries %}
+                    <tr>
+                        <td class="uk-table-link">
+                            <a class="uk-link-reset" href="{{ url_for('inquiry.read_inquiry', id=inquiry.id) }}">
+                                {{ inquiry.plot.name }}
+                            </a>
+                        </td>
+                        <td> {{ inquiry.client.location }}</td>
+                        <td> {{ inquiry.source.name }} </td>
+                        <td>{{ inquiry.proposal }}</td>
+                        <td>
+                            {% for assignee in inquiry.assignees %}
+                                {{ assignee.username }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}" class="uk-icon-link"
+                                uk-icon="file-edit"></a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('inquiry.delete_inquiry', id=inquiry.id) }}" class="uk-icon-link"
+                                uk-icon="trash"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="uk-placeholder uk-text-center">No leads have been added.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

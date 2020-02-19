@@ -96,13 +96,14 @@ def update_plot(id):
     form = PlotForm(obj=plot)
 
     if form.validate_on_submit():
-        plot.name = form.name.data
+        plot.lr_number = form.lr_number.data
         plot.description = form.description.data
         plot.latitude = form.latitude.data
         plot.longitude = form.longitude.data
-        plot.rating = form.rating.data
+        plot.size = form.size.data
         plot.price = form.price.data
         plot.status = form.status.data
+        plot.project = form.project.data
 
         try:
             db.session.add(plot)

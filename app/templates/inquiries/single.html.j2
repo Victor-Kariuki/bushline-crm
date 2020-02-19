@@ -3,7 +3,7 @@
 {% block content %}
 <div class="uk-clearfix uk-margin">
     <div class="uk-float-left">
-        <h1>{{ lead.customer.first_name }} {{ lead.customer.last_name }}</h1>
+        <h1>{{ lead.client.first_name }} {{ lead.client.last_name }}</h1>
     </div>
     <div class="uk-float-right">
         <a class="uk-button uk-button-primary" href="{{ url_for('lead.update_lead', id=lead.id) }}">Update Lead</a>
@@ -34,19 +34,19 @@
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: user"></span>
-                            Name:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.first_name }} {{ lead.customer.last_name }}</span>
+                            Name:  <span class="uk-text-meta uk-text-primary">{{ lead.client.first_name }} {{ lead.client.last_name }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.email }}</span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ lead.client.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.customer.phone }}</span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ lead.client.phone }}</span>
                         </a>
                     </li>
                     <li>

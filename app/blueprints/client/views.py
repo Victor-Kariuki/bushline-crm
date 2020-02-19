@@ -11,7 +11,8 @@ from flask_login import login_required, current_user
 from app import db
 from app.models import Client, Inquiry
 from app.blueprints.client import client
-from app.blueprints.client.forms import ClientForm, InquiryForm
+from app.blueprints.client.forms import ClientForm
+from app.blueprints.inquiry.forms import InquiryForm
 
 
 @client.route('/leads')
@@ -37,7 +38,7 @@ def read_customers():
     Retrieve & render all customers in the DB
     """
 
-    customers = Client.query.filter_by(type='customer').all()
+    customers = Client.query.filter_by(type='client').all()
 
     return render_template('clients/customers.html.j2', customers=customers, title='Customers Listing')
 
@@ -71,8 +72,7 @@ def create_client():
             first_name = form.first_name.data,
             last_name = form.last_name.data,
             email = form.email.data,
-            phone = form.phone.data,
-            tel = form.tel.data,
+            mobile = form.mobile.data,
             location = form.location.data,
             user = current_user
         )
@@ -83,13 +83,12 @@ def create_client():
             flash('Successfully added the client', 'info')
 
             # redirect to the clients page
-            return redirect(url_for('client.read_clients'))
+            return redirect(url_for('client.read_leads'))
         except:
             flash('Error creating the client', 'error')
 
     # load clients template
-    print('client-id, {}').format(client.id)
-    return render_template('clients/form.html.j2', form=form, title='Create client')
+    return render_template('clients/form.html.j2', form=form, title='Create Lead')
 
 
 @client.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -108,8 +107,7 @@ def update_client(id):
         client.first_name = form.first_name.data
         client.last_name = form.last_name.data
         client.email = form.email.data
-        client.phone = form.phone.data
-        client.tel = form.tel.data
+        client.mobile = form.mobile.data
         client.location = form.location.data
         client.updated_on = datetime.utcnow()
 
@@ -120,7 +118,7 @@ def update_client(id):
             flash('You have successfully edited the client.', 'info')
 
             # redirect to the clients page
-            return redirect(url_for('client.read_client', id=client.id))
+            return redirect(url_for('client.read_client', id=id))
         except:
             flash('Error updating the client', 'error')
 
@@ -155,7 +153,7 @@ def create_inquiry(id):
 
     form = InquiryForm()
 
-    client = Client.query.filter_by(id=id).first_or_404()
+    client = Client.query.get_or_404(id)
 
     if form.validate_on_submit():
         inquiry = Inquiry(
@@ -164,6 +162,7 @@ def create_inquiry(id):
             plot = form.plot.data,
             client = client
         )
+        inquiry.assignees.append(current_user)
 
         try:
             db.session.add(inquiry)

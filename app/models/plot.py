@@ -45,7 +45,7 @@ class Plot(db.Model):
     price = db.Column(db.Integer, nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
     status = db.Column(db.Enum(Status), default='available')
-    clients = db.relationship('Client', backref='plot', lazy='dynamic')
+    inquiries = db.relationship('Inquiry', backref='plot', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     updated_on = db.Column(db.DateTime)
 

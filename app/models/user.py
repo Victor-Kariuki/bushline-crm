@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # local imports
 from app import db
-from app.models.links import user_client_links
+
 
 class User(UserMixin, db.Model):
     """
@@ -33,7 +33,7 @@ class User(UserMixin, db.Model):
     notes = db.relationship('Note', backref='user', lazy='dynamic')
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     comments = db.relationship('Comment', backref='user', lazy='dynamic')
-    clients = db.relationship('Lead', secondary=user_client_links, backref='user', lazy='dynamic')
+    clients = db.relationship('Client', backref='user', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     update_on = db.Column(db.DateTime)
 

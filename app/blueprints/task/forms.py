@@ -7,8 +7,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length
 
 # local imports
-from app.models import Lead
-
+from app.models import Inquiry
 
 class TaskForm(FlaskForm):
     """
@@ -24,5 +23,5 @@ class TaskForm(FlaskForm):
         ('active', 'active'),
         ('closed', 'closed')
     ])
-    lead = QuerySelectField(query_factory=lambda: Lead.query.all(), get_label="customer")
+    inquiry = QuerySelectField(query_factory=lambda: Inquiry.query.all(), get_label="title")
     submit = SubmitField('submit')

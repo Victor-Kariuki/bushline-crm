@@ -9,6 +9,19 @@ from app import db
 from app.models.links import user_inquiry_links
 
 
+class Source(enum.Enum):
+    """
+    Client sources enum
+    """
+
+    facebook = 'facebook'
+    twitter = 'twitter'
+    whatsapp = 'whatsapp'
+    sms = 'sms'
+    call = 'call'
+    mail = 'mail'
+
+
 class Status(enum.Enum):
     """
     Inquiry status enum
@@ -43,6 +56,7 @@ class Inquiry(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     plot_id = db.Column(db.Integer, db.ForeignKey('plots.id'))
     status = db.Column(db.Enum(Status), default='active')
+    source = db.Column(db.Enum(Source), nullable=False)
     assignees = db.relationship('User', secondary=user_inquiry_links, backref='inquiry', lazy='dynamic')
     appointments = db.relationship('Appointment', backref='inquiry', lazy='dynamic')
     notes = db.relationship('Note', backref='inquiry', lazy='dynamic')
@@ -52,4 +66,4 @@ class Inquiry(db.Model):
     updated_on = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<Lead: {}>'.format(self.title)
+        return '<Inquiry: {}>'.format(self.title)

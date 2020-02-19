@@ -65,7 +65,7 @@ def create_project():
             description = form.description.data,
             latitude = form.latitude.data,
             longitude = form.longitude.data,
-            price = form.price.data,
+            price = form.price.data
         )
 
         try:

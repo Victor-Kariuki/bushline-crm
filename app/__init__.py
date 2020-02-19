@@ -31,7 +31,7 @@ def create_app(env_name):
     migrate = Migrate(app=app, db=db)
 
     # import all db models
-    from app.models import Comment, Plot, Lead, Note, Task, User, Appointment, Project, Contact
+    from app.models import Comment, Plot, Client, Note, Task, User, Appointment, Project, Inquiry
 
     # import & register blueprints
     from app.blueprints.appointment import appointment as appointment_blueprint
@@ -40,8 +40,8 @@ def create_app(env_name):
     from app.blueprints.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    from app.blueprints.customer import customer as customer_blueprint
-    app.register_blueprint(customer_blueprint, url_prefix='/customers')
+    from app.blueprints.client import client as client_blueprint
+    app.register_blueprint(client_blueprint, url_prefix='/clients')
 
     from app.blueprints.dashboard import dashboard as dashboard_blueprint
     app.register_blueprint(dashboard_blueprint, url_prefix='/dashboard')
@@ -52,8 +52,8 @@ def create_app(env_name):
     from app.blueprints.plot import plot as plot_blueprint
     app.register_blueprint(plot_blueprint, url_prefix='/plots')
 
-    from app.blueprints.lead import lead as lead_blueprint
-    app.register_blueprint(lead_blueprint, url_prefix='/leads')
+    from app.blueprints.inquiry import inquiry as inquiry_blueprint
+    app.register_blueprint(inquiry_blueprint, url_prefix='/inquiries')
 
     from app.blueprints.note import note as note_blueprint
     app.register_blueprint(note_blueprint, url_prefix='/notes')

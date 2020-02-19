@@ -6,7 +6,7 @@
         <h1>{{ title }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('lead.create_lead') }}">Add Lead</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_inquiry') }}">Add Lead</a>
     </div>
 </div>
 {%  if leads %}
@@ -37,13 +37,13 @@
             <tr>
                 <td class="uk-table-link">
                     <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                        {{ lead.customer.first_name }} {{ lead.customer.last_name }}
+                        {{ lead.client.first_name }} {{ lead.client.last_name }}
                     </a>
                 </td>
-                <td> {{ lead.customer.phone }}</br>{{ lead.customer.email }}</td>
+                <td> {{ lead.client.phone }}</br>{{ lead.client.email }}</td>
                 <td> {{ lead.source.name }} </td>
                 <td>{{ lead.proposal }}</td>
-                <td> {{ lead.customer.location }} </td>
+                <td> {{ lead.client.location }} </td>
                 <td>{{ lead.plot.name }}</td>
                 <td>
                     {% for assignee in lead.assignees %}

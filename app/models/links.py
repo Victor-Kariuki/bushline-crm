@@ -7,9 +7,3 @@ user_inquiry_links = db.Table('user_inquiry_links',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('inquiry_id', db.Integer, db.ForeignKey('inquiries.id'))
 )
-
-user_client_links = db.Table('user_client_links',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('client_id', db.Integer, db.ForeignKey('clients.id'))
-)
-

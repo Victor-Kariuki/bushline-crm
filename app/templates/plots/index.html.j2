@@ -36,7 +36,7 @@
                             <div class="uk-width-auto">
                                 <h3 class="uk-card-title uk-margin-remove-bottom">
                                     <a class="uk-link-reset" href="{{ url_for('plot.read_plot', id=plot.id) }}">
-                                        {{ plot.name }}
+                                        {{ plot.lr_number }}
                                     </a>
                                 </h3>
                                 <p class="uk-text-meta uk-margin-remove-top">
@@ -64,7 +64,7 @@
 
                     </div>
                     <div class="uk-card-footer">
-                        <div class="uk-text-small uk-text-muted">Rating <span class="uk-badge">{{ plot.rating }}</span>
+                        <div class="uk-text-small uk-text-muted">Size <span class="uk-badge">{{ plot.size }}</span>
                         </div>
                         <div class="uk-text-small uk-text-muted">Price <span
                                 class="uk-text-primary">{{ plot.price }}</span></div>
@@ -79,12 +79,12 @@
             class="uk-table uk-table-responsive uk-table-divider uk-table-hover uk-table-small uk-table-justify uk-table-middle">
             <thead>
                 <tr>
-                    <th class="uk-table-shrink">Name</th>
+                    <th class="uk-table-shrink">LR Number</th>
                     <th class="uk-table-shrink">Description</th>
                     <th class="uk-table-shrink">Price</th>
-                    <th class="uk-table-shrink">Rating</th>
+                    <th class="uk-table-shrink">Size</th>
                     <th class="uk-table-shrink">Status</th>
-                    <th class="uk-table-shrink">Leads</th>
+                    <th class="uk-table-shrink">Inquiries</th>
                     <th class="uk-table-shrink">Update</th>
                     <th class="uk-table-shrink">Delete</th>
                 </tr>
@@ -94,14 +94,14 @@
                 <tr>
                     <td class="uk-table-link">
                         <a class="uk-link-reset" href="{{ url_for('plot.read_plot', id=plot.id) }}">
-                            {{ plot.name }}
+                            {{ plot.lr_number }}
                         </a>
                     </td>
                     <td class="uk-text-truncate">{{ plot.description }}</td>
                     <td>{{ plot.price }}</td>
-                    <td>{{ plot.rating }}</td>
+                    <td>{{ plot.size }}</td>
                     <td>{{ plot.status.name }}</td>
-                    <td>{{ plot.leads.count() }}</td>
+                    <td>{{ plot.Inquiries.count() }}</td>
                     <td>
                         <a href="{{ url_for('plot.update_plot', id=plot.id) }}" class="uk-icon-link"
                             uk-icon="file-edit"></a>
