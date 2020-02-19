@@ -1,5 +1,6 @@
 # app/models/__init__.py
 
+# local imports
 from app.models.appointment import Appointment
 from app.models.comment import Comment
 from app.models.inquiry import Inquiry
