@@ -61,7 +61,6 @@ def create_task():
             start_date = form.start_date.data,
             end_date = form.end_date.data,
             status = form.status.data,
-            inquiry = form.inquiry.data,
             user = current_user
         )
 

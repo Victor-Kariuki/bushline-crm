@@ -6,15 +6,16 @@
         <h1>{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}">Update Inquiry</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}">Update
+            Inquiry</a>
     </div>
 </div>
 <hr>
 {% for message in get_flashed_messages() %}
-    <div class="uk-alert-primary" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        <p>{{ message }}</p>
-    </div>
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
 {% endfor %}
 <div uk-grid>
     <div class="uk-width-2-5@m">
@@ -34,46 +35,48 @@
                     <li>
                         <a href="{{ url_for('client.read_client', id=inquiry.client.id) }}">
                             <span class="uk-margin-small-right" uk-icon="icon: user"></span>
-                            Name:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</span>
+                            Name: <span class="uk-text-meta uk-text-primary">{{ inquiry.client.first_name }}
+                                {{ inquiry.client.last_name }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.email }}</span>
+                            Email: <span class="uk-text-meta uk-text-primary">{{ inquiry.client.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.mobile }}</span>
+                            Phone: <span class="uk-text-meta uk-text-primary">{{ inquiry.client.mobile }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ url_for('plot.read_plot', id=inquiry.plot.id) }}">
                             <span class="uk-margin-small-right" uk-icon="icon: image"></span>
-                            Plot:  <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.lr_number }}</span>
+                            Plot: <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.lr_number }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: image"></span>
-                            Plot Price:  <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.price }}</span>
+                            Plot Price: <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.price }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: credit-card"></span>
-                            Proposal:  <span class="uk-text-meta uk-text-primary">{{ inquiry.proposal }}</span>
+                            Proposal: <span class="uk-text-meta uk-text-primary">{{ inquiry.proposal }}</span>
                         </a>
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: social"></span>
-                        Source:  <span class="uk-text-meta uk-text-primary">{{ inquiry.source.name }}</span>
+                        Source: <span class="uk-text-meta uk-text-primary">{{ inquiry.source.name }}</span>
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: info"></span>
-                        Purchase Probability:  <span class="uk-text-meta uk-text-primary">{{ inquiry.probability.name }}</span>
+                        Purchase Probability: <span
+                            class="uk-text-meta uk-text-primary">{{ inquiry.probability.name }}</span>
                     </li>
                 </ul>
             </div>
@@ -100,19 +103,19 @@
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: user"></span>
-                            Username:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.username }}</span>
+                            Username: <span class="uk-text-meta uk-text-primary">{{ inquiry.user.username }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.email }}</span>
+                            Email: <span class="uk-text-meta uk-text-primary">{{ inquiry.user.email }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.phone }}</span>
+                            Phone: <span class="uk-text-meta uk-text-primary">{{ inquiry.user.phone }}</span>
                         </a>
                     </li>
                 </ul>
@@ -131,36 +134,84 @@
                 <h3>Appointments</h3>
             </div>
             <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_appointment', id=inquiry.id) }}">Add Appointment</a>
+                <a class="uk-button uk-button-primary"
+                    href="{{ url_for('inquiry.create_appointment', id=inquiry.id) }}">Add Appointment</a>
             </div>
         </div>
         {% if inquiry.appointments.count() != 0 %}
-            <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th class="uk-table-shrink">Edit</th>
-                        <th class="uk-table-shrink">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for appointment in inquiry.appointments %}
-                    <tr>
-                        <td>{{ appointment.title }}</td>
-                        <td class="uk-table-truncate">{{  appointment.description }}</td>
-                        <td>
-                            <a href="{{ url_for('appointment.update_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in inquiry.appointments %}
+                <tr>
+                    <td>{{ appointment.title }}</td>
+                    <td class="uk-table-truncate">{{  appointment.description }}</td>
+                    <td>
+                        <a href="{{ url_for('appointment.update_appointment', id=appointment.id) }}"
+                            class="uk-icon-link" uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}"
+                            class="uk-icon-link" uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
-            <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
+        <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
+        {% endif %}
+
+
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Tasks</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary"
+                    href="{{ url_for('inquiry.create_task', id=inquiry.id) }}">Add Task</a>
+            </div>
+        </div>
+        {% if inquiry.tasks.count() != 0 %}
+        <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in inquiry.tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td class="uk-table-truncate">{{  task.description }}</td>
+                    <td class="uk-table-truncate">{{  task.start_date }}</td>
+                    <td class="uk-table-truncate">{{  task.end_date }}</td>
+                    <td>
+                        <a href="{{ url_for('task.update_task', id=task.id) }}"
+                            class="uk-icon-link" uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('task.delete_task', id=task.id) }}"
+                            class="uk-icon-link" uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
         {% endif %}
 
 
@@ -169,36 +220,39 @@
                 <h3>Notes</h3>
             </div>
             <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_note',id=inquiry.id) }}">Add Note</a>
+                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_note',id=inquiry.id) }}">Add
+                    Note</a>
             </div>
         </div>
         {% if inquiry.notes.count() != 0 %}
-            <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th class="uk-table-shrink">Edit</th>
-                        <th class="uk-table-shrink">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for note in inquiry.notes %}
-                    <tr>
-                        <td>{{ note.title }}</td>
-                        <td class="uk-table-truncate">{{  note.description }}</td>
-                        <td>
-                            <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for('note.delete_note', id=note.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th class="uk-table-shrink">Edit</th>
+                    <th class="uk-table-shrink">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for note in inquiry.notes %}
+                <tr>
+                    <td>{{ note.title }}</td>
+                    <td class="uk-table-truncate">{{  note.description }}</td>
+                    <td>
+                        <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link"
+                            uk-icon="file-edit"></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('note.delete_note', id=note.id) }}" class="uk-icon-link"
+                            uk-icon="trash"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
-            <div class="uk-placeholder uk-text-center">No notes for the inquiry.</div>
+        <div class="uk-placeholder uk-text-center">No notes for the inquiry.</div>
         {% endif %}
     </div>
 </div>
