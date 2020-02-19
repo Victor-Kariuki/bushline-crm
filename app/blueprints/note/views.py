@@ -1,5 +1,8 @@
 # app/note/views
 
+# inbuilt imports
+from datetime import datetime
+
 # 3rd party imports
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
@@ -9,6 +12,7 @@ from app import db
 from app.models import Note
 from app.blueprints.note import note
 from app.blueprints.note.forms import NoteForm
+
 
 @note.route('/')
 @login_required
@@ -25,6 +29,7 @@ def read_notes():
 
     return render_template('notes/index.html.j2', notes=notes, title='Notes')
 
+
 @note.route('/<int:id>')
 @login_required
 def read_note(id):
@@ -38,65 +43,36 @@ def read_note(id):
     return render_template('notes/single.html.j2', note=note, title='Notes')
 
 
-@note.route('/create', methods=['GET', 'POST'])
+@note.route('/<int:id>/update', methods=['GET', 'POST'])
 @login_required
-def create_note():
+def update_note(id):
     """
-    Handle request to /notes/create route \n
-    Create a new note and store in the DB
+    Handle request to /inquiries/<id>/update route \n
+    Udpate the target note
     """
 
-    form = NoteForm()
+
+    note = Note.query.get_or_404(id)
+    form = NoteForm(obj=note)
 
     if form.validate_on_submit():
 
-        note = Note(
-            title = form.title.data,
-            description = form.description.data,
-            appointment = form.appointment.data,
-            client = form.client.data,
-            user = current_user
-        )
+        note.title = form.title.data
+        note.description = form.description.data
+        note.updated_on = datetime.utcnow()
 
         try:
             db.session.add(note)
             db.session.commit()
             flash('You have successfully added a new note.', 'info')
             # redirect to the client's page
-            return redirect(url_for('note.read_notes'))
+            return redirect(url_for('inquiry.read_inquiry', id=id))
         except:
             flash('Error creating the note', 'error')
 
     # load note form template
-    return render_template('notes/form.html.j2', form=form, title='Add Note')
+    return render_template('note/form.html.j2', form=form, title='Update Note')
 
-
-@note.route('/update/<int:id>', methods=['GET', 'POST'])
-@login_required
-def update_note(id):
-    """
-    Handles request to the /notes/update/<int:id> route
-    Update's the target note
-    """
-
-    note = Note.query.get_or_404(id)
-    
-    form = NoteForm(obj=note)
-
-    if form.validate_on_submit():
-        note.title = form.title.data
-        note.description = form.description.data
-        note.client = form.client.data
-
-        # update the note's instance in the DB
-        db.session.add(note)
-        db.session.commit()
-        flash('You have successfully edited the note.')
-
-        # redirect to the client's page
-        return redirect(url_for('note.read_note', id=note.id))
-
-    return render_template('notes/form.html.j2', form=form, title='Update Note')
 
 
 @note.route('/delete/<int:id>', methods=['GET', 'POST'])

@@ -1,10 +1,14 @@
 # app/blueprints/inquiry/forms.py
 
+# inbuilt imports
+from datetime import datetime
+
 # 3rd party imports
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, SelectField, TextAreaField
+from wtforms import SubmitField, StringField, SelectField, TextAreaField, DateField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from wtforms.validators import DataRequired
+from wtforms_components import DateRange, TimeField
+from wtforms.validators import DataRequired, Length
 
 # local imports
 from app.models import Plot, User, Client
@@ -44,3 +48,32 @@ class NoteForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class AppointmentForm(FlaskForm):
+    """
+    Form to handle creating & updating of appointments
+    """
+
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    date = DateField('Date', validators=[DataRequired()])
+    time = TimeField('Time')
+    submit = SubmitField('Submit')
+
+
+class TaskForm(FlaskForm):
+    """
+    Form to handle creating & updating tasks
+    """
+
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[Length(max=200)])
+    start_date = DateField('Start Date')
+    end_date = DateField('End Date')
+    status = SelectField('Status', choices=[
+        ('pending', 'pending'),
+        ('active', 'active'),
+        ('closed', 'closed')
+    ])
+    submit = SubmitField('submit')

@@ -18,7 +18,7 @@
 {% endfor %}
 <div uk-grid>
     <div class="uk-width-2-5@m">
-        <div class="uk-card uk-card-primary uk-card-small">
+        <div class="uk-card uk-card-primary uk-card-small uk-margin">
             <div class="uk-card-header">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
@@ -32,7 +32,7 @@
             <div class="uk-card-body">
                 <ul class="uk-iconnav uk-iconnav-vertical">
                     <li>
-                        <a href="#">
+                        <a href="{{ url_for('client.read_client', id=inquiry.client.id) }}">
                             <span class="uk-margin-small-right" uk-icon="icon: user"></span>
                             Name:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</span>
                         </a>
@@ -46,7 +46,25 @@
                     <li>
                         <a href="#">
                             <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.phone }}</span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.client.mobile }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('plot.read_plot', id=inquiry.plot.id) }}">
+                            <span class="uk-margin-small-right" uk-icon="icon: image"></span>
+                            Plot:  <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.lr_number }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: image"></span>
+                            Plot Price:  <span class="uk-text-meta uk-text-primary">{{ inquiry.plot.price }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: credit-card"></span>
+                            Proposal:  <span class="uk-text-meta uk-text-primary">{{ inquiry.proposal }}</span>
                         </a>
                     </li>
                     <li>
@@ -55,7 +73,7 @@
                     </li>
                     <li>
                         <span class="uk-margin-small-right" uk-icon="icon: info"></span>
-                        Probability:  <span class="uk-text-meta uk-text-primary">{{ inquiry.probability.name }}</span>
+                        Purchase Probability:  <span class="uk-text-meta uk-text-primary">{{ inquiry.probability.name }}</span>
                     </li>
                 </ul>
             </div>
@@ -66,8 +84,86 @@
                 </p>
             </div>
         </div>
+        <div class="uk-card uk-card-secondary uk-card-small uk-margin">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h3 class="uk-card-title">Assignee</h3>
+                    </div>
+                    <div class="uk-width-expand">
+                        <a class="uk-button uk-button-primary" href="">Re Assign</a>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-card-body">
+                <ul class="uk-iconnav uk-iconnav-vertical">
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>
+                            Username:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.username }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
+                            Email:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.email }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
+                            Phone:  <span class="uk-text-meta uk-text-primary">{{ inquiry.user.phone }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="uk-card-footer">
+                <p class="uk-text-meta uk-margin-remove-top">
+                    Last updated:
+                    <time datetime="{{ inquiry.updated_on }}">{{ inquiry.updated_on }}</time>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="uk-width-3-5@m">
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Appointments</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_appointment', id=inquiry.id) }}">Add Appointment</a>
+            </div>
+        </div>
+        {% if inquiry.appointments.count() != 0 %}
+            <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th class="uk-table-shrink">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in inquiry.appointments %}
+                    <tr>
+                        <td>{{ appointment.title }}</td>
+                        <td class="uk-table-truncate">{{  appointment.description }}</td>
+                        <td>
+                            <a href="{{ url_for('appointment.update_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
+        {% endif %}
+
+
         <div class="uk-clearfix">
             <div class="uk-float-left">
                 <h3>Notes</h3>
@@ -88,7 +184,6 @@
                 </thead>
                 <tbody>
                     {% for note in inquiry.notes %}
-                    {{ note }}
                     <tr>
                         <td>{{ note.title }}</td>
                         <td class="uk-table-truncate">{{  note.description }}</td>
@@ -105,57 +200,6 @@
         {% else %}
             <div class="uk-placeholder uk-text-center">No notes for the inquiry.</div>
         {% endif %}
-    </div>
-</div>
-
-<div uk-grid>
-    <div class="uk-width-3-5@m">
-        <div class="uk-placeholder uk-text-center">No scheduled appointments.</div>
-        <a class="uk-button uk-button-primary" href="">Add Appointment</a>
-    </div>
-    <div class="uk-width-2-5@m">
-        <div class="uk-card uk-card-default uk-card-small">
-            <div class="uk-card-header">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-expand">
-                        <h3 class="uk-card-title">Assignee</h3>
-                    </div>
-                    <div class="uk-width-expand">
-                        <a class="uk-button uk-button-primary" href="">Re Assign</a>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-card-body">
-                {% for assignee in inquiry.assignees %}
-                <ul class="uk-iconnav uk-iconnav-vertical">
-                    <li>
-                        <a href="#">
-                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>
-                            Username:  <span class="uk-text-meta uk-text-primary">{{ assignee.username }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="uk-margin-small-right" uk-icon="icon: mail"></span>
-                            Email:  <span class="uk-text-meta uk-text-primary">{{ assignee.email }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="uk-margin-small-right" uk-icon="icon: receiver"></span>
-                            Phone:  <span class="uk-text-meta uk-text-primary">{{ assignee.phone }}</span>
-                        </a>
-                    </li>
-                </ul>
-                {% endfor %}
-            </div>
-            <div class="uk-card-footer">
-                <p class="uk-text-meta uk-margin-remove-top">
-                    Last updated:
-                    <time datetime="{{ inquiry.created_on }}">{{ inquiry.created_on }}</time>
-                </p>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

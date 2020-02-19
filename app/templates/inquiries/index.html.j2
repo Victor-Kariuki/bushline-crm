@@ -45,11 +45,7 @@
                 <td>{{ inquiry.proposal }}</td>
                 <td> {{ inquiry.client.location }} </td>
                 <td><a class="uk-link-reset" href="{{ url_for('plot.read_plot', id=inquiry.plot.id) }}">{{ inquiry.plot.lr_number }}</a></td>
-                <td>
-                    {% for assignee in inquiry.assignees %}
-                    {{ assignee.username }}
-                    {% endfor %}
-                </td>
+                <td>{{ inquiry.user.username }}</td>
                 <td><span class="uk-label uk-badge">{{ inquiry.status.name }}</span></td>
                 <td>
                     <a href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}" class="uk-icon-link"

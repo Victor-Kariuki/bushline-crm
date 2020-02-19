@@ -16,12 +16,11 @@ class TaskForm(FlaskForm):
 
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
-    start_date = DateField('Start Date', format='%m/%d/%Y')
-    end_date = DateField('End Date', format='%m/%d/%Y')
+    start_date = DateField('Start Date')
+    end_date = DateField('End Date')
     status = SelectField('Status', choices=[
-        ('pending', 'pending'),
         ('active', 'active'),
+        ('pending', 'pending'),
         ('closed', 'closed')
     ])
-    inquiry = QuerySelectField(query_factory=lambda: Inquiry.query.all(), get_label="title")
     submit = SubmitField('submit')

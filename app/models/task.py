@@ -29,7 +29,7 @@ class Task(db.Model):
     description = db.Column(db.String(200))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
-    status = db.Column(db.Enum(TaskStatus), nullable=False)
+    status = db.Column(db.Enum(TaskStatus), default='active', nullable=False)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     inquiry_id = db.Column(db.Integer, db.ForeignKey('inquiries.id'))
     comments = db.relationship('Comment', backref='task', lazy='dynamic')

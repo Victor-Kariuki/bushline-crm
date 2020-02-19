@@ -17,7 +17,7 @@ class Appointment(db.Model):
     title = db.Column(db.String(60), nullable=False)
     description = db.Column(db.Text)
     date = db.Column(db.DateTime, nullable=False)
-    time = db.Column(db.DateTime)
+    time = db.Column(db.Time, nullable=False)
     location = db.Column(db.String(60), nullable=False)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     inquiry_id = db.Column(db.Integer, db.ForeignKey('inquiries.id'))

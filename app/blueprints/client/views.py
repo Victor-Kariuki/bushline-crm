@@ -38,7 +38,7 @@ def read_customers():
     Retrieve & render all customers in the DB
     """
 
-    customers = Client.query.filter_by(type='client').all()
+    customers = Client.query.filter_by(type='customer').all()
 
     return render_template('clients/customers.html.j2', customers=customers, title='Customers Listing')
 

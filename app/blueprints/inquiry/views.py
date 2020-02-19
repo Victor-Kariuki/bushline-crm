@@ -9,9 +9,9 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Inquiry, Note
+from app.models import Inquiry, Note, Appointment, Task
 from app.blueprints.inquiry import inquiry
-from app.blueprints.inquiry.forms import InquiryForm, NoteForm
+from app.blueprints.inquiry.forms import InquiryForm, NoteForm, AppointmentForm, TaskForm
 
 
 @inquiry.route('/')
@@ -39,7 +39,7 @@ def read_inquiry(id):
 
     inquiry = Inquiry.query.get_or_404(id)
 
-    return render_template('inquiries/single.html.j2', inquiry=inquiry, title=inquiry.title)
+    return render_template('inquiries/single.html.j2', inquiry=inquiry, title=inquiry.client.first_name)
 
 
 @inquiry.route('/create', methods=['GET', 'POST'])
@@ -57,12 +57,11 @@ def create_inquiry():
             title = form.title.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
-            status = 'active',
             source = form.source.data,
             client = form.client.data,
             plot = form.plot.data,
+            user = form.user.data
         )
-        inquiry.assignees.append(current_user)
 
         try:
             db.session.add(inquiry)
@@ -94,11 +93,10 @@ def update_inquiry(id):
         inquiry.title = form.title.data
         inquiry.proposal = form.proposal.data
         inquiry.probability = form.probability.data
-        inquiry.status = form.status.data
         inquiry.source = form.source.data
         inquiry.plot = form.plot.data
         inquiry.client = form.client.data
-        inquiry.assignees.append(form.user.data)
+        inquiry.user = form.user.data
         inquiry.updated_on = datetime.utcnow()
 
         try:
@@ -112,7 +110,7 @@ def update_inquiry(id):
         except:
             flash('Error updating the inquiry', 'error')
 
-    return render_template('inquiries/update.html.j2', form=form, title='Update inquiry')
+    return render_template('inquiries/form.html.j2', form=form, title='Update inquiry')
 
 
 @inquiry.route('/delete/<int:id>', methods=['GET', 'POST'])
@@ -166,3 +164,73 @@ def create_note(id):
     # load note form template
     return render_template('inquiries/note-form.html.j2', form=form, title='Add Note')
 
+
+@inquiry.route('/<int:id>/create-appointment', methods=['GET', 'POST'])
+def create_appointment(id):
+    """
+    Handle requests to /appointments route
+    Create & save a new appointment
+    """
+
+    form = AppointmentForm()
+    inquiry = Inquiry.query.get_or_404(id)
+
+    if form.validate_on_submit():
+
+        appointment = Appointment(
+            title = form.title.data,
+            description = form.description.data,
+            date = form.date.data,
+            time= form.time.data,
+            client = inquiry.client,
+            inquiry = inquiry,
+            user = current_user
+        )
+
+        try:
+            db.session.add(appointment)
+            db.session.commit()
+
+            flash('Successfully created the appointment.')
+
+            return redirect(url_for('inquiry.read_inquiry', id=id))
+        except:
+            flash('Error creating the appointment')
+
+    return render_template('inquiries/appointment-form.html.j2', form=form, title='Create appointment')
+
+
+@inquiry.route('/<int:id>/create-task', methods=['GET', 'POST'])
+@login_required
+def create_task(id):
+    """
+    Handle requests to /inquiries/<int:id>/create-task route
+    Create & save task
+    """
+
+    form = TaskForm()
+    inquiry = Inquiry.query.get_or_404(id)
+
+    if form.validate_on_submit():
+
+        task = Task(
+            title = form.title.data,
+            description = form.description.data,
+            start_date = form.start_date.data,
+            end_date = form.end_date.data,
+            status = form.status.data,
+            inquiry = inquiry,
+            user = current_user
+        )
+
+        try:
+            db.session.add(task)
+            db.session.commit()
+
+            flash('Successfully created the task', 'info')
+
+            return redirect(url_for('inquiry.read_inquiry', id=id))
+        except:
+            flash('Error creating the task', 'error')
+
+    return render_template('inquiries/task-form.html.j2', form=form, title='Create Task')

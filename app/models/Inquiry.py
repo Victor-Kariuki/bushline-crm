@@ -49,7 +49,6 @@ class Inquiry(db.Model):
     __tablename__ = 'inquiries'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(60), nullable=False, index=True)
     proposal = db.Column(db.Integer)
     probability = db.Column(db.Enum(Probability))
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)

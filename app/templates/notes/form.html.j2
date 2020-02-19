@@ -32,30 +32,6 @@
             </div>
 
             <div class="uk-margin">
-                {{ form.client.label(class='uk-label') }}
-                {% if form.client.errors %}
-                {{ form.client(class='uk-select uk-form-danger', rows="5") }}
-                {% for error in form.client.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.client(class='uk-select', placeholder='Client') }}
-                {% endif %}
-            </div>
-
-            <div class="uk-margin">
-                {{ form.appointment.label(class='uk-label') }}
-                {% if form.appointment.errors %}
-                {{ form.appointment(class='uk-select uk-form-danger', rows="5") }}
-                {% for error in form.appointment.errors %}
-                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.appointment(class='uk-select', placeholder='appointment') }}
-                {% endif %}
-            </div>
-
-            <div class="uk-margin">
                 {{ form.submit(class='uk-button uk-button-primary') }}
             </div>
         </form>

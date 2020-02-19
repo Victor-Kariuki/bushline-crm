@@ -96,7 +96,6 @@ def update_task(id):
         task.start_date = form.start_date.data
         task.end_date = form.end_date.data
         task.status = form.status.data
-        task.inquiry = form.inquiry.data
         task.updated_on = datetime.utcnow()
 
         try:
