@@ -115,17 +115,13 @@
                     <tr>
                         <td class="uk-table-link">
                             <a class="uk-link-reset" href="{{ url_for('inquiry.read_inquiry', id=inquiry.id) }}">
-                                {{ inquiry.plot.name }}
+                                {{ inquiry.plot.lr_number }}
                             </a>
                         </td>
                         <td> {{ inquiry.client.location }}</td>
                         <td> {{ inquiry.source.name }} </td>
                         <td>{{ inquiry.proposal }}</td>
-                        <td>
-                            {% for assignee in inquiry.assignees %}
-                                {{ assignee.username }}
-                            {% endfor %}
-                        </td>
+                        <td>{{ inquiry.user.username }}</td>
                         <td>
                             <a href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}" class="uk-icon-link"
                                 uk-icon="file-edit"></a>

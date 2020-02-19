@@ -34,6 +34,7 @@ class User(UserMixin, db.Model):
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     comments = db.relationship('Comment', backref='user', lazy='dynamic')
     clients = db.relationship('Client', backref='user', lazy='dynamic')
+    inquiries = db.relationship('Inquiry', backref='user', lazy='dynamic')
     created_on = db.Column(db.DateTime, default=datetime.utcnow())
     update_on = db.Column(db.DateTime)
 

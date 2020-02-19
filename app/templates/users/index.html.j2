@@ -10,15 +10,16 @@
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
-        <table class="uk-table uk-table-divider uk-table-hover uk-table-justify uk-table-responsive">
+        <table class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify uk-table-responsive">
             <thead>
                 <tr>
-                    <th>Username</th>
                     <th>Fullname</th>
                     <th>Contacts</th>
-                    <th class="uk-table-shrink">Admin Status</th>
-                    <th class="uk-table-shrink">Appointments</th>
+                    <th class="uk-table-shrink">Customers</th>
                     <th class="uk-table-shrink">Leads</th>
+                    <th class="uk-table-shrink">Inquiries</th>
+                    <th class="uk-table-shrink">Appointments</th>
+                    <th class="uk-table-shrink">Tasks</th>
                     <th class="uk-table-shrink">Edit</th>
                     <th class="uk-table-shrink">Delete</th>
                 </tr>
@@ -26,16 +27,19 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('user.read_user', id=user.id) }}">
-                            {{ user.username }}
-                        </a>
-                    </td>
                     <td> {{ user.first_name }} {{ user.last_name }}</td>
                     <td> {{ user.email }}</br>{{ user.phone }}</td>
-                    <td> {{ user.is_admin }} </td>
-                    <td class="uk-text-center"><span class="uk-badge">{{ user.appointments.count() }}</span> </td>
-                    <td class="uk-text-center"><span class="uk-badge">{{ user.leads.count() }}</span> </td>
+                    <td class="uk-text-center">
+                        {{ user.clients.filter_by(type='customer').count() }}
+                    </td>
+                    <td class="uk-text-center">
+                        {{ user.clients.filter_by(type='lead').count() }}
+                    </td>
+                    <td class="uk-text-center">
+                        {{user.inquiries.count()}}
+                    </td>
+                    <td class="uk-text-center">{{ user.appointments.count() }}</td>
+                    <td class="uk-text-center">{{ user.tasks.count() }}</td>
                     <td>
                         <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
                     </td>

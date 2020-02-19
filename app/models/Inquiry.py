@@ -6,7 +6,6 @@ from datetime import datetime
 
 # local imports
 from app import db
-from app.models.links import user_inquiry_links
 
 
 class Source(enum.Enum):
@@ -57,7 +56,7 @@ class Inquiry(db.Model):
     plot_id = db.Column(db.Integer, db.ForeignKey('plots.id'))
     status = db.Column(db.Enum(Status), default='active')
     source = db.Column(db.Enum(Source), nullable=False)
-    assignees = db.relationship('User', secondary=user_inquiry_links, backref='inquiry', lazy='dynamic')
+    assignee = db.Column(db.Integer, db.ForeignKey('users.id'))
     appointments = db.relationship('Appointment', backref='inquiry', lazy='dynamic')
     notes = db.relationship('Note', backref='inquiry', lazy='dynamic')
     comments = db.relationship('Comment', backref='inquiry', lazy='dynamic')
