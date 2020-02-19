@@ -19,7 +19,6 @@ class InquiryForm(FlaskForm):
   Handles creating & updating of inquiries
   """
 
-  title = StringField('Title')
   plot = QuerySelectField(query_factory=lambda: Plot.query.all(), get_label="lr_number")
   source = SelectField('Source', choices=[
     ('facebook', 'facebook'),
@@ -67,6 +66,7 @@ class TaskForm(FlaskForm):
     Form to handle creating & updating tasks
     """
 
+    title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
     start_date = DateField('Start Date')
     end_date = DateField('End Date')

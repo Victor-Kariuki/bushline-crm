@@ -54,7 +54,6 @@ def create_inquiry():
 
     if form.validate_on_submit():
         inquiry = Inquiry(
-            title = form.title.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
             source = form.source.data,
