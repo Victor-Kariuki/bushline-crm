@@ -6,7 +6,7 @@
         <h1>{{ inquiry.client.first_name }} {{ inquiry.client.last_name }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}">Update Lead</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.update_inquiry', id=inquiry.id) }}">Update Inquiry</a>
     </div>
 </div>
 <hr>
@@ -76,7 +76,7 @@
                 <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_note',id=inquiry.id) }}">Add Note</a>
             </div>
         </div>
-        {% if notes %}
+        {% if inquiry.notes %}
             <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
                 <thead>
                     <tr>
@@ -87,7 +87,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for note in notes %}
+                    {% for note in inquiry.notes %}
                     {{ note }}
                     <tr>
                         <td>{{ note.title }}</td>
