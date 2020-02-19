@@ -21,8 +21,8 @@ class AppointmentForm(FlaskForm):
 
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
-    date = DateField('Date', format='%m/%d/%Y', validators=[DataRequired(), DateRange(min=datetime.now())])
+    date = DateField('Date')
     time = TimeField('Time')
-    inquiry = QuerySelectField(query_factory=lambda: Inquiry.query.all(), get_label="title")
+    inquiry = QuerySelectField(query_factory=lambda: Inquiry.query.all(), get_label="client.first_name")
     client = QuerySelectField(query_factory=lambda: Client.query.all(), get_label="first_name")
     submit = SubmitField('Submit')

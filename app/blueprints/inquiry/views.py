@@ -90,7 +90,6 @@ def update_inquiry(id):
     form = InquiryForm(obj=inquiry)
 
     if form.validate_on_submit():
-        inquiry.title = form.title.data
         inquiry.proposal = form.proposal.data
         inquiry.probability = form.probability.data
         inquiry.source = form.source.data

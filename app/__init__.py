@@ -43,6 +43,9 @@ def create_app(env_name):
     from app.blueprints.client import client as client_blueprint
     app.register_blueprint(client_blueprint, url_prefix='/clients')
 
+    from app.blueprints.comment import comment as comment_blueprint
+    app.register_blueprint(comment_blueprint, url_prefix='/comments')
+
     from app.blueprints.dashboard import dashboard as dashboard_blueprint
     app.register_blueprint(dashboard_blueprint, url_prefix='/dashboard')
 

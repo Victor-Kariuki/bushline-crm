@@ -12,6 +12,7 @@ from app import db
 from app.models import Note
 from app.blueprints.note import note
 from app.blueprints.note.forms import NoteForm
+from app.blueprints.comment.forms import CommentForm
 
 
 @note.route('/')
@@ -30,7 +31,7 @@ def read_notes():
     return render_template('notes/index.html.j2', notes=notes, title='Notes')
 
 
-@note.route('/<int:id>')
+@note.route('/<int:id>', methods=['GET', 'POST'])
 @login_required
 def read_note(id):
     """
@@ -39,8 +40,9 @@ def read_note(id):
     """
 
     note = Note.query.get_or_404(id)
+    form = CommentForm()
 
-    return render_template('notes/single.html.j2', note=note, title='Notes')
+    return render_template('notes/single.html.j2', note=note, form=form, title='Notes')
 
 
 @note.route('/<int:id>/update', methods=['GET', 'POST'])

@@ -53,13 +53,12 @@ def create_appointment():
 
     if form.validate_on_submit():
 
-        appointment = appointment(
+        appointment = Appointment(
             title = form.title.data,
             description = form.description.data,
             date = form.date.data,
             time= form.time.data,
             client = form.client.data,
-            inquiry = form.inquiry.data,
             user = current_user
         )
 
