@@ -15,6 +15,14 @@ def create_note_comment(id):
   Create comments
   """
 
-  
+  return redirect(url_for('note.read_note', id=id))
+
+
+@comment.route('/<int:id>/create-note-reply', methods=['GET', 'POST'])
+def create_note_reply(id):
+  """
+  Handles requests to /comments/create route
+  Create comment reply
+  """
 
   return redirect(url_for('note.read_note', id=id))

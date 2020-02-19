@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 # local imports
 from app import db
-from app.models import Note
+from app.models import Note, Comment
 from app.blueprints.note import note
 from app.blueprints.note.forms import NoteForm
 from app.blueprints.comment.forms import CommentForm
@@ -41,6 +41,22 @@ def read_note(id):
 
     note = Note.query.get_or_404(id)
     form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(
+            comment = form.comment.data,
+            note = note,
+            user = current_user
+        )
+
+        try:
+            db.session.add(comment)
+            db.session.commit()
+            flash('You have successfully added a new comment.', 'info')
+            # redirect to the client's page
+            return redirect(url_for('note.read_note', id=id))
+        except:
+            flash('Error creating the comment', 'error')
 
     return render_template('notes/single.html.j2', note=note, form=form, title='Notes')
 

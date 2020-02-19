@@ -76,7 +76,7 @@
         </ul>
     </li>
 </ul>
-        <form action="{{ url_for('comment.create_comment') }}" method="post" id="reply">
+        <form method="post" id="reply">
             {{ form.hidden_tag() }}
             <div class="uk-margin">
                 {% if form.comment.errors %}

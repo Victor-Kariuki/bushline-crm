@@ -14,7 +14,7 @@ class Comment(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column(db.String(200), nullable=False)
+    comment = db.Column(db.Text, nullable=False)
     author = db.Column(db.Integer, db.ForeignKey('users.id'))
     inquiry_id = db.Column(db.Integer, db.ForeignKey('inquiries.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
@@ -22,7 +22,7 @@ class Comment(db.Model):
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'))
     parent_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
     replies = db.relationship('Comment', remote_side=parent_id)
-    created_on = db.Column(db.DateTime, default=datetime.utcnow())
+    created_on = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
     updated_on = db.Column(db.DateTime)
 
     def __repr__(self):
