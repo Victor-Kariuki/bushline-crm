@@ -110,4 +110,3 @@ def delete_note(id):
 
     # redirect to the client's page
     return redirect(url_for('note.read_notes'))
-

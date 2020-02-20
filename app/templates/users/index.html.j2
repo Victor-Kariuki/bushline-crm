@@ -27,7 +27,11 @@
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td> {{ user.first_name }} {{ user.last_name }}</td>
+                    <td class="uk-table-link">
+                        <a class="uk-link-reset" href="{{ url_for('user.read_user', id=user.id) }}">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </a>
+                    </td>
                     <td> {{ user.email }}</br>{{ user.phone }}</td>
                     <td class="uk-text-center">
                         {{ user.clients.filter_by(type='customer').count() }}

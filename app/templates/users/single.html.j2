@@ -47,172 +47,32 @@
         </div>
     </div>
     <div class="uk-width-3-5@m">
-        {% if user.id == current_user.id %}
-        <div class="uk-clearfix">
-            <div class="uk-float-left">
-                <h3>Appointments</h3>
+        <div class="uk-child-width-1-2@s uk-grid-small uk-text-center" uk-grid>
+            <div>
+                <div class="uk-tile uk-tile-primary uk-padding-small">
+                    <h1>{{ user.clients.filter_by(type='customer').count() }}</h1>
+                    <p class="uk-text-muted uk-text-baseline uk-text-uppercase">Customers</p>
+                </div>
             </div>
-            <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('appointment.create_appointment') }}">Create
-                    Appointment</a>
+            <div>
+                <div class="uk-tile uk-tile-primary uk-padding-small">
+                    <h1>{{ user.clients.filter_by(type='lead').count() }}</h1>
+                    <p class="uk-text-muted uk-text-baseline uk-text-uppercase">Leads</p>
+                </div>
             </div>
-        </div>
-        <hr>
-        {% endif %}
-        {% if user.appointments.count() != 0 %}
-        <table class="uk-table uk-table-hover uk-table-divider uk-table-responsive">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th class="uk-table-shrink">Update</th>
-                    <th class="uk-table-shrink">Discard</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for appointment in user.appointments %}
-                <tr>
-                    <td>{{ appointment.title }}</td>
-                    <td>{{ appointment.description }}</td>
-                    <td>{{ appointment.date }}</td>
-                    <td>
-                        <a href="{{ url_for('appointments.update_appointment', id=appointment.id) }}"
-                            class="uk-icon-link" uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}"
-                            class="uk-icon-link" uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="uk-placeholder uk-text-center">No appointments have been added.</div>
-        {% endif %}
-
-        <hr>
-        <hr>
-
-        {% if user.id == current_user.id %}
-        <div class="uk-clearfix">
-            <div class="uk-float-left">
-                <h3>clients</h3>
+            <div>
+                <div class="uk-tile uk-tile-primary uk-padding-small">
+                    <h1>{{ user.inquiries.count() }}</h1>
+                    <p class="uk-text-muted uk-text-baseline uk-text-uppercase">Inquiries</p>
+                </div>
             </div>
-            <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('client.create_client') }}">Add client</a>
+            <div>
+                <div class="uk-tile uk-tile-primary uk-padding-small">
+                    <h1>{{ user.appointments.count() }}</h1>
+                    <p class="uk-text-muted uk-text-baseline uk-text-uppercase">Appointments</p>
+                </div>
             </div>
-        </div>
-        <hr>
-        {% endif %}
-        {%  if user.clients.count() != 0 %}
-        <table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
-            <thead>
-                <tr>
-                    <th class="uk-table-shrink">Name</th>
-                    <th class="uk-table-shrink">Email</th>
-                    <th class="uk-table-shrink">Phone</th>
-                    <th class="uk-table-shrink">Leads</th>
-                    <th class="uk-table-shrink">Added By</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for client in user.clients %}
-                <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('client.read_client', id=client.id) }}">
-                            {{ client.first_name }} {{ client.last_name }}
-                        </a>
-                    </td>
-                    <td> {{ client.email }}</td>
-                    <td>{{ client.phone }}</td>
-                    <td> {{ client.inquiries.count() }} </td>
-                    <td>{{ client.user.username }}</td>
-                    <td>
-                        <a href="{{ url_for('client.update_client', id=client.id) }}" class="uk-icon-link"
-                            uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('client.delete_client', id=client.id) }}" class="uk-icon-link"
-                            uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="uk-placeholder uk-text-center">No clients have been added.</div>
-        {% endif %}
-
-        <hr>
-        <hr>
-
-        {% if user.id == current_user.id %}
-        <div class="uk-clearfix">
-            <div class="uk-float-left">
-                <h3>Leads</h3>
-            </div>
-            <div class="uk-float-right">
-                <a class="uk-button uk-button-primary" href="{{ url_for('client.create_client') }}">Add Lead</a>
-            </div>
-        </div>
-        <hr>
-        {% endif %}
-
-        {%  if user.leads.count() != 0 %}
-        <table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
-            <thead>
-                <tr>
-                    <th class="uk-table-shrink">Name</th>
-                    <th class="uk-table-shrink">Contact</th>
-                    <th class="uk-table-shrink">Source</th>
-                    <th class="uk-table-shrink">Proposal</th>
-                    <th class="uk-table-shrink">Location</th>
-                    <th class="uk-table-shrink">plot</th>
-                    <th class="uk-table-shrink">Assignee</th>
-                    <th class="uk-table-shrink">Status</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for lead in user.leads %}
-                <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('lead.read_lead', id=lead.id) }}">
-                            {{ lead.client.first_name }} {{ lead.client.last_name }}
-                        </a>
-                    </td>
-                    <td> {{ lead.client.phone }}</br>{{ lead.client.email }}</td>
-                    <td> {{ lead.source.name }} </td>
-                    <td>{{ lead.proposal }}</td>
-                    <td> {{ lead.client.location }} </td>
-                    <td>{{ lead.plot.name }}</td>
-                    <td>
-                        {% for assignee in lead.assignees %}
-                        {{ assignee.username }}
-                        {% endfor %}
-                    </td>
-                    <td><span class="uk-label uk-badge">{{ lead.status.name }}</span></td>
-                    <td>
-                        <a href="{{ url_for('lead.update_lead', id=lead.id) }}" class="uk-icon-link"
-                            uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('lead.delete_lead', id=lead.id) }}" class="uk-icon-link"
-                            uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="uk-placeholder uk-text-center">No leads have been added.</div>
-        {% endif %}
-
+        <div>
     </div>
 </div>
 {% endblock %}

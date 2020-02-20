@@ -11,36 +11,19 @@
     </div>
 </div>
 <hr>
-{% if appointments %}
-{% for message in get_flashed_messages() %}
-<div class="uk-alert-primary" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
-    <p>{{ message }}</p>
-</div>
-{% endfor %}
-<div class="uk-child-width-1-4" uk-grid>
-    {% for appointment in appointments %}
-        <div class="uk-card uk-card-default">
-            <div class="uk-card-header">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-expand">
-                        <h3 class="uk-card-title uk-margin-remove-bottom">{{ appointment.title }}</h3>
-                        <p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ appointment.created_on }}">{{ appointment.created_on }}</time></p>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-card-body">
-                <p>Date: <span class="uk-label">{{ appointment.date }}</span></p>
-                <p>Time: <span class="uk-label">{{ appointment.time }}</span></p>
-                <p>{{ appointment.description }}</p>
-            </div>
-            <div class="uk-card-footer">
-                <a href="{{ url_for('appointment.read_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Read more</a>
-            </div>
-        </div>
-    {% endfor %}
-</div>
-{% else %}
-<div class="uk-placeholder uk-text-center">No appointments have been added.</div>
-{% endif %}
+<div id='calendar'></div>
+
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: [ 'dayGrid' ]
+        });
+
+        calendar.render();
+      });
+
+    </script>
 {% endblock %}
