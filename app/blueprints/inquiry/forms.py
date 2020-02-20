@@ -56,8 +56,8 @@ class AppointmentForm(FlaskForm):
 
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[Length(max=200)])
-    date = DateField('Date', validators=[DataRequired()])
-    time = TimeField('Time')
+    start = DateField('Date', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 

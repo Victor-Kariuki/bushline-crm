@@ -138,37 +138,7 @@
                     href="{{ url_for('inquiry.create_appointment', id=inquiry.id) }}">Add Appointment</a>
             </div>
         </div>
-        {% if inquiry.appointments.count() != 0 %}
-        <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for appointment in inquiry.appointments %}
-                <tr>
-                    <td>{{ appointment.title }}</td>
-                    <td class="uk-table-truncate">{{  appointment.description }}</td>
-                    <td>
-                        <a href="{{ url_for('appointment.update_appointment', id=appointment.id) }}"
-                            class="uk-icon-link" uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}"
-                            class="uk-icon-link" uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
-        {% endif %}
-
+        <div id='calendar' class="uk-margin"></div>
 
         <div class="uk-clearfix">
             <div class="uk-float-left">
@@ -180,36 +150,18 @@
             </div>
         </div>
         {% if inquiry.tasks.count() != 0 %}
-        <table class="uk-table uk-table-divider uk-table-small uk-table-justify uk-table-responsive">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="uk-tile uk-tile-muted uk-margin uk-padding">
+            <ul class="uk-list">
                 {% for task in inquiry.tasks %}
-                <tr>
-                    <td>{{ task.title }}</td>
-                    <td class="uk-table-truncate">{{  task.description }}</td>
-                    <td class="uk-table-truncate">{{  task.start_date }}</td>
-                    <td class="uk-table-truncate">{{  task.end_date }}</td>
-                    <td>
-                        <a href="{{ url_for('task.update_task', id=task.id) }}"
-                            class="uk-icon-link" uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('task.delete_task', id=task.id) }}"
-                            class="uk-icon-link" uk-icon="trash"></a>
-                    </td>
-                </tr>
+                <li>
+                    <label>
+                        <input class="uk-checkbox" type="checkbox">
+                        <span class="uk-text-right uk-text-meta">{{ task.description }}</span>
+                    </label> 
+                </li>
                 {% endfor %}
-            </tbody>
-        </table>
+            </ul>
+        </div>
         {% else %}
         <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
         {% endif %}
@@ -256,4 +208,38 @@
         {% endif %}
     </div>
 </div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'dayGrid' ],
+
+      events: [
+      {% for appointment in inquiry.appointments %}
+      {
+        title: '{{ appointment.title }}',
+        start: '{{ appointment.start }}',
+        description: '{{ appointment.description }}'
+      }
+      {% endfor %}
+      ],
+
+        eventClick: function(info) {
+            alert('Event: ' + info.event.title);
+            alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            alert('View: ' + info.view.type);
+
+            // change the border color just for fun
+            info.el.style.borderColor = 'red';
+        }
+    });
+
+    calendar.render();
+  });
+
+</script>
 {% endblock %}

@@ -178,8 +178,8 @@ def create_appointment(id):
         appointment = Appointment(
             title = form.title.data,
             description = form.description.data,
-            date = form.date.data,
-            time= form.time.data,
+            start = form.start.data,
+            location = form.location.data,
             client = inquiry.client,
             inquiry = inquiry,
             user = current_user

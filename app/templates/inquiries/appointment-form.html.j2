@@ -20,6 +20,17 @@
             </div>
 
             <div class="uk-margin">
+                {% if form.location.errors %}
+                {{ form.location(class_='uk-input uk-form-danger') }}
+                {% for error in form.location.errors %}
+                <small class="uk-form-help-block">{{ error }}</small>
+                {% endfor %}
+                {% else %}
+                {{ form.location(class_='uk-input', placeholder='Location') }}
+                {% endif %}
+            </div>
+
+            <div class="uk-margin">
                 {% if form.description.errors %}
                 {{ form.description(class_='uk-textarea uk-form-danger', rows="5") }}
                 {% for error in form.description.errors %}
@@ -31,24 +42,13 @@
             </div>
 
             <div class="uk-margin">
-                {% if form.date.errors %}
-                {{ form.date(class_='uk-input uk-form-danger', type="date") }}
-                {% for error in form.date.errors %}
+                {% if form.start.errors %}
+                {{ form.start(class_='uk-input uk-form-danger', type="date") }}
+                {% for error in form.start.errors %}
                 <small class="uk-form-help-block">{{ error }}</small>
                 {% endfor %}
                 {% else %}
-                {{ form.date(class_='uk-input', placeholder='Date', type="date") }}
-                {% endif %}
-            </div>
-
-            <div class="uk-margin">
-                {% if form.time.errors %}
-                {{ form.time(class_='uk-input uk-form-danger') }}
-                {% for error in form.time.errors %}
-                <small class="uk-form-help-block">{{ error }}</small>
-                {% endfor %}
-                {% else %}
-                {{ form.time(class_='uk-input', placeholder='Title') }}
+                {{ form.start(class_='uk-input', placeholder='Date', type="date") }}
                 {% endif %}
             </div>
 

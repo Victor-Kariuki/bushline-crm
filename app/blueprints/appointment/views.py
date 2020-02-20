@@ -4,7 +4,7 @@
 from datetime import datetime
 
 # 3rd party imports
-from flask import render_template, redirect, url_for, abort, flash
+from flask import render_template, redirect, url_for, abort, flash, jsonify
 from flask_login import login_required, current_user
 
 # local imports
@@ -24,7 +24,8 @@ def read_appointments():
     if current_user.is_admin is False:
         appointments = Appointment.query.filter_by(user_id=current_user.id).all()
     else:
-        appointment = Appointment.query.all()
+        appointments = Appointment.query.all()
+    
 
     return render_template('appointments/index.html.j2', appointments=appointments, title='appointments')
 
@@ -56,8 +57,8 @@ def create_appointment():
         appointment = Appointment(
             title = form.title.data,
             description = form.description.data,
-            date = form.date.data,
-            time= form.time.data,
+            location = form.location.data,
+            start = form.start.data,
             client = form.client.data,
             user = current_user
         )
@@ -90,8 +91,8 @@ def update_appointment(id):
     if form.validate_on_submit():
         appointment.title = form.title.data
         appointment.description = form.description.data
-        appointment.date = form.date.data,
-        appointment.time= form.time.data,
+        appointment.start = form.start.data,
+        appointment.location = form.location.data,
         appointment.client = form.client.data,
         appointment.inquiry = form.inquiry.data,
         
