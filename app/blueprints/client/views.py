@@ -11,8 +11,7 @@ from flask_login import login_required, current_user
 from app import db
 from app.models import Client, Inquiry
 from app.blueprints.client import client
-from app.blueprints.client.forms import ClientForm
-from app.blueprints.inquiry.forms import InquiryForm
+from app.blueprints.client.forms import ClientForm, InquiryForm
 
 
 @client.route('/leads')
@@ -24,7 +23,10 @@ def read_leads():
     Retrieve & render all leads in the DB
     """
 
-    leads = Client.query.filter_by(type='lead').all()
+    if current_user.is_admin == True:
+        leads = Client.query.filter_by(type='lead').all()
+    else:
+        leads = Client.query.filter_by(type='lead', added_by=current_user.id).all()
 
     return render_template('clients/leads.html.j2', leads=leads, title='Leads Listing')
 
@@ -38,7 +40,10 @@ def read_customers():
     Retrieve & render all customers in the DB
     """
 
-    customers = Client.query.filter_by(type='customer').all()
+    if current_user.is_admin == True:
+        customers = Client.query.filter_by(type='customer').all()
+    else:
+        customers = Client.query.filter_by(type='customer', added_by=current_user.id).all()
 
     return render_template('clients/customers.html.j2', customers=customers, title='Customers Listing')
 
@@ -159,10 +164,11 @@ def create_inquiry(id):
         inquiry = Inquiry(
             proposal = form.proposal.data,
             probability = form.probability.data,
+            source = form.source.data,
+            client = client,
             plot = form.plot.data,
-            client = client
+            user = form.user.data
         )
-        inquiry.assignees.append(current_user)
 
         try:
             db.session.add(inquiry)
