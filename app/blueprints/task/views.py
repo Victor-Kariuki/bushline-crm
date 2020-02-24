@@ -127,3 +127,47 @@ def delete_task(id):
     flash('Successfully deleted the task')
 
     return redirect(url_for('task.read_tasks'))
+
+
+@task.route('/<int:id>/close-task', methods=['GET', 'POST'])
+@login_required
+def close_task(id):
+    """
+    Handle requests to /tasks/<int:id>/close-task route
+    Update task status to closed
+    """
+
+    task = Task.query.get_or_404(id)
+
+    task.status = 'closed'
+
+    try:
+        db.session.add(task)
+        db.session.commit()
+
+        flash('Successfully closed the task')
+        return redirect(url_for('task.read_task', id=id))
+    except:
+        flash('Error closing task')
+
+
+@task.route('/<int:id>/open-task', methods=['GET', 'POST'])
+@login_required
+def open_task(id):
+    """
+    Handle requests to /tasks/<int:id>/open-task route
+    Update task status to active
+    """
+
+    task = Task.query.get_or_404(id)
+
+    task.status = 'active'
+
+    try:
+        db.session.add(task)
+        db.session.commit()
+
+        flash('Successfully activated the task')
+        return redirect(url_for('task.read_task', id=id))
+    except:
+        flash('Error activating task')

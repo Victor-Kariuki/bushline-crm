@@ -140,32 +140,6 @@
         </div>
         <div id='calendar' class="uk-margin"></div>
 
-        <div class="uk-clearfix">
-            <div class="uk-float-left">
-                <h3>Tasks</h3>
-            </div>
-            <div class="uk-float-right">
-                <a class="uk-button uk-button-primary"
-                    href="{{ url_for('inquiry.create_task', id=inquiry.id) }}">Add Task</a>
-            </div>
-        </div>
-        {% if inquiry.tasks.count() != 0 %}
-        <div class="uk-tile uk-tile-muted uk-margin uk-padding">
-            <ul class="uk-list">
-                {% for task in inquiry.tasks %}
-                <li>
-                    <label>
-                        <input class="uk-checkbox" type="checkbox">
-                        <span class="uk-text-right uk-text-meta">{{ task.description }}</span>
-                    </label> 
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% else %}
-        <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
-        {% endif %}
-
 
         <div class="uk-clearfix">
             <div class="uk-float-left">
@@ -182,6 +156,8 @@
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Created On</th>
+                    <th>Comments</th>
                     <th class="uk-table-shrink">Edit</th>
                     <th class="uk-table-shrink">Delete</th>
                 </tr>
@@ -189,8 +165,10 @@
             <tbody>
                 {% for note in inquiry.notes %}
                 <tr>
-                    <td>{{ note.title }}</td>
-                    <td class="uk-table-truncate">{{  note.description }}</td>
+                    <td class="uk-table-link"><a href="{{ url_for('note.read_note', id=note.id) }}">{{ note.title }}</a></td>
+                    <td class="uk-text-truncate">{{  note.description }}</td>
+                    <td>{{ note.created_on }}</td>
+                    <td>{{ note.comments.count() }}</td>
                     <td>
                         <a href="{{ url_for('note.update_note', id=note.id) }}" class="uk-icon-link"
                             uk-icon="file-edit"></a>
@@ -206,39 +184,101 @@
         {% else %}
         <div class="uk-placeholder uk-text-center">No notes for the inquiry.</div>
         {% endif %}
+
+
+
+        <div class="uk-clearfix">
+            <div class="uk-float-left">
+                <h3>Tasks</h3>
+            </div>
+            <div class="uk-float-right">
+                <a class="uk-button uk-button-primary"
+                    href="{{ url_for('inquiry.create_task', id=inquiry.id) }}">Add Task</a>
+            </div>
+        </div>
+        {% if inquiry.tasks.count() != 0 %}
+        <div class="uk-tile uk-tile-muted uk-margin uk-padding">
+            <ul class="uk-list">
+                {% for task in inquiry.tasks  %}
+                {% if task.status.name == 'closed' %}
+                <li>
+                    <label>
+                        <input class="uk-checkbox" type="checkbox" id="task-checkbox" onclick="changeStatus()" checked>
+                        <span class="uk-text-right uk-text-meta uk-text-linethrough">
+                            {{ task.description }}
+                        </span>
+                        <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
+                    </label> 
+                </li>
+                {% else %}
+                <li>
+                    <label>
+                        <input class="uk-checkbox" type="checkbox" id="task-checkbox" onclick="changeStatus()">
+                        <span class="uk-text-right uk-text-meta">{{ task.description }}</span>
+                        <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
+                    </label> 
+                </li>
+                {% endif %}
+
+
+                <script>
+                $(document).ready(function() {
+                    function changeStatus() {
+                        let checkbox = document.getElementById('task-checkbox');
+                        if (checkbox.checked != true) {
+                            $.ajax({
+                                type: "POST",
+                                url: '/tasks/{{task.id}}/close-task'
+                            });
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                url: '/tasks/{{task.id}}/open-task'
+                            });
+                        }
+                    }
+                });
+                </script>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="uk-placeholder uk-text-center">No appointments for the inquiry.</div>
+        {% endif %}
+
     </div>
 </div>
 
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+  document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      plugins: [ 'dayGrid' ],
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: ['dayGrid'],
 
-      events: [
-      {% for appointment in inquiry.appointments %}
-      {
-        title: '{{ appointment.title }}',
-        start: '{{ appointment.start }}',
-        description: '{{ appointment.description }}'
-      }
-      {% endfor %}
-      ],
+          events: [
+            {%for appointment in inquiry.appointments %} 
+                {
+                title: '{{ appointment.title }}',
+                start: '{{ appointment.start }}',
+                description: '{{ appointment.description }}'
+                } 
+            {% endfor %}
+        ],
 
-        eventClick: function(info) {
-            alert('Event: ' + info.event.title);
-            alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-            alert('View: ' + info.view.type);
+          eventClick: function (info) {
+              alert('Event: ' + info.event.title);
+              alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+              alert('View: ' + info.view.type);
 
-            // change the border color just for fun
-            info.el.style.borderColor = 'red';
-        }
-    });
+              // change the border color just for fun
+              info.el.style.borderColor = 'red';
+          }
+      });
 
-    calendar.render();
+      calendar.render();
   });
 
 </script>
