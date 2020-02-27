@@ -11,18 +11,22 @@
                     {{ appointment.title }}
                 </div>
                 <div class="uk-width-expand">
-                    <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{ appointment.date }}</time></p>
+                    <div class="uk-hidden-hover">
+                        <a href="{{ url_for('appointment.update_appointment', id=appointment.id) }}" uk-icon="icon: pencil"></a>
+                        <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" uk-icon="icon: trash"></a>
+                    </div>
+                    <p class="uk-text-meta uk-margin-remove-top"><time datetime="{{ appointment.start }}">{{ appointment.start }}</time></p>
                 </div>
             </div>
         </div>
         <div class="uk-card-body">
             <p>{{ appointment.description }}</p>
             <ul class="uk-list">
-                <li>{{ owner.username }}</li>
+                <li>{{ appointment.user.username }}</li>
             </ul>
         </div>
         <div class="uk-card-footer">
-            <a href="{{ url_for('appointments.delete_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Cancel Appointment</a>
+            <a href="{{ url_for('appointment.delete_appointment', id=appointment.id) }}" class="uk-button uk-button-text">Cancel Appointment</a>
         </div>
     </div>
 </div>

@@ -198,45 +198,20 @@
         <div class="uk-tile uk-tile-muted uk-margin uk-padding">
             <ul class="uk-list">
                 {% for task in inquiry.tasks  %}
-                {% if task.status.name == 'closed' %}
-                <li>
+                <li class="uk-placeholder">
+                    <div class="uk-hidden-hover">
+                        <a href="{{ url_for('task.update_task', id=task.id) }}" uk-icon="icon: pencil"></a>
+                        <a href="{{ url_for('task.delete_task', id=task.id) }}" uk-icon="icon: trash"></a>
+                    </div>
                     <label>
-                        <input class="uk-checkbox" type="checkbox" id="task-checkbox" onclick="changeStatus()" checked>
-                        <span class="uk-text-right uk-text-meta uk-text-linethrough">
+                        {{ task.title }}
+                        <span class="uk-text-right uk-text-meta">
                             {{ task.description }}
                         </span>
-                        <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
+                        <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.created_on }}</span>
+                        <span class="uk-text-meta uk-text-small uk-text-success">{{ task.user.username }}</span>
                     </label>
                 </li>
-                {% else %}
-                <li>
-                    <label>
-                        <input class="uk-checkbox" type="checkbox" id="task-checkbox" onclick="changeStatus()">
-                        <span class="uk-text-right uk-text-meta">{{ task.description }}</span>
-                        <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
-                    </label>
-                </li>
-                {% endif %}
-
-
-                <script>
-                    $(document).ready(function () {
-                        function changeStatus() {
-                            let checkbox = document.getElementById('task-checkbox');
-                            if (checkbox.checked != true) {
-                                $.ajax({
-                                    type: "POST",
-                                    url: '/tasks/{{task.id}}/close-task'
-                                });
-                            } else {
-                                $.ajax({
-                                    type: "POST",
-                                    url: '/tasks/{{task.id}}/open-task'
-                                });
-                            }
-                        }
-                    });
-                </script>
                 {% endfor %}
             </ul>
         </div>
@@ -257,22 +232,20 @@
           plugins: ['dayGrid'],
 
           events: [
-            {%for appointment in inquiry.appointments %} 
+            {%for appointment in inquiry.appointments %}
                 {
+                id: '{{ appointment.id }}',
                 title: '{{ appointment.title }}',
                 start: '{{ appointment.start }}',
                 description: '{{ appointment.description }}'
-                } 
+                }
             {% endfor %}
         ],
 
           eventClick: function (info) {
-              alert('Event: ' + info.event.title);
-              alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-              alert('View: ' + info.view.type);
+            const appointmentId = info.event.id;
+            window.location.href = `/appointments/${appointmentId}`;
 
-              // change the border color just for fun
-              info.el.style.borderColor = 'red';
           }
       });
 

@@ -13,7 +13,7 @@ class Type(enum.Enum):
     Client types enum
     """
 
-    client = 'client'
+    customer = 'customer'
     lead = 'lead'
 
 
@@ -30,7 +30,7 @@ class Client(db.Model):
     email = db.Column(db.String(60), unique=True)
     mobile = db.Column(db.Integer, unique=True, nullable=False)
     location = db.Column(db.String(60), nullable=False)
-    type = db.Column(db.Enum(Type), default='lead', nullable=False)
+    type = db.Column(db.Enum(Type), default='lead')
     inquiries = db.relationship('Inquiry', backref='client', lazy='dynamic')
     appointments = db.relationship('Appointment', backref='client', lazy='dynamic')
     is_blacklisted = db.Column(db.Boolean, default=False)

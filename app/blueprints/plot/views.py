@@ -2,6 +2,7 @@
 
 # inbuilt imports
 import os
+import enum
 
 # 3rd party imports
 from flask import render_template, url_for, redirect, flash, abort
@@ -18,6 +19,15 @@ def check_admin():
     if current_user.is_admin is False:
         abort(403)
 
+
+class Status(enum.Enum):
+    """
+    plot status enum
+    """
+
+    sold = 'sold'
+    booked = 'booked'
+    available = 'available'
 
 @plot.route('/')
 @login_required
@@ -116,7 +126,7 @@ def update_plot(id):
     return render_template('plots/form.html.j2', form=form, title='Update Plot')
 
 
-@plot.route('/delete/<int:id>', methods=['GET', 'POST'])
+@plot.route('/delete/<int:id>', methods=['POST'])
 @login_required
 def delete_plot(id):
     """
@@ -171,18 +181,22 @@ def add_inquiry(id):
     return render_template('plots/inquiry-form.html.j2', form=form, title='Create inquiry')
 
 
-@plot.route('/<int:plot_id>/book-plot/<int:inquiry_id>', methods=['GET', 'POST'])
+@plot.route('/<int:plot_id>/book/<int:inquiry_id>', methods=['GET', 'POST'])
+@login_required
 def book_plot(plot_id, inquiry_id):
     """
-    Handles requests to /plots/{plot_id}/book-plot/{inquiry_id}
+    Handles requests to /plots/{plot_id}/book/{inquiry_id}
     Change a plot's status
     """
-
-    plot = Plot.query.get_or_404(id)
+    inquiry = Inquiry.query.get_or_404(inquiry_id)
+    client = Client.query.filter_by(id=inquiry.client_id).first()
+    plot = Plot.query.get_or_404(plot_id)
     plot.status = 'booked'
+    client.type = 'customer'
 
     try:
-       db.session.add(plot_id)
+       db.session.add(plot)
+       db.session.add(client)
        db.session.commit()
 
        flash('successfully updated plot status', true)
@@ -192,15 +206,15 @@ def book_plot(plot_id, inquiry_id):
         return redirect(url_for('plot.read_plot', id=plot_id))
 
 
-@plot.route('/<int:plot_id>/sale-plot/<int:inquiry_id>', methods=['GET', 'POST'])
+@plot.route('/<int:plot_id>/sell/<int:inquiry_id>', methods=['GET', 'POST'])
+@login_required
 def sale_plot(plot_id, inquiry_id):
     """
-    Handles requests to /plots/{plot_id}/sale-plot/{inquiry_id}
+    Handles requests to /plots/{plot_id}/sell/{inquiry_id}
     Change a plot's status
     """
     inquiry = Inquiry.query.get_or_404(inquiry_id)
-    client = Client.query.filter_by(id=inquiry.id).first_or_404()
-
+    client = Client.query.filter_by(id=inquiry.client_id).first()
     plot = Plot.query.get_or_404(plot_id)
     plot.status = 'sold'
     client.type = 'customer'

@@ -102,6 +102,7 @@
                 <thead>
                     <tr>
                         <th>plot</th>
+                        <th>Status</th>
                         <th>Location</th>
                         <th>Source</th>
                         <th>Proposal</th>
@@ -118,6 +119,7 @@
                                 {{ inquiry.plot.lr_number }}
                             </a>
                         </td>
+                        <td>{{ inquiry.plot.status.name }}</td>
                         <td> {{ inquiry.client.location }}</td>
                         <td> {{ inquiry.source.name }} </td>
                         <td>{{ inquiry.proposal }}</td>

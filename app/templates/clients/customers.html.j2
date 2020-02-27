@@ -1,8 +1,11 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-<h1 class="uk-text-capitalize">{{ title }}</h1>
-<hr>
+<div class="uk-clearfix">
+    <div class="uk-float-left">
+        <h1 class="uk-text-capitalize">{{ title }}</h1>
+    </div>
+</div>
 {%  if customers %}
 {% for message in get_flashed_messages() %}
 <div class="uk-alert-primary" uk-alert>
@@ -10,7 +13,7 @@
     <p>{{ message }}</p>
 </div>
 {% endfor %}
-<table class="uk-table uk-table-divider uk-table-middle uk-table-justify uk-table-hover uk-table-responsive">
+<table class="uk-table uk-table-divider uk-table-small uk-table-hover uk-table-responsive">
     <thead>
         <tr>
             <th>Name</th>
@@ -24,24 +27,24 @@
         </tr>
     </thead>
     <tbody>
-        {% for customers in customerss %}
+        {% for customer in customers %}
         <tr>
             <td class="uk-table-link">
-                <a class="uk-link-reset" href="{{ url_for('client.read_client', id=customers.id) }}">
-                    {{ customers.first_name }} {{ customers.last_name }}
+                <a class="uk-link-reset" href="{{ url_for('client.read_client', id=customer.id) }}">
+                    {{ customer.first_name }} {{ customer.last_name }}
                 </a>
             </td>
-            <td> {{ customers.email }}</td>
-            <td>{{ customers.mobile }}</td>
-            <td>{{ customers.location }}</td>
-            <td class="uk-text-center"> <span class="uk-badge">{{ customers.inquiries.count() }}</span> </td>
-            <td>{{ customers.user.username }}</td>
+            <td> {{ customer.email }}</td>
+            <td>{{ customer.mobile }}</td>
+            <td>{{ customer.location }}</td>
+            <td class="uk-text-center"> <span class="uk-badge">{{ customer.inquiries.count() }}</span> </td>
+            <td>{{ customer.user.username }}</td>
             <td class="uk-text-center">
-                <a href="{{ url_for('client.update_client', id=customers.id) }}" class="uk-icon-link"
+                <a href="{{ url_for('client.update_client', id=customer.id) }}" class="uk-icon-link"
                     uk-icon="file-edit"></a>
             </td>
             <td class="uk-text-center">
-                <a href="{{ url_for('client.delete_client', id=customers.id) }}" class="uk-icon-link"
+                <a href="{{ url_for('client.delete_client', id=customer.id) }}" class="uk-icon-link"
                     uk-icon="trash"></a>
             </td>
         </tr>
@@ -49,6 +52,6 @@
     </tbody>
 </table>
 {% else %}
-<div class="uk-placeholder uk-text-center">No Leads have been added.</div>
+<div class="uk-placeholder uk-text-center">No customers have been added.</div>
 {% endif %}
 {% endblock %}

@@ -25,7 +25,6 @@ def read_appointments():
         appointments = Appointment.query.filter_by(user_id=current_user.id).all()
     else:
         appointments = Appointment.query.all()
-    
 
     return render_template('appointments/index.html.j2', appointments=appointments, title='appointments')
 
@@ -40,7 +39,7 @@ def read_appointment(id):
 
     appointment = Appointment.query.get_or_404(id)
 
-    return render_template('appointments/single.html.j2', appointment=appointment, title=appointment.name)
+    return render_template('appointments/single.html.j2', appointment=appointment, title=appointment.title)
 
 
 @appointment.route('/create', methods=['GET', 'POST'])
@@ -84,7 +83,7 @@ def update_appointment(id):
     Update the target appointment
     """
 
-    appointment = Appointment.query.get_or_404(id=id)
+    appointment = Appointment.query.get_or_404(id)
 
     form = AppointmentForm(obj=appointment)
 
@@ -95,7 +94,7 @@ def update_appointment(id):
         appointment.location = form.location.data,
         appointment.client = form.client.data,
         appointment.inquiry = form.inquiry.data,
-        
+
         try:
             db.session.add(appointment)
             db.session.commit()
