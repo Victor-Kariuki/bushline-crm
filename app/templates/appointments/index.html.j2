@@ -15,12 +15,20 @@
       events: [
       {% for appointment in appointments %}
       {
+        id: '{{ appointment.id }}',
         title: '{{ appointment.title }}',
         start: '{{ appointment.start }}',
         description: '{{ appointment.description }}'
       }
       {% endfor %}
-      ]
+      ],
+
+      eventClick: function (info) {
+        const appointmentId = info.event.id;
+        console.lgo
+        window.location.href = `/appointments/${appointmentId}`;
+
+      }
     });
 
     calendar.render();

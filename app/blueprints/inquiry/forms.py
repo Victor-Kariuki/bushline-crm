@@ -19,7 +19,7 @@ class InquiryForm(FlaskForm):
   Handles creating & updating of inquiries
   """
 
-  plot = QuerySelectField(query_factory=lambda: Plot.query.all(), get_label="lr_number")
+  plot = QuerySelectField(query_factory=lambda: Plot.query.filter_by(status='available').all(), get_label="lr_number")
   source = SelectField('Source', choices=[
     ('facebook', 'facebook'),
     ('twitter', 'twitter'),

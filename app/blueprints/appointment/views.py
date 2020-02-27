@@ -109,7 +109,7 @@ def update_appointment(id):
     return render_template('appointments/form.html.j2', form=form, title='Update appointment')
 
 
-@appointment.route('/delete/<int:id>', methods=['DELETE'])
+@appointment.route('/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_appointment(id):
     """
@@ -124,4 +124,4 @@ def delete_appointment(id):
 
     flash('Successfully deleted the appointment')
 
-    redirect(url_for('appointment.read_appointments'))
+    return redirect(url_for('appointment.read_appointments'))
