@@ -58,6 +58,8 @@
                         <th class="uk-table-shrink">Proposal</th>
                         <th class="uk-table-shrink">Location</th>
                         <th class="uk-table-shrink">Assignee</th>
+                        <th>Book</th>
+                        <th>Sale</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,11 +73,9 @@
                         <td class="uk-text-overflow"> {{ inquiry.client.phone }}</br>{{ inquiry.client.email }}</td>
                         <td>{{ inquiry.proposal }}</td>
                         <td> {{ inquiry.client.location }} </td>
-                        <td>
-                            {% for assignee in inquiry.assignees %}
-                            {{ assignee.username }}
-                            {% endfor %}
-                        </td>
+                        <td>{{ inquiry.user.username }}</td>
+                        <td><a class="uk-button uk-button-primary" href="{{ url_for('plot.book_plot', plot_id=plot.id, inquiry_id=inquiry.id)}}">Book</a></td>
+                        <td><a class="uk-button uk-button-default" href="{{url_for('plot.sale_plot', plot_id=plot.id, inquiry_id=inquiry.id)}}">Sale</a></td>
                     </tr>
                 </tbody>
                 {% endfor %}

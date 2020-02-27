@@ -19,32 +19,32 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
     <style>
-        html,
-        body {
-            font-family: 'Quicksand', sans-serif;
-        }
+    html,
+    body {
+        font-family: 'Quicksand', sans-serif;
+    }
 
-        .uk-text-error {
-            font-size: 5em;
-        }
+    .uk-text-error {
+        font-size: 5em;
+    }
 
-        .uk-text-linethrough {
-            text-decoration: line-through;
-        }
+    .uk-text-linethrough {
+        text-decoration: line-through;
+    }
     </style>
     {# jquery #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
-    <div uk-height-viewport class="uk-grid-divider uk-padding" uk-grid>
+    <div uk-height-viewport class="uk-grid-divider uk-padding-small" uk-grid>
         <div class="uk-width-1-6@m uk-visible@m">
             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
                 <li class="uk-nav-header">Admin</li>
-                <li><a href="{{ url_for('dashboard.index') }}"><span class="uk-margin-small-right" uk-icon="icon: home"></span> Dashboard</a></li>
+                <li><a href="{{ url_for('dashboard.index') }}"><span class="uk-margin-small-right"
+                            uk-icon="icon: home"></span> Dashboard</a></li>
                 <li><a href="{{ url_for('user.read_users') }}"><span class=" uk-margin-small-right"
                             uk-icon="icon: users"></span> Users</a></li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bolt"></span> Reports</a></li>
                 <li class="uk-nav-divider"></li>
 
                 <li class="uk-nav-header">Properties</li>
@@ -54,7 +54,7 @@
                             uk-icon="icon: image"></span>Plots</a>
                 </li>
                 <li class="uk-nav-divider"></li>
-    
+
 
                 <li class="uk-nav-header">Clients</li>
                 <li><a href="{{ url_for('client.read_customers') }}"><span class=" uk-margin-small-right"
@@ -100,8 +100,8 @@
                         </button>
                         <div uk-dropdown>
                             <ul class="uk-nav uk-dropdown-nav">
-                                <li class="uk-active"><a
-                                        href="{{ url_for('user.read_user', id=current_user.id) }}">Profile</a></li>
+                                <li class="uk-active">
+                                <a href="{{ url_for('user.read_user', id=current_user.id) }}">Profile</a></li>
                                 <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                             </ul>
                         </div>

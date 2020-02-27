@@ -6,8 +6,9 @@
         <h1>{{ user.username }}</h1>
     </div>
     <div class="uk-float-right">
-        <a class="uk-button uk-button-primary" href="{{ url_for('user.update_user', id=user.id) }}">Update
-            User</a>
+        <a class="uk-button uk-button-primary" href="{{ url_for('user.update_user', id=user.id) }}">
+            Update User
+        </a>
     </div>
 </div>
 <hr>
@@ -72,7 +73,7 @@
                     <p class="uk-text-muted uk-text-baseline uk-text-uppercase">Appointments</p>
                 </div>
             </div>
-        <div>
-    </div>
-</div>
-{% endblock %}
+            <div>
+            </div>
+        </div>
+        {% endblock %}

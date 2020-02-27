@@ -1,60 +1,72 @@
 {% extends 'dashboard.html.j2' %}
 
 {% block content %}
-    <h1 class="uk-text-capitalize">{{ title }}</h1>
-    <hr>
-    {%  if users %}
-        {% for message in get_flashed_messages() %}
-            <div class="uk-alert-primary" uk-alert>
-                <a class="uk-alert-close" uk-close></a>
-                <p>{{ message }}</p>
-            </div>
+<h1 class="uk-text-capitalize">{{ title }}</h1>
+<hr>
+{%  if users %}
+{% for message in get_flashed_messages() %}
+<div class="uk-alert-primary" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
+<table id="users" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-responsive">
+    <thead>
+        <tr>
+            <th>Fullname</th>
+            <th>Contacts</th>
+            <th class="uk-table-shrink">Customers</th>
+            <th class="uk-table-shrink">Leads</th>
+            <th class="uk-table-shrink">Inquiries</th>
+            <th class="uk-table-shrink">Appointments</th>
+            <th class="uk-table-shrink">Tasks</th>
+            <th class="uk-table-shrink">Actions</th>
+            <th class="uk-table-shrink">Admin Status</th>
+            {% if current_user.is_admin == 1 %}<th>Admin Actions</th>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td class="uk-table-link">
+                <a class="uk-link-reset" href="{{ url_for('user.read_user', id=user.id) }}">
+                    {{ user.first_name }} {{ user.last_name }}
+                </a>
+            </td>
+            <td> {{ user.email }}</br>{{ user.phone }}</td>
+            <td class="uk-text-center">
+                {{ user.clients.filter_by(type='customer').count() }}
+            </td>
+            <td class="uk-text-center">
+                {{ user.clients.filter_by(type='lead').count() }}
+            </td>
+            <td class="uk-text-center">
+                {{user.inquiries.count()}}
+            </td>
+            <td class="uk-text-center">{{ user.appointments.count() }}</td>
+            <td class="uk-text-center">{{ user.tasks.count() }}</td>
+            <td>
+                <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                <a href="{{ url_for('user.delete_user', id=user.id) }}" class="uk-icon-link" uk-icon="trash"></a>
+            </td>
+            <td>
+                {{ user.is_admin }}
+            </td>
+            {% if current_user.is_admin == True and current_user.id == user.id %}
+            <td>
+                ADMIN
+            </td>
+            {% else %}
+            <td>
+                <a href="{{ url_for('user.make_admin', id=user.id) }}" class="uk-icon-link" uk-icon="check"></a>
+                <a href="{{ url_for('user.remove_admin', id=user.id) }}" class="uk-icon-link" uk-icon="close"></a>
+            </td>
+            {% endif %}
+        </tr>
         {% endfor %}
-        <table class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify uk-table-responsive">
-            <thead>
-                <tr>
-                    <th>Fullname</th>
-                    <th>Contacts</th>
-                    <th class="uk-table-shrink">Customers</th>
-                    <th class="uk-table-shrink">Leads</th>
-                    <th class="uk-table-shrink">Inquiries</th>
-                    <th class="uk-table-shrink">Appointments</th>
-                    <th class="uk-table-shrink">Tasks</th>
-                    <th class="uk-table-shrink">Edit</th>
-                    <th class="uk-table-shrink">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td class="uk-table-link">
-                        <a class="uk-link-reset" href="{{ url_for('user.read_user', id=user.id) }}">
-                            {{ user.first_name }} {{ user.last_name }}
-                        </a>
-                    </td>
-                    <td> {{ user.email }}</br>{{ user.phone }}</td>
-                    <td class="uk-text-center">
-                        {{ user.clients.filter_by(type='customer').count() }}
-                    </td>
-                    <td class="uk-text-center">
-                        {{ user.clients.filter_by(type='lead').count() }}
-                    </td>
-                    <td class="uk-text-center">
-                        {{user.inquiries.count()}}
-                    </td>
-                    <td class="uk-text-center">{{ user.appointments.count() }}</td>
-                    <td class="uk-text-center">{{ user.tasks.count() }}</td>
-                    <td>
-                        <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('user.delete_user', id=user.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <div class="uk-placeholder uk-text-center">No users have been added.</div>
-    {% endif %}
+    </tbody>
+</table>
+{% else %}
+<div class="uk-placeholder uk-text-center">No users have been added.</div>
+{% endif %}
 {% endblock %}

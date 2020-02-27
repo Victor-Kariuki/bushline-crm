@@ -40,7 +40,7 @@ def read_user(id):
     return render_template('users/single.html.j2', user=user, title='Users')
 
 
-@user.route('/update/<int:id>')
+@user.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_user(id):
     """
@@ -70,11 +70,11 @@ def update_user(id):
     return render_template('users/form.html.j2', form=form, title='Update your profile')
 
 
-@user.route('/user/delete/<int:id>')
+@user.route('/user/<int:id>/delete')
 @login_required
 def delete_user(id):
     """
-    Handle requests to /user/delete/<int:id> route
+    Handle requests to /user/<int:id>/delete route
     Delete the user
     """
 
@@ -86,3 +86,47 @@ def delete_user(id):
     flash('Successfully deleted the user', 'info')
 
     return redirect(url_for('user.read_users'))
+
+
+@user.route('/user/<int:id>/make-admin', methods=['GET', 'POST'])
+@login_required
+def make_admin(id):
+    """
+    Handle requests to /user/{id}/make-admin route
+    Make user admin
+    """
+
+    user = User.query.get_or_404(id)
+    user.is_admin = True
+
+    try:
+        db.session.add(user)
+        db.session.commit()
+        flash('Successfully upgrade user admin privileges', 'info')
+
+        return redirect(url_for('user.read_users'))
+    except:
+        flash('Error making user admin', 'error')
+        return redirect(url_for('user.read_users'))
+
+
+@user.route('/user/<int:id>/remove-admin', methods=['GET', 'POST'])
+@login_required
+def remove_admin(id):
+    """
+    Handle requests to /user/{id}/remove-admin route
+    Remove user admin
+    """
+
+    user = User.query.get_or_404(id)
+    user.is_admin = False
+
+    try:
+        db.session.add(user)
+        db.session.commit()
+        flash('Successfully removed admin privileges', 'info')
+
+        return redirect(url_for('user.read_users'))
+    except:
+        flash('Error removing admin privileges', 'error')
+        return redirect(url_for('user.read_users'))

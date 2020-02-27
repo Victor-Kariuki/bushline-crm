@@ -50,4 +50,5 @@ class InquiryForm(FlaskForm):
     ('low', 'low')
   ])
   client = QuerySelectField(query_factory=lambda: Client.query.all(), get_label="first_name")
+  assignee = QuerySelectField(query_factory=lambda: User.query.all(), get_label="username")
   submit = SubmitField('Submit')

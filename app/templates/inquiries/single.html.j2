@@ -93,9 +93,6 @@
                     <div class="uk-width-expand">
                         <h3 class="uk-card-title">Assignee</h3>
                     </div>
-                    <div class="uk-width-expand">
-                        <a class="uk-button uk-button-primary" href="">Re Assign</a>
-                    </div>
                 </div>
             </div>
             <div class="uk-card-body">
@@ -165,7 +162,8 @@
             <tbody>
                 {% for note in inquiry.notes %}
                 <tr>
-                    <td class="uk-table-link"><a href="{{ url_for('note.read_note', id=note.id) }}">{{ note.title }}</a></td>
+                    <td class="uk-table-link"><a href="{{ url_for('note.read_note', id=note.id) }}">{{ note.title }}</a>
+                    </td>
                     <td class="uk-text-truncate">{{  note.description }}</td>
                     <td>{{ note.created_on }}</td>
                     <td>{{ note.comments.count() }}</td>
@@ -192,8 +190,8 @@
                 <h3>Tasks</h3>
             </div>
             <div class="uk-float-right">
-                <a class="uk-button uk-button-primary"
-                    href="{{ url_for('inquiry.create_task', id=inquiry.id) }}">Add Task</a>
+                <a class="uk-button uk-button-primary" href="{{ url_for('inquiry.create_task', id=inquiry.id) }}">Add
+                    Task</a>
             </div>
         </div>
         {% if inquiry.tasks.count() != 0 %}
@@ -208,7 +206,7 @@
                             {{ task.description }}
                         </span>
                         <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
-                    </label> 
+                    </label>
                 </li>
                 {% else %}
                 <li>
@@ -216,28 +214,28 @@
                         <input class="uk-checkbox" type="checkbox" id="task-checkbox" onclick="changeStatus()">
                         <span class="uk-text-right uk-text-meta">{{ task.description }}</span>
                         <span class="uk-text-meta uk-text-small uk-text-primary">{{ task.updated_on }}</span>
-                    </label> 
+                    </label>
                 </li>
                 {% endif %}
 
 
                 <script>
-                $(document).ready(function() {
-                    function changeStatus() {
-                        let checkbox = document.getElementById('task-checkbox');
-                        if (checkbox.checked != true) {
-                            $.ajax({
-                                type: "POST",
-                                url: '/tasks/{{task.id}}/close-task'
-                            });
-                        } else {
-                            $.ajax({
-                                type: "POST",
-                                url: '/tasks/{{task.id}}/open-task'
-                            });
+                    $(document).ready(function () {
+                        function changeStatus() {
+                            let checkbox = document.getElementById('task-checkbox');
+                            if (checkbox.checked != true) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/tasks/{{task.id}}/close-task'
+                                });
+                            } else {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/tasks/{{task.id}}/open-task'
+                                });
+                            }
                         }
-                    }
-                });
+                    });
                 </script>
                 {% endfor %}
             </ul>

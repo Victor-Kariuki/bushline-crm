@@ -63,6 +63,18 @@
             </div>
 
             <div class="uk-margin">
+                {{ form.assignee.label(class='uk-label') }}
+                {% if form.assignee.errors %}
+                {{ form.assignee(class='uk-select uk-form-danger') }}
+                {% for error in form.assignee.errors %}
+                <small class="uk-form-help-block uk-text-danger">{{ error }}</small>
+                {% endfor %}
+                {% else %}
+                {{ form.assignee(class='uk-select', placeholder='Assignee') }}
+                {% endif %}
+            </div>
+
+            <div class="uk-margin">
                 {{ form.submit(class='uk-button uk-button-primary') }}
             </div>
         </form>

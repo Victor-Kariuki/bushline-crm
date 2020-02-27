@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 
 # local imports
 from app import db
-from app.models import Plot, Inquiry
+from app.models import Plot, Inquiry, Client
 from app.blueprints.plot import plot
 from app.blueprints.plot.forms import PlotForm, InquiryForm
 
@@ -142,7 +142,7 @@ def delete_plot(id):
 def add_inquiry(id):
     """
     Handles requests to /<id>/add-inquiry route
-    Create's a new inquiry
+    Creates a new inquiry
     """
 
     form = InquiryForm()
@@ -150,15 +150,13 @@ def add_inquiry(id):
 
     if form.validate_on_submit():
         inquiry = Inquiry(
-            title = form.title.data,
             proposal = form.proposal.data,
             probability = form.probability.data,
             source = form.source.data,
             client = form.client.data,
-            plot= plot
+            plot = plot,
+            user = form.assignee.data
         )
-        inquiry.assignees.append(current_user)
-
         try:
             db.session.add(inquiry)
             db.session.commit()
@@ -171,4 +169,50 @@ def add_inquiry(id):
 
     # load inquiries template
     return render_template('plots/inquiry-form.html.j2', form=form, title='Create inquiry')
+
+
+@plot.route('/<int:plot_id>/book-plot/<int:inquiry_id>', methods=['GET', 'POST'])
+def book_plot(plot_id, inquiry_id):
+    """
+    Handles requests to /plots/{plot_id}/book-plot/{inquiry_id}
+    Change a plot's status
+    """
+
+    plot = Plot.query.get_or_404(id)
+    plot.status = 'booked'
+
+    try:
+       db.session.add(plot_id)
+       db.session.commit()
+
+       flash('successfully updated plot status', true)
+       return redirect(url_for('plot.read_plot', id=plot_id))
+    except:
+        flash('Error updating plot status')
+        return redirect(url_for('plot.read_plot', id=plot_id))
+
+
+@plot.route('/<int:plot_id>/sale-plot/<int:inquiry_id>', methods=['GET', 'POST'])
+def sale_plot(plot_id, inquiry_id):
+    """
+    Handles requests to /plots/{plot_id}/sale-plot/{inquiry_id}
+    Change a plot's status
+    """
+    inquiry = Inquiry.query.get_or_404(inquiry_id)
+    client = Client.query.filter_by(id=inquiry.id).first_or_404()
+
+    plot = Plot.query.get_or_404(plot_id)
+    plot.status = 'sold'
+    client.type = 'customer'
+
+    try:
+       db.session.add(plot)
+       db.session.add(client)
+       db.session.commit()
+
+       flash('successfully updated plot status', true)
+       return redirect(url_for('plot.read_plot', id=plot_id))
+    except:
+        flash('Error updating plot status')
+        return redirect(url_for('plot.read_plot', id=plot_id))
 
