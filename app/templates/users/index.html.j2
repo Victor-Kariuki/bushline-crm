@@ -20,9 +20,11 @@
             <th class="uk-table-shrink">Inquiries</th>
             <th class="uk-table-shrink">Appointments</th>
             <th class="uk-table-shrink">Tasks</th>
-            <th class="uk-table-shrink">Actions</th>
             <th class="uk-table-shrink">Admin Status</th>
-            {% if current_user.is_admin == 1 %}<th>Admin Actions</th>{% endif %}
+            {% if current_user.is_admin == 1 %}
+            <th class="uk-table-shrink">Actions</th>
+            <th>Admin Actions</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -46,18 +48,13 @@
             <td class="uk-text-center">{{ user.appointments.count() }}</td>
             <td class="uk-text-center">{{ user.tasks.count() }}</td>
             <td>
-                <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
-                <a href="{{ url_for('user.delete_user', id=user.id) }}" class="uk-icon-link" uk-icon="trash"></a>
-            </td>
-            <td>
                 {{ user.is_admin }}
             </td>
             {% if current_user.is_admin == True and current_user.id == user.id %}
             <td>
-                ADMIN
+                <a href="{{ url_for('user.update_user', id=user.id) }}" class="uk-icon-link" uk-icon="file-edit"></a>
+                <a href="{{ url_for('user.delete_user', id=user.id) }}" class="uk-icon-link" uk-icon="trash"></a>
             </td>
-            {% else %}
-            <td>
                 <a href="{{ url_for('user.make_admin', id=user.id) }}" class="uk-icon-link" uk-icon="check"></a>
                 <a href="{{ url_for('user.remove_admin', id=user.id) }}" class="uk-icon-link" uk-icon="close"></a>
             </td>
