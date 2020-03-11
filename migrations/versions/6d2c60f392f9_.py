@@ -1,8 +1,8 @@
-"""create-initial-tables
+"""empty message
 
-Revision ID: b3a2498c3fb7
+Revision ID: 6d2c60f392f9
 Revises: 
-Create Date: 2020-02-24 14:16:20.716662
+Create Date: 2020-03-11 17:29:40.762373
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b3a2498c3fb7'
+revision = '6d2c60f392f9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,7 +56,7 @@ def upgrade():
     sa.Column('email', sa.String(length=60), nullable=True),
     sa.Column('mobile', sa.Integer(), nullable=False),
     sa.Column('location', sa.String(length=60), nullable=False),
-    sa.Column('type', sa.Enum('client', 'lead', name='type'), nullable=False),
+    sa.Column('type', sa.Enum('customer', 'lead', name='type'), nullable=True),
     sa.Column('is_blacklisted', sa.Boolean(), nullable=True),
     sa.Column('added_by', sa.Integer(), nullable=False),
     sa.Column('created_on', sa.DateTime(), nullable=True),
@@ -152,14 +152,12 @@ def upgrade():
     sa.Column('task_id', sa.Integer(), nullable=True),
     sa.Column('note_id', sa.Integer(), nullable=True),
     sa.Column('appointment_id', sa.Integer(), nullable=True),
-    sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=False),
     sa.Column('updated_on', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['appointment_id'], ['appointments.id'], ),
     sa.ForeignKeyConstraint(['author'], ['users.id'], ),
     sa.ForeignKeyConstraint(['inquiry_id'], ['inquiries.id'], ),
     sa.ForeignKeyConstraint(['note_id'], ['notes.id'], ),
-    sa.ForeignKeyConstraint(['parent_id'], ['comments.id'], ),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
